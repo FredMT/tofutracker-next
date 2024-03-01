@@ -12,6 +12,7 @@ import Image from "next/image";
 import HomepageTrendingMovieBadges from "./HomepageTrendingMovieBadges";
 import Autoplay from "embla-carousel-autoplay";
 import SkeletonHomepageTrendingMovieCarousel from "./SkeletonHomepageTrendingMovieCarousel";
+import Link from "next/link";
 
 type Movie = {
   id: number;
@@ -24,22 +25,19 @@ type Movie = {
 const fetcher = async (url: string) => {
   const res = await fetch(url);
   const json = await res.json();
-  return json.results.map(
+  return json.map(
     ({ id, backdrop_path, logo_path, title, genre_ids }: Movie) => ({
       id,
       title,
-      backdrop_path: `https://image.tmdb.org/t/p/original${backdrop_path}`,
-      logo_path: `https://image.tmdb.org/t/p/original${logo_path}`,
+      backdrop_path,
+      logo_path,
       genre_ids,
     })
   );
 };
 
 export default function HomepageTrendingMovieCarousel() {
-  const { data, error, isLoading } = useSWR(
-    "https://jellyfish-app-lmbt9.ondigitalocean.app/api/trending",
-    fetcher
-  );
+  const { data, error, isLoading } = useSWR("/api/trending", fetcher);
 
   if (error) return <div>Failed to load</div>;
 
@@ -67,16 +65,18 @@ export default function HomepageTrendingMovieCarousel() {
                 sizes="100vw, 100vw"
               />
               <div className="absolute bottom-20 left-0 right-0 mx-auto flex justify-center">
-                <div className="relative h-[200px] w-[400px]">
-                  <Image
-                    src={movie.logo_path}
-                    alt={movie.title}
-                    className="object-contain object-center"
-                    sizes="100vw, 100vw"
-                    priority
-                    fill
-                  />
-                </div>
+                <Link href={`/movie/${movie.id}`}>
+                  <div className="relative h-[200px] w-[400px]">
+                    <Image
+                      src={movie.logo_path}
+                      alt={movie.title}
+                      className="object-contain object-center"
+                      sizes="100vw, 100vw"
+                      priority
+                      fill
+                    />
+                  </div>
+                </Link>
               </div>
 
               <HomepageTrendingMovieBadges genre_ids={movie.genre_ids} />

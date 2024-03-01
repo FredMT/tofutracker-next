@@ -1,5 +1,4 @@
 import HomepageTrendingMovieCarousel from "./components/HomepageTrendingMovieCarousel";
-import { ModeToggle } from "../components/ui/theme";
 
 export default function Home() {
   return (
