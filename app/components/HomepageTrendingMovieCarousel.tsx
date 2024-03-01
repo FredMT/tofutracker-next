@@ -73,6 +73,7 @@ export default function HomepageTrendingMovieCarousel() {
                     alt={movie.title}
                     className="object-contain object-center"
                     sizes="100vw, 100vw"
+                    priority
                     fill
                   />
                 </div>
