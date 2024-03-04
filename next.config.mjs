@@ -8,6 +8,18 @@ const nextConfig = {
         port: "",
         pathname: "/t/p/**",
       },
+      {
+        protocol: "https",
+        hostname: "placehold.co",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.anidb.net",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

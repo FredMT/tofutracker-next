@@ -20,7 +20,15 @@ const genreMap: { [key: number]: string } = {
   10402: "Music",
   9648: "Mystery",
   10749: "Romance",
+  10759: "Action & Adventure",
+  10762: "Kids",
+  10763: "News",
   878: "Science Fiction",
+  10764: "Reality",
+  10765: "Sci-Fi & Fantasy",
+  10766: "Soap",
+  10767: "Talk",
+  10768: "War & Politics",
   10770: "TV Movie",
   53: "Thriller",
   10752: "War",
@@ -32,7 +40,9 @@ export default function HomepageTrendingMovieBadges({ genre_ids }: Props) {
     <div className="absolute bottom-5 left-0 right-0 mx-auto flex justify-center">
       <div className="flex gap-x-4">
         {genre_ids.map((id, index) => (
-          <Badge key={index}>{genreMap[id]}</Badge>
+          <Badge key={index} className="bg-transparent text-white border-white">
+            {genreMap[id]}
+          </Badge>
         ))}
       </div>
     </div>

@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.39.7",
@@ -19,6 +20,7 @@
     "clsx": "^2.1.0",
     "embla-carousel-autoplay": "^8.0.0",
     "embla-carousel-react": "^8.0.0",
+    "embla-carousel-wheel-gestures": "^8.0.0-rc05",
     "lucide-react": "^0.341.0",
     "next": "14.1.0",
     "next-themes": "^0.2.1",

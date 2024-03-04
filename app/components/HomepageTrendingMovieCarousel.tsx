@@ -14,30 +14,37 @@ import Autoplay from "embla-carousel-autoplay";
 import SkeletonHomepageTrendingMovieCarousel from "./SkeletonHomepageTrendingMovieCarousel";
 import Link from "next/link";
 
-type Movie = {
+type Content = {
   id: number;
   backdrop_path: string;
   title: string;
   logo_path: string;
   genre_ids: number[];
-};
-
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  const json = await res.json();
-  return json.map(
-    ({ id, backdrop_path, logo_path, title, genre_ids }: Movie) => ({
-      id,
-      title,
-      backdrop_path,
-      logo_path,
-      genre_ids,
-    })
-  );
+  media_type: string;
 };
 
 export default function HomepageTrendingMovieCarousel() {
-  const { data, error, isLoading } = useSWR("/api/trending", fetcher);
+  const {
+    data: fetchedData,
+    error,
+    isLoading,
+  } = useSWR(
+    "https://jellyfish-app-lmbt9.ondigitalocean.app/api/trending",
+    (url) => fetch(url).then((res) => res.json())
+  );
+
+  let data: Content[] = [];
+  if (fetchedData) {
+    const minLength = Math.min(
+      fetchedData.movies.length,
+      fetchedData.tvShows.length,
+      5
+    );
+    for (let i = 0; i < minLength; i++) {
+      data.push(fetchedData.movies[i]); // Add movie
+      data.push(fetchedData.tvShows[i]); // Add TV show
+    }
+  }
 
   if (error) return <div>Failed to load</div>;
 
@@ -49,27 +56,32 @@ export default function HomepageTrendingMovieCarousel() {
       plugins={[
         Autoplay({
           delay: 5000,
+          stopOnMouseEnter: true,
         }),
       ]}
     >
       <CarouselContent>
-        {data.map((movie: Movie, index: number) => (
+        {data.map((item: Content, index: number) => (
           <CarouselItem key={index} className="h-[60vh]">
             <div className="relative h-full w-full">
               <Image
-                src={movie.backdrop_path}
-                alt={movie.title}
+                src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
+                alt={item.title}
                 className="object-cover object-center"
                 fill
                 priority
                 sizes="100vw, 100vw"
               />
               <div className="absolute bottom-20 left-0 right-0 mx-auto flex justify-center">
-                <Link href={`/movie/${movie.id}`}>
-                  <div className="relative h-[200px] w-[400px]">
+                <Link
+                  href={`/${item.media_type}/${item.id}-${item.title
+                    .replace(/ /g, "-")
+                    .replace(/:/g, "")}`}
+                >
+                  <div className="relative sm:h-[200px] sm:w-[400px] h-[100px] w-[200px]">
                     <Image
-                      src={movie.logo_path}
-                      alt={movie.title}
+                      src={item.logo_path}
+                      alt={item.title}
                       className="object-contain object-center"
                       sizes="100vw, 100vw"
                       priority
@@ -79,7 +91,7 @@ export default function HomepageTrendingMovieCarousel() {
                 </Link>
               </div>
 
-              <HomepageTrendingMovieBadges genre_ids={movie.genre_ids} />
+              <HomepageTrendingMovieBadges genre_ids={item.genre_ids} />
 
               <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-gradient-to-t from-black to-transparent p-5 opacity-35" />
             </div>
