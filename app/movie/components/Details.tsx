@@ -25,8 +25,6 @@ export default async function Details({
       person.job === "Novel"
   );
 
-  console.log(movieCredits);
-
   const sortedMovieCredits = movieCredits.sort((a, b) => {
     if (a.job === "Director") return -1;
     if (b.job === "Director") return 1;

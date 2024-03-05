@@ -26,7 +26,7 @@ export default async function Backdrop({
         alt={title}
         width={1920}
         height={1080}
-        className="absolute top-[85%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] object-contain"
+        className="absolute -bottom-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] object-contain"
       />
     </div>
   );
