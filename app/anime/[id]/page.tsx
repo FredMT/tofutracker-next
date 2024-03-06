@@ -82,8 +82,6 @@ export default async function Anime({ params }: { params: { id: string } }) {
       images.posters[0].file_path ||
       `https://cdn.anidb.net/images/main/${anime.poster}`);
 
-  console.log(poster_path);
-
   return (
     <>
       <title>{`${anime.title} - Tofutracker`}</title>
