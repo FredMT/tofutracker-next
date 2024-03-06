@@ -8,14 +8,17 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
     <div className="w-full absolute top-0 z-50">
       <div className="flex justify-between w-[80%] mx-auto">
-        <div className="font-syne p-4 text-white font-semibold text-[24px] uppercase select-none">
-          TOFUTRACKER
-        </div>
+        <Link href="/">
+          <div className="font-syne p-4 text-white font-semibold text-[24px] uppercase select-none">
+            TOFUTRACKER
+          </div>
+        </Link>
         <div className="hidden sm:flex gap-x-4 p-4">
           <ThemeButton />
           <Button
