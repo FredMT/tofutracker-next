@@ -30,7 +30,6 @@ export default async function MovieInfo({
   const newlanguage = new Intl.DisplayNames(["en"], { type: "language" }).of(
     language
   );
-  await new Promise((resolve) => setTimeout(resolve, 900));
 
   return (
     <Card className="border-x-0 border-y-2 rounded-none w-full mt-6">

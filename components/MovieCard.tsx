@@ -32,7 +32,7 @@ export default function MovieCard({
             className="w-full object-cover rounded-sm lg:w-[140px] lg:h-[210px]"
             src={
               media_type !== "anime"
-                ? `https://image.tmdb.org/t/p/original${poster_path}`
+                ? `https://image.tmdb.org/t/p/w440_and_h660_face${poster_path}`
                 : `https://cdn.anidb.net/images/main/${poster_path}`
             }
             alt={title}

@@ -73,7 +73,7 @@ export default function HomepageTrendingMovieCardCarousel() {
           }}
         >
           <CarouselContent>
-            {fetchedData.movies.map((movie: Movie, index: number) => {
+            {fetchedData.movies.map((movie: Movie) => {
               const year = movie.release_date.split("-")[0];
               const rating = movie.vote_average.toFixed(2);
               return (

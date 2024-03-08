@@ -10,7 +10,6 @@ export default async function Backdrop({
   title: string;
   logo_path: string;
 }) {
-  await new Promise((resolve) => setTimeout(resolve, 500));
   return (
     <div className="relative">
       <Image

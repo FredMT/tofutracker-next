@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useSWR from "swr";
 import { useParams } from "next/navigation";
@@ -21,9 +21,9 @@ type Season = {
 export default function SeasonsAndEpisodes() {
   const slug = useParams().id;
   const id = typeof slug === "string" ? slug.split("-")[0] : slug[0];
-  const [selectedSeason, setSelectedSeason] = useState("Season 1");
-  const [seasonNumber, setSeasonNumber] = useState(1);
-  const [isDataReady, setIsDataReady] = useState(false);
+  const [selectedSeason, setSelectedSeason] = React.useState("Season 1");
+  const [seasonNumber, setSeasonNumber] = React.useState(1);
+  const [isDataReady, setIsDataReady] = React.useState(false);
 
   const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -45,7 +45,7 @@ export default function SeasonsAndEpisodes() {
     fetcher
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (fetchedData && fetchedData.seasons) {
       const hasSeasonOne = fetchedData.seasons.some(
         (season: Season) => season.name === "Season 1"

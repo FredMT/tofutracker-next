@@ -31,7 +31,6 @@ export default async function Details({
     return 0;
   });
 
-  await new Promise((resolve) => setTimeout(resolve, 1200));
   return (
     <Card className="border-x-0 border-t-0 rounded-none pb-8">
       <div className="grid grid-cols-[75px_auto] gap-y-2 lg:grid-cols-[75px_1fr_75px_1fr] lg:gap-y-4 mt-4">

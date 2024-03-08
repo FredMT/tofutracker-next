@@ -20,7 +20,7 @@ type MediaItem = {
 
 type SimilarMediaProps = {
   items: MediaItem[];
-  basePath: string; // 'movie' or 'tv'
+  basePath: string;
 };
 
 export default function SimilarMedia({ items, basePath }: SimilarMediaProps) {

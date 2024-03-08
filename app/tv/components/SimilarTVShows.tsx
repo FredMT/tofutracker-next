@@ -1,14 +1,5 @@
 "use client";
 import SimilarMedia from "@/app/components/SimilarMedia";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 type TVShow = {

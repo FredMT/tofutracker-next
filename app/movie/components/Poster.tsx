@@ -9,7 +9,6 @@ export default async function Poster({
   poster_path: string;
   title: string;
 }) {
-  await new Promise((resolve) => setTimeout(resolve, 600));
   return (
     <div className="flex flex-col gap-y-6 max-w-[182px]">
       <Image
