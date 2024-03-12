@@ -43,7 +43,11 @@ export default function MovieCard({
         </div>
       </Link>
       <div className="flex flex-col gap-y-2 mt-4">
-        <Link href={`/movie/${id}`}>
+      <Link
+        href={`/${media_type}/${id}-${title
+          .replace(/ /g, "-")
+          .replace(/:/g, "")}`}
+      >
           <h3 className="text-[14px] leading-6 font-semibold line-clamp-2 text-secondary-foreground">
             {title}
           </h3>

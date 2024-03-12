@@ -40,8 +40,6 @@ export default async function Anime({ params }: { params: { id: string } }) {
   const anime = result[0].anime[0];
 
   return (
-    <>
-      <title>{`${anime.title} - Tofutracker`}</title>
       <div className="flex flex-col gap-y-6">
         <Suspense fallback={<Skeleton className="h-[288px] w-full" />}>
           <AnimeBackdrop title={anime.title} type={anime.type} id={anime.id} />
@@ -126,6 +124,5 @@ export default async function Anime({ params }: { params: { id: string } }) {
           </div>
         </div>
       </div>
-    </>
   );
 }

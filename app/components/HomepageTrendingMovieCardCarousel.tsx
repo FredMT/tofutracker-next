@@ -116,7 +116,7 @@ export default function HomepageTrendingMovieCardCarousel() {
                   !tvShow.genre_ids.includes(16) &&
                   tvShow.origin_country[0] !== "JP"
               )
-              .map((tvShow: Movie, index: number) => {
+              .map((tvShow: Movie) => {
                 const year = tvShow.first_air_date.split("-")[0];
                 const rating = tvShow.vote_average.toFixed(2);
                 return (
@@ -153,7 +153,7 @@ export default function HomepageTrendingMovieCardCarousel() {
           }}
         >
           <CarouselContent>
-            {fetchedData.anime.map((anime: Movie, index: number) => {
+            {fetchedData.anime.map((anime: Movie) => {
               const year = anime.start_date.split("-")[0];
               const rating = anime.rating;
               return (

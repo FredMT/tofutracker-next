@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
 import AnimeEpisodes from "./AnimeEpisodes";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 type AnimeSeasonResponse = {
   success: boolean;
@@ -115,6 +116,10 @@ export default function AnimeSeasonsAndEpisodes({
   return (
     <Card className="border-x-0 border-t-0 rounded-none pb-8">
       <Tabs value={selectedSeason}>
+      <ScrollArea
+            className="relative mb-4 rounded-md h-12 sm:w-[60vw] "
+            type="always"
+          >
         <TabsList className="bg-transparent">
           {fetchedData?.data?.map((item: AnimeSeason, index: number) => (
             <TabsTrigger
@@ -127,6 +132,8 @@ export default function AnimeSeasonsAndEpisodes({
             </TabsTrigger>
           ))}
         </TabsList>
+        <ScrollBar orientation="horizontal" />
+          </ScrollArea>
         <TabsContent value={selectedSeason}>
           {episodes?.data && <AnimeEpisodes episodes={episodes?.data} />}
         </TabsContent>
