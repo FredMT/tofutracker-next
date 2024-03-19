@@ -59,26 +59,34 @@ export default async function Details({
             </div>
           </React.Fragment>
         ))}
-        <div className="text-[14px] text-muted-foreground font-medium leading-[24px]">
-          Budget
-        </div>
-        <div className="text-[14px]  font-medium leading-[24px] ml-6">
-          {new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 2,
-          }).format(budget)}
-        </div>
-        <div className="text-[14px] text-muted-foreground font-medium leading-[24px]">
-          Revenue
-        </div>
-        <div className="text-[14px]  font-medium leading-[24px] ml-6">
-          {new Intl.NumberFormat("en-US", {
-            style: "currency",
-            currency: "USD",
-            minimumFractionDigits: 2,
-          }).format(revenue)}
-        </div>
+        {Boolean(budget) && (
+          <>
+            <div className="text-[14px] text-muted-foreground font-medium leading-[24px]">
+              Budget
+            </div>
+            <div className="text-[14px]  font-medium leading-[24px] ml-6">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 2,
+              }).format(budget)}
+            </div>
+          </>
+        )}
+        {Boolean(revenue) && (
+          <>
+            <div className="text-[14px] text-muted-foreground font-medium leading-[24px]">
+              Revenue
+            </div>
+            <div className="text-[14px]  font-medium leading-[24px] ml-6">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "USD",
+                minimumFractionDigits: 2,
+              }).format(revenue)}
+            </div>
+          </>
+        )}
       </div>
     </Card>
   );

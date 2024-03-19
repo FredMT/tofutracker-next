@@ -35,7 +35,10 @@ export default function RelatedAnime({ id }: { id: number }) {
     data: related,
     error,
     isLoading,
-  } = useSWR(`http://localhost:8080/api/getanimerelationsinfo/${id}`, fetcher);
+  } = useSWR(
+    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/getanimerelationsinfo/${id}`,
+    fetcher
+  );
 
   if (error) {
     return <div>Error...</div>;

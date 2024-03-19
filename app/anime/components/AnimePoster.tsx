@@ -13,7 +13,7 @@ type Images = {
 };
 
 async function getAnimeImages(type: string, id: number) {
-  const url = `http://localhost:8080/api/getanimeimages/${type}/${id}`;
+  const url = `https://jellyfish-app-lmbt9.ondigitalocean.app/api/getanimeimages/${type}/${id}`;
   const data = await fetch(url);
   const result = await data.json();
   return result.data;

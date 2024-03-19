@@ -39,7 +39,7 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
   let animeType = type !== "Movie" ? "tv" : "movie";
 
   const { data, error, isLoading } = useSWR(
-    `http://localhost:8080/api/getsimilaranime/${animeType}/${id}`,
+    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/getsimilaranime/${animeType}/${id}`,
     fetcher
   );
 

@@ -72,7 +72,9 @@ export default function AnimeSeasonsAndEpisodes({
     error: relationsError,
     isLoading: relationsLoading,
   } = useSWR<AnimeRelationsResponse>(
-    `http://localhost:8080/api/getanimerelations/${parseInt(selectedSeason)}`,
+    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/getanimerelations/${parseInt(
+      selectedSeason
+    )}`,
     fetcher
   );
 
@@ -81,7 +83,7 @@ export default function AnimeSeasonsAndEpisodes({
     error: episodesError,
     isLoading: episodesLoading,
   } = useSWR<AnimeEpisodesResponse>(
-    `http://localhost:8080/api/getanimeepisodes/${parseInt(
+    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/getanimeepisodes/${parseInt(
       selectedSeason
     )}/${start_date}/${end_date}`,
     fetcher
@@ -116,24 +118,24 @@ export default function AnimeSeasonsAndEpisodes({
   return (
     <Card className="border-x-0 border-t-0 rounded-none pb-8">
       <Tabs value={selectedSeason}>
-      <ScrollArea
-            className="relative mb-4 rounded-md h-12 sm:w-[60vw] "
-            type="always"
-          >
-        <TabsList className="bg-transparent">
-          {fetchedData?.data?.map((item: AnimeSeason, index: number) => (
-            <TabsTrigger
-              key={item.sequel_id}
-              value={item.sequel_id.toString()}
-              onClick={() => handleSeasonChange(item.sequel_id.toString())}
-              className={getBackgroundColor(item.sequel_id.toString())}
-            >
-              {`Season ${index + 1}`}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        <ScrollBar orientation="horizontal" />
-          </ScrollArea>
+        <ScrollArea
+          className="relative mb-4 rounded-md h-12 sm:w-[60vw] "
+          type="always"
+        >
+          <TabsList className="bg-transparent">
+            {fetchedData?.data?.map((item: AnimeSeason, index: number) => (
+              <TabsTrigger
+                key={item.sequel_id}
+                value={item.sequel_id.toString()}
+                onClick={() => handleSeasonChange(item.sequel_id.toString())}
+                className={getBackgroundColor(item.sequel_id.toString())}
+              >
+                {`Season ${index + 1}`}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
         <TabsContent value={selectedSeason}>
           {episodes?.data && <AnimeEpisodes episodes={episodes?.data} />}
         </TabsContent>
