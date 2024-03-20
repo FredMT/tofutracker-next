@@ -4,6 +4,7 @@ import { Syne } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ui/theme-provider";
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 
