@@ -36,7 +36,7 @@ export default function RelatedAnime({ id }: { id: number }) {
     error,
     isLoading,
   } = useSWR(
-    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/getanimerelationsinfo/${id}`,
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/getanimerelationsinfo/${id}`,
     fetcher
   );
 

@@ -27,7 +27,7 @@ export const generateMetadata = ({ params }: Props): Metadata => {
 
 async function getMovieData(id: number) {
   const data = await fetch(
-    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/getmovie/${id}`
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/getmovie/${id}`
   );
   const result = await data.json();
   return result;

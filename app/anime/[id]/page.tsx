@@ -28,7 +28,7 @@ type Props = {
 
 export default async function Anime({ params }: { params: { id: string } }) {
   const result = await fetch(
-    "https://jellyfish-app-lmbt9.ondigitalocean.app/api/getanime/" +
+    "https://tofutracker-3pt5y.ondigitalocean.app/api/getanime/" +
       params.id.split("-")[0]
   )
     .then((res) => res.json())

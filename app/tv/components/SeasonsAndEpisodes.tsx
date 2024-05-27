@@ -32,7 +32,7 @@ export default function SeasonsAndEpisodes() {
     error,
     isLoading,
   } = useSWR(
-    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/gettv/${id}`,
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/gettv/${id}`,
     fetcher
   );
 
@@ -41,7 +41,7 @@ export default function SeasonsAndEpisodes() {
     error: seasonDataError,
     isLoading: seasonDataLoading,
   } = useSWR(
-    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/gettvseason/${id}/${seasonNumber}`,
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/gettvseason/${id}/${seasonNumber}`,
     fetcher
   );
 

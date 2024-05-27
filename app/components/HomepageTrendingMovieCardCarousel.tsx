@@ -33,7 +33,7 @@ export default function HomepageTrendingMovieCardCarousel() {
     error,
     isLoading,
   } = useSWR(
-    "https://jellyfish-app-lmbt9.ondigitalocean.app/api/trending",
+    "https://tofutracker-3pt5y.ondigitalocean.app/api/trending",
     (url) => fetch(url).then((res) => res.json())
   );
 

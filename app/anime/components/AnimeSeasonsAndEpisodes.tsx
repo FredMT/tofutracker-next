@@ -63,7 +63,7 @@ export default function AnimeSeasonsAndEpisodes({
     error,
     isLoading,
   } = useSWR<AnimeSeasonResponse>(
-    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/getanimechain/${id}`,
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/getanimechain/${id}`,
     fetcher
   );
 
@@ -72,7 +72,7 @@ export default function AnimeSeasonsAndEpisodes({
     error: relationsError,
     isLoading: relationsLoading,
   } = useSWR<AnimeRelationsResponse>(
-    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/getanimerelations/${parseInt(
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/getanimerelations/${parseInt(
       selectedSeason
     )}`,
     fetcher
@@ -83,7 +83,7 @@ export default function AnimeSeasonsAndEpisodes({
     error: episodesError,
     isLoading: episodesLoading,
   } = useSWR<AnimeEpisodesResponse>(
-    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/getanimeepisodes/${parseInt(
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/getanimeepisodes/${parseInt(
       selectedSeason
     )}/${start_date}/${end_date}`,
     fetcher

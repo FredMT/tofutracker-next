@@ -28,7 +28,7 @@ type Props = {
 
 async function getTVData(id: number) {
   const data = await fetch(
-    `https://jellyfish-app-lmbt9.ondigitalocean.app/api/gettv/${id}`
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/gettv/${id}`
   );
   const result = await data.json();
   return result;
