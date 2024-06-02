@@ -12,6 +12,7 @@ import Overview from "@/app/movie/components/Overview";
 import AnimeSeasonsAndEpisodes from "../components/AnimeSeasonsAndEpisodes";
 import SimilarAnime from "../components/SimilarAnime";
 import RelatedAnime from "../components/RelatedAnime";
+import { createClient } from "@/utils/supabase/server";
 
 export const generateMetadata = ({ params }: Props): Metadata => {
   const title = params.id.split("-").slice(1).join(" ").replace(/%20/g, " ");
@@ -27,6 +28,12 @@ type Props = {
 };
 
 export default async function Anime({ params }: { params: { id: string } }) {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   const result = await fetch(
     "https://tofutracker-3pt5y.ondigitalocean.app/api/getanime/" +
       params.id.split("-")[0]
@@ -77,7 +84,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
           </div>
           <div className="sm:hidden flex justify-center mt-6">
             <Suspense fallback={<Skeleton className="w-full h-[168px] mt-6" />}>
-              <MobileButtons />
+              <MobileButtons item_id={anime.id} item_type="Anime" />
             </Suspense>
           </div>
           <div className="mt-6">

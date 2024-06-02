@@ -94,7 +94,7 @@ export default async function TVShow({ params }: { params: { id: string } }) {
           </div>
           <div className="sm:hidden flex justify-center mt-6">
             <Suspense fallback={<Skeleton className="w-full h-[168px] mt-6" />}>
-              <MobileButtons />
+              <MobileButtons item_id={tv.id} item_type="TV" />
             </Suspense>
           </div>
           <div className="mt-6">

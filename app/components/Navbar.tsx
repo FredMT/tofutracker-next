@@ -1,7 +1,7 @@
-"use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import ThemeButton from "./ThemeButton";
+import AuthButton from "@/components/AuthButton";
 import { Menu } from "lucide-react";
 import {
   DropdownMenu,
@@ -21,15 +21,7 @@ export default function Navbar() {
         </Link>
         <div className="hidden sm:flex gap-x-4 p-4">
           <ThemeButton />
-          <Button
-            variant="secondary"
-            className="text-[14px] font-medium leading-[24px]"
-          >
-            Sign In
-          </Button>
-          <Button className="text-[14px] font-medium leading-[24px]">
-            Sign Up
-          </Button>
+          <AuthButton />
         </div>
         <div className="flex sm:hidden">
           <DropdownMenu>
@@ -38,8 +30,7 @@ export default function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="p-4">
               <div className="flex flex-col gap-y-2">
-                <Button variant="secondary">Sign In</Button>
-                <Button variant="secondary">Sign Up</Button>
+                <AuthButton />
                 <ThemeButton />
               </div>
             </DropdownMenuContent>
