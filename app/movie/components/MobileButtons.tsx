@@ -17,6 +17,7 @@ import {
 import { createClient } from "@/utils/supabase/server";
 import { addOrRemoveFromLibrary } from "./actions";
 import React from "react";
+import ItemRating from "@/app/components/ItemRating";
 
 export default async function MobileButtons({
   item_id,
@@ -31,6 +32,7 @@ export default async function MobileButtons({
   } = await supabase.auth.getUser();
 
   let isInLibrary = false;
+  let currentRating = -1;
 
   if (user) {
     const { data, error } = await supabase
@@ -43,9 +45,12 @@ export default async function MobileButtons({
     } else {
       if (data.length > 0) {
         isInLibrary = true;
+        currentRating = data[0].rating || -1;
       }
     }
   }
+
+  console.log(currentRating, item_id, item_type);
 
   return (
     <div className="flex flex-col w-full gap-y-4">
@@ -71,9 +76,9 @@ export default async function MobileButtons({
             </Button>
           </form>
 
-          <DrawerTrigger className="absolute left-[87%] bottom-0 top-0 my-auto">
+          {/* <DrawerTrigger className="absolute left-[87%] bottom-0 top-0 my-auto">
             <ChevronDown className="text-black size-5" />
-          </DrawerTrigger>
+          </DrawerTrigger> */}
         </div>
         <DrawerContent className="p-6">
           <DrawerHeader className="p-0 text-start text-[18px] not-italic font-semibold leading-[28px]">
@@ -92,12 +97,17 @@ export default async function MobileButtons({
           </div>
         </DrawerContent>
       </Drawer>
-      <Button className="w-full flex justify-start" variant="secondary">
-        <Star className="mr-2" /> Rate
-      </Button>
-      <Button className="w-full flex justify-start" variant="secondary">
-        <Monitor className="mr-2" /> Watch
-      </Button>
+      <ItemRating
+        item_id={item_id}
+        item_type={item_type}
+        currentRating={currentRating}
+      />
+
+      {/* {item_type !== "Anime" && (
+        <Button className="w-full flex justify-start" variant="secondary">
+          <Monitor className="mr-2" /> Watch
+        </Button>
+      )} */}
     </div>
   );
 }
