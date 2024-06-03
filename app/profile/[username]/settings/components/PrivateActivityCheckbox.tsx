@@ -1,6 +1,5 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSWRConfig } from "swr";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -13,11 +12,13 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { toast } from "@/components/ui/use-toast";
-import { createClient } from "@/utils/supabase/client";
+
+type ActivityPrivacyData = {
+  activity_privacy: boolean;
+};
 
 const FormSchema = z.object({
-  activity_privacy: z.boolean().default(false).optional(),
+  activity_privacy: z.boolean().default(false),
 });
 
 export default function PrivateActivityCheckbox({
@@ -29,17 +30,18 @@ export default function PrivateActivityCheckbox({
   user_id: string;
   username: string;
   activityIsPrivate: boolean;
-  updateActivityPrivacySetting: () => void;
+  updateActivityPrivacySetting: (
+    data: ActivityPrivacyData,
+    userId: string,
+    username: string
+  ) => Promise<void>;
 }) {
-  const supabase = createClient();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       activity_privacy: activityIsPrivate,
     },
   });
-
-  const { mutate } = useSWRConfig();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     await updateActivityPrivacySetting(data, user_id, username);

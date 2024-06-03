@@ -43,10 +43,9 @@ export default async function Profile({
     return;
   }
 
-  // Fetch poster data for each item
   const posterDataPromises = activityData.map((item) =>
     fetch(
-      `http://localhost:8080/api/getposter/${item.item_type}/${item.item_id}`
+      `https://tofutracker-3pt5y.ondigitalocean.app/api/getposter/${item.item_type}/${item.item_id}`
     ).then((response) => response.json())
   );
   const postersData = await Promise.all(posterDataPromises);

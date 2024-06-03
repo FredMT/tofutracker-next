@@ -10,7 +10,7 @@ export const getActivityPrivacySetting = async (
   const supabase = createClient();
   const { data, error } = await supabase
     .from("profile")
-    .select("activity_isPrivate")
+    .select("activity_is_private")
     .eq("id", user_id)
     .single();
 
@@ -19,7 +19,7 @@ export const getActivityPrivacySetting = async (
     return;
   }
   revalidatePath(`/profile/${username}/settings`);
-  return data.activity_isPrivate;
+  return data.activity_is_private;
 };
 
 type ActivityPrivacyData = {
@@ -42,6 +42,4 @@ export const updateActivityPrivacySetting = async (
   if (!error) {
     revalidatePath(`/profile/${username}/settings`);
   }
-
-  return error;
 };
