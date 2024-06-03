@@ -84,7 +84,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
           </div>
           <div className="sm:hidden flex justify-center mt-6">
             <Suspense fallback={<Skeleton className="w-full h-[168px] mt-6" />}>
-              <MobileButtons item_id={anime.id} item_type="Anime" />
+              <MobileButtons item_id={anime.id} item_type="anime" />
             </Suspense>
           </div>
           <div className="mt-6">

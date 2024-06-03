@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen font-sans antialiased",
+          "min-h-screen font-sans antialiased flex flex-col",
           fontSans.variable,
           syne_init.variable
         )}
@@ -44,7 +44,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          {children}
+          <div className="flex-1">{children}</div>
           <Footer />
         </ThemeProvider>
       </body>

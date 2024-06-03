@@ -7,7 +7,7 @@ import { Code, Layers2 } from "lucide-react";
 
 export default function Footer() {
   return (
-    <div className="flex flex-col gap-y-4">
+    <div className="flex flex-col gap-y-4 mx-6">
       <div className="flex gap-x-6 w-full justify-around px-6">
         <Link
           href="https://bento.me/notacookiefactory"
