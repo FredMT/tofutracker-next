@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Tofutracker - Homepage",
@@ -45,6 +46,7 @@ export default function RootLayout({
         >
           <Navbar />
           <div className="flex-1">{children}</div>
+          <Toaster />
           <Footer />
         </ThemeProvider>
       </body>

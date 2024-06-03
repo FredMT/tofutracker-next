@@ -28,7 +28,7 @@ export default function Navbar() {
             <DropdownMenuTrigger>
               <Menu />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="p-4">
+            <DropdownMenuContent className="p-4 w-40">
               <div className="flex flex-col gap-y-2">
                 <AuthButton />
                 <ThemeButton />

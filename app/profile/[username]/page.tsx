@@ -29,12 +29,12 @@ export default async function Profile({
     return;
   }
 
-  const userId = userData.id;
+  const viewedUserId = userData.id;
 
   const { data: activityData, error: activityDataError } = await supabase
     .from("item_lists")
     .select("item_id, item_type")
-    .eq("user_id", userId)
+    .eq("user_id", viewedUserId)
     .eq("list_type", "Library")
     .order("created_at", { ascending: false });
 
@@ -55,7 +55,10 @@ export default async function Profile({
     <div className="mt-20 mx-6">
       <div className="flex gap-6">
         <Avatar className="size-12">
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage
+            src="https://github.com/shadcn.png"
+            alt="Profile picture"
+          />
         </Avatar>
         <div className="flex flex-col">
           <div className="font-syne text-xl font-semibold">
@@ -68,11 +71,11 @@ export default async function Profile({
       <div className="text-xl mt-6">Activity</div>
       <Separator className="mt-2" />
 
-      <div className="grid gap-4 mt-6 grid-cols-3 place-items-center">
+      <div className="grid gap-4 mt-6 grid-cols-3 lg:grid-cols-4 place-items-center mb-6">
         {postersData.map((item, index) => (
           <Image
             key={index}
-            className="min-w-[88px] h-[132px]"
+            className="min-w-[88px] min-h-[132px] sm:min-w-[124px] sm:min-h-[186px] md:min-w-[152px] md:min-h-[228px] lg:min-w-[176px] lg:min-h-[264px] xl:min-w-[200px] xl:min-h-[300px]"
             src={item.item_poster}
             alt={item.item_title}
             width={88}
