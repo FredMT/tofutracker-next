@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# TofuTracker (in development)
+TofuTracker helps you view the latest information on Movies, Television Shows and Anime.
 
-## Getting Started
+# Features
+1. Uses TMDB for Movies and TV Shows, and uses AniDB for anime.
+2. View detailed information on trending movies, tv shows, and anime.
+3. Login and track your favorite media!
+4. View other users profiles and interact with them by commenting on their activity!
 
-First, run the development server:
+# Screenshots
+Homepage
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+![Homepage](https://i.imgur.com/xdlgdZH.png)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+TV Show page
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+![TV Show page](https://i.imgur.com/ACyeDyu.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Anime page
 
-## Learn More
+![Anime page](https://i.imgur.com/3ZQ7GnD.png)
 
-To learn more about Next.js, take a look at the following resources:
+Profile page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![Profile page](https://i.imgur.com/s18LMy2.png)
