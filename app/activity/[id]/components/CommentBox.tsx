@@ -62,4 +62,5 @@ const CommentBox = forwardRef<
   );
 });
 
+CommentBox.displayName = "CommentBox";
 export default CommentBox;
