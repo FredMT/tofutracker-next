@@ -2,6 +2,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Profile({
   params,
@@ -33,7 +34,7 @@ export default async function Profile({
 
   const { data: activityData, error: activityDataError } = await supabase
     .from("item_lists")
-    .select("item_id, item_type")
+    .select("id")
     .eq("user_id", viewedUserId)
     .eq("list_type", "Library")
     .order("created_at", { ascending: false });
@@ -45,7 +46,7 @@ export default async function Profile({
 
   const posterDataPromises = activityData.map((item) =>
     fetch(
-      `https://tofutracker-3pt5y.ondigitalocean.app/api/getposter/${item.item_type}/${item.item_id}`
+      `https://tofutracker-3pt5y.ondigitalocean.app/api/getposter/${item.id}`
     ).then((response) => response.json())
   );
   const postersData = await Promise.all(posterDataPromises);
@@ -71,16 +72,18 @@ export default async function Profile({
       <Separator className="mt-2" />
 
       <div className="grid gap-4 mt-6 grid-cols-3 lg:grid-cols-4 place-items-center mb-6">
-        {postersData.map((item, index) => (
-          <Image
-            key={index}
-            className="min-w-[88px] min-h-[132px] sm:min-w-[124px] sm:min-h-[186px] md:min-w-[152px] md:min-h-[228px] lg:min-w-[176px] lg:min-h-[264px] xl:min-w-[200px] xl:min-h-[300px]"
-            src={item.item_poster}
-            alt={item.item_title}
-            width={88}
-            height={132}
-            priority
-          />
+        {postersData.map((item) => (
+          <Link href={`/activity/${item.activity_id}`} key={item.activity_id}>
+            <Image
+              key={item.activity_id}
+              className="min-w-[88px] min-h-[132px] sm:min-w-[124px] sm:min-h-[186px] md:min-w-[152px] md:min-h-[228px] lg:min-w-[176px] lg:min-h-[264px] xl:min-w-[200px] xl:min-h-[300px]"
+              src={item.item_poster}
+              alt={item.item_title}
+              width={88}
+              height={132}
+              priority
+            />
+          </Link>
         ))}
       </div>
     </div>

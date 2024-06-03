@@ -2,6 +2,10 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
+type ActivityPrivacyData = {
+  activity_privacy: boolean;
+};
+
 export const getActivityPrivacySetting = async (
   user_id: string,
   username: string
@@ -20,10 +24,6 @@ export const getActivityPrivacySetting = async (
   }
   revalidatePath(`/profile/${username}/settings`);
   return data.activity_is_private;
-};
-
-type ActivityPrivacyData = {
-  activity_privacy: boolean;
 };
 
 export const updateActivityPrivacySetting = async (

@@ -77,13 +77,6 @@ export default async function SettingsAccordion() {
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-2">
-          <AccordionTrigger className="text-xl">Profile</AccordionTrigger>
-          <AccordionContent>
-            Yes. It comes with default styles that matches the other
-            components&apos; aesthetic.
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-3">
           <AccordionTrigger className="text-xl">Site Settings</AccordionTrigger>
           <AccordionContent>
             <PrivateActivityCheckbox
