@@ -6,14 +6,7 @@ import {
   DrawerHeader,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import {
-  BookmarkPlus,
-  ChevronDown,
-  Library,
-  List,
-  Monitor,
-  Star,
-} from "lucide-react";
+import { BookmarkPlus, Library, List } from "lucide-react";
 import { createClient } from "@/utils/supabase/server";
 import { addOrRemoveFromLibrary } from "./actions";
 import React from "react";

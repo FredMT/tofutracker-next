@@ -6,6 +6,7 @@ import CommentBox from "./CommentBox";
 import { useRef, useState } from "react";
 import { fetcher } from "@/utils/fetcher";
 import Link from "next/link";
+import { formatDate, formatDistanceToNowStrict } from "date-fns";
 
 type Comment = {
   id: string;
@@ -86,7 +87,7 @@ export default function Comments({
               <p className="text-sm flex items-center">{comment.username}</p>
             </Link>
             <p className="text-sm text-muted-foreground flex items-center">
-              {new Date(comment.created_at).toLocaleTimeString()}
+              {formatDistanceToNowStrict(new Date(comment.created_at))}
             </p>
           </div>
           <div className="flex gap-2 items-center">

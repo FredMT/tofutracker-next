@@ -21,10 +21,10 @@ export default async function Poster({
       />
       <div className="sm:flex sm:flex-col gap-y-4 hidden">
         <Button className="w-full">Add to Library</Button>
-        <Button className="w-full">Add to Watchlist</Button>
-        <Button className="w-full">Add to Custom List</Button>
+        {/* <Button className="w-full">Add to Watchlist</Button> */}
+        {/* <Button className="w-full">Add to Custom List</Button> */}
         <Button className="w-full">Rate</Button>
-        <Button className="w-full">Watch</Button>
+        {/* <Button className="w-full">Watch</Button> */}
       </div>
     </div>
   );

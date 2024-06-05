@@ -2,31 +2,29 @@
 import { createClient } from "@/utils/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export async function createComment(formData: FormData) {
-  const user_id = formData.get("user_id");
-  const target_user_id = formData.get("target_user_id");
-  //   const content = formData.get("content");
-  //   const activity_id = formData.get("activity_id");
-  //   const parent_comment_id = formData.get("parent_comment_id");
-
+export const toggleLike = async (formData: FormData) => {
+  "use server";
   const supabase = createClient();
+  const activity_id = formData.get("activity_id");
+  const user_id = formData.get("user_id");
 
-  console.log(user_id, target_user_id);
+  const { data: likesData, error: likesError } = await supabase
+    .from("likes")
+    .select("*")
+    .eq("activity_id", activity_id)
+    .eq("user_id", user_id)
+    .maybeSingle();
 
-  //   const { error } = await supabase.from("comments").insert([
-  //     {
-  //       user_id,
-  //       target_user_id,
-  //       content,
-  //       activity_id,
-  //       parent_comment_id,
-  //     },
-  //   ]);
+  if (likesError) {
+    console.log(likesError);
+    return;
+  }
 
-  //   if (error) {
-  //     console.error("Failed to create comment:", error.message);
-  //     return;
-  //   }
+  if (likesData) {
+    await supabase.from("likes").delete().eq("id", likesData.id);
+  } else {
+    await supabase.from("likes").insert([{ activity_id, user_id }]);
+  }
 
-  //   revalidatePath(`/activity/${activity_id}`);
-}
+  revalidatePath(`/activity/${activity_id}`);
+};

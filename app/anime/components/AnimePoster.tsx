@@ -1,6 +1,9 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
+import AnimeLibraryButton from "./AnimeLibraryButton";
+import { addAnimeToLibrary, removeAnimeFromLibrary } from "./actions";
+import { createClient } from "@/utils/supabase/server";
+import ItemRating from "@/app/components/ItemRating";
 
 type Images = {
   aspect_ratio: number;
@@ -17,6 +20,37 @@ async function getAnimeImages(type: string, id: number) {
   const data = await fetch(url);
   const result = await data.json();
   return result.data;
+}
+
+async function checkAnimeInLibrary(id: number, user_id: string) {
+  const url = `http://localhost:8080/api/checkanimeinlibrary/${id}/${user_id}`;
+  const data = await fetch(url);
+  const result = await data.json();
+  return result.data;
+}
+
+async function getCurrentRating(
+  item_id: number,
+  user_id: string
+): Promise<number> {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("item_lists")
+    .select("*")
+    .eq("item_id", item_id)
+    .eq("user_id", user_id)
+    .eq("item_type", "anime");
+
+  if (error) {
+    console.error("Error fetching rating:", error);
+    return -1; // or handle the error as appropriate
+  }
+
+  if (data && data.length > 0 && Boolean(data[0].rating)) {
+    return data[0].rating;
+  } else {
+    return -1;
+  }
 }
 
 export default async function AnimePoster({
@@ -49,6 +83,19 @@ export default async function AnimePoster({
     poster_path = `https://cdn.anidb.net/images/main/${poster}`;
   }
 
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  let isInLibrary = false;
+  let currentRating: number = -1;
+
+  if (user) {
+    isInLibrary = await checkAnimeInLibrary(id, user.id);
+    currentRating = await getCurrentRating(id, user.id);
+  }
+
   return (
     <div className="flex flex-col gap-y-6">
       <Image
@@ -60,11 +107,21 @@ export default async function AnimePoster({
         priority
       />
       <div className="sm:flex sm:flex-col gap-y-4 hidden">
-        <Button className="w-full">Add to Library</Button>
-        <Button className="w-full">Add to Watchlist</Button>
-        <Button className="w-full">Add to Custom List</Button>
-        <Button className="w-full">Rate</Button>
-        <Button className="w-full">Watch</Button>
+        <AnimeLibraryButton
+          id={id}
+          addAnimeToLibrary={addAnimeToLibrary}
+          removeAnimeFromLibrary={removeAnimeFromLibrary}
+          user={user}
+          isInLibrary={isInLibrary}
+        />
+        {/* <Button className="w-full">Add to Watchlist</Button> */}
+        {/* <Button className="w-full">Add to Custom List</Button> */}
+        <ItemRating
+          item_id={id}
+          item_type="anime"
+          currentRating={currentRating}
+        />
+        {/* <Button className="w-full">Watch</Button> */}
       </div>
     </div>
   );

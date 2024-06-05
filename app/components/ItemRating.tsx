@@ -10,7 +10,6 @@ import {
 import { Star } from "lucide-react";
 import Rating from "./Rating";
 import { setRating } from "../movie/components/actions";
-import { createClient } from "@/utils/supabase/client";
 
 export default function ItemRating({
   item_id,
