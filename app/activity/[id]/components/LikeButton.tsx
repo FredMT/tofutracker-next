@@ -18,6 +18,7 @@ export default function LikeButton({
     <form action={like}>
       <input type="hidden" name="activity_id" value={activity_id} />
       <input type="hidden" name="user_id" value={user_id} />
+      <input type="hidden" name="reference_id" value={activity_id} />
       <Button variant="ghost" type="submit" className="p-0">
         <Heart className={`${likeStatus ? "fill-red-500 " : ""}`} />
       </Button>

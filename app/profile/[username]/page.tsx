@@ -4,6 +4,21 @@ import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
 
+type PosterItem = {
+  item_id: number;
+  item_type: string;
+  item_poster: string;
+  item_title: string;
+  activity_id: string;
+};
+
+async function getActivityData(user_id: string) {
+  const data = await fetch(
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/getposters/${user_id}`
+  );
+  return data;
+}
+
 export default async function Profile({
   params,
 }: {
@@ -32,24 +47,8 @@ export default async function Profile({
 
   const viewedUserId = userData.id;
 
-  const { data: activityData, error: activityDataError } = await supabase
-    .from("item_lists")
-    .select("id")
-    .eq("user_id", viewedUserId)
-    .eq("list_type", "Library")
-    .order("created_at", { ascending: false });
-
-  if (activityDataError) {
-    console.error(activityDataError.message);
-    return;
-  }
-
-  const posterDataPromises = activityData.map((item) =>
-    fetch(
-      `https://tofutracker-3pt5y.ondigitalocean.app/api/getposter/${item.id}`
-    ).then((response) => response.json())
-  );
-  const postersData = await Promise.all(posterDataPromises);
+  const response = await getActivityData(viewedUserId);
+  const activityData = await response.json();
 
   return (
     <div className="mt-20 mx-6">
@@ -76,18 +75,18 @@ export default async function Profile({
           <Separator className="mt-2" />
 
           <div className="grid gap-4 mt-6 grid-cols-3 lg:grid-cols-4 place-items-center mb-6">
-            {postersData.map((item) => (
+            {activityData.posters.map((item: PosterItem) => (
               <Link
                 href={`/activity/${item.activity_id}`}
                 key={item.activity_id}
               >
                 <Image
-                  key={item.activity_id}
-                  className="min-w-[88px] min-h-[132px] sm:min-w-[124px] sm:min-h-[186px] md:min-w-[152px] md:min-h-[228px] lg:min-w-[176px] lg:min-h-[264px] xl:min-w-[200px] xl:min-h-[300px] rounded-md"
+                  key={item.item_id}
+                  className=" min-w-[88px] min-h-[132px] sm:min-w-[124px] sm:min-h-[186px] md:min-w-[152px] md:min-h-[228px] lg:min-w-[176px] lg:min-h-[264px] xl:min-w-[200px] xl:min-h-[300px] rounded-md"
                   src={item.item_poster}
                   alt={item.item_title}
-                  width="0"
-                  height="0"
+                  width="1080"
+                  height="1920"
                   priority
                 />
               </Link>

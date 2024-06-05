@@ -23,7 +23,7 @@ async function getAnimeImages(type: string, id: number) {
 }
 
 async function checkAnimeInLibrary(id: number, user_id: string) {
-  const url = `http://localhost:8080/api/checkanimeinlibrary/${id}/${user_id}`;
+  const url = `https://tofutracker-3pt5y.ondigitalocean.app/api/checkanimeinlibrary/${id}/${user_id}`;
   const data = await fetch(url);
   const result = await data.json();
   return result.data;
@@ -43,7 +43,7 @@ async function getCurrentRating(
 
   if (error) {
     console.error("Error fetching rating:", error);
-    return -1; // or handle the error as appropriate
+    return -1;
   }
 
   if (data && data.length > 0 && Boolean(data[0].rating)) {

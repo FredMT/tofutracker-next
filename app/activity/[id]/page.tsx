@@ -9,6 +9,16 @@ import Link from "next/link";
 import LikeButton from "./components/LikeButton";
 import { toggleLike } from "./actions";
 
+type ActivityItem = {
+  ok: boolean;
+  data: {
+    item_type: string;
+    item_id: number;
+    item_poster: string;
+    item_title: string;
+  };
+};
+
 async function getNumberOfLikes(activity_id: string): Promise<number> {
   const supabase = createClient();
   const { data: likesData, error } = await supabase
@@ -44,6 +54,17 @@ async function getActivityLikeStatus(
   return Boolean(likeStatus);
 }
 
+async function getActivityItemData(activity_id: string): Promise<ActivityItem> {
+  const response = await fetch(
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/getactivityitemdata/${activity_id}`
+  );
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+
+  return response.json();
+}
+
 export default async function Activity({ params }: { params: { id: string } }) {
   const supabase = createClient();
 
@@ -68,10 +89,6 @@ export default async function Activity({ params }: { params: { id: string } }) {
 
   if (error) {
     console.error(error);
-    return <div>Something went wrong</div>;
-  }
-
-  if (!activityData.user_id) {
     return notFound();
   }
 
@@ -83,16 +100,14 @@ export default async function Activity({ params }: { params: { id: string } }) {
 
   if (userError) {
     console.error(userError);
-    return <div>Something went wrong</div>;
+    return notFound();
   }
 
   if (!userData) {
     return notFound();
   }
 
-  const posterData = await fetch(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/getposter/${params.id}`
-  ).then((response) => response.json());
+  const itemData = await getActivityItemData(params.id);
 
   return (
     <div className="px-6 mt-20 flex flex-col gap-4 mb-6">
@@ -118,10 +133,10 @@ export default async function Activity({ params }: { params: { id: string } }) {
       </div>
 
       <div className="flex justify-center">
-        <Link href={`/${posterData.item_type}/${posterData.item_id}`}>
+        <Link href={`/${itemData.data.item_type}/${itemData.data.item_id}`}>
           <Image
-            src={posterData.item_poster}
-            alt="TV SHow"
+            src={itemData.data.item_poster}
+            alt={itemData.data.item_title}
             width={272}
             height={378}
             priority
@@ -137,8 +152,8 @@ export default async function Activity({ params }: { params: { id: string } }) {
               {userData.username}
             </Link>{" "}
             added{" "}
-            <Link href={`/${posterData.item_type}/${posterData.item_id}`}>
-              {posterData.item_title}
+            <Link href={`/${itemData.data.item_type}/${itemData.data.item_id}`}>
+              {itemData.data.item_title}
             </Link>{" "}
             to their Library
           </p>
@@ -159,6 +174,7 @@ export default async function Activity({ params }: { params: { id: string } }) {
       <Comments
         user_id={loggedInUserData?.user?.id || ""}
         activity_id={params.id}
+        toggleLike={toggleLike}
       />
     </div>
   );

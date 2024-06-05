@@ -7,6 +7,7 @@ export const toggleLike = async (formData: FormData) => {
   const supabase = createClient();
   const activity_id = formData.get("activity_id");
   const user_id = formData.get("user_id");
+  const reference_id = formData.get("reference_id");
 
   const { data: likesData, error: likesError } = await supabase
     .from("likes")
@@ -23,7 +24,9 @@ export const toggleLike = async (formData: FormData) => {
   if (likesData) {
     await supabase.from("likes").delete().eq("id", likesData.id);
   } else {
-    await supabase.from("likes").insert([{ activity_id, user_id }]);
+    await supabase
+      .from("likes")
+      .insert([{ activity_id, user_id, reference_id }]);
   }
 
   revalidatePath(`/activity/${activity_id}`);
