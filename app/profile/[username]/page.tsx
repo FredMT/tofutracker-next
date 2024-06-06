@@ -1,8 +1,10 @@
+"use server";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
-import Link from "next/link";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import ActivityDialog from "./components/ActivityDialog";
 
 type PosterItem = {
   item_id: number;
@@ -76,20 +78,24 @@ export default async function Profile({
 
           <div className="grid gap-4 mt-6 grid-cols-3 lg:grid-cols-4 place-items-center mb-6">
             {activityData.posters.map((item: PosterItem) => (
-              <Link
-                href={`/activity/${item.activity_id}`}
-                key={item.activity_id}
-              >
-                <Image
-                  key={item.item_id}
-                  className=" min-w-[88px] min-h-[132px] sm:min-w-[124px] sm:min-h-[186px] md:min-w-[152px] md:min-h-[228px] lg:min-w-[176px] lg:min-h-[264px] xl:min-w-[200px] xl:min-h-[300px] rounded-md"
-                  src={item.item_poster}
-                  alt={item.item_title}
-                  width="1080"
-                  height="1920"
-                  priority
+              <Dialog key={item.item_id}>
+                <DialogTrigger>
+                  <Image
+                    key={item.item_id}
+                    className=" min-w-[88px] min-h-[132px] sm:min-w-[124px] sm:min-h-[186px] md:min-w-[152px] md:min-h-[228px] lg:min-w-[176px] lg:min-h-[264px] xl:min-w-[200px] xl:min-h-[300px] rounded-md"
+                    src={item.item_poster}
+                    alt={item.item_title}
+                    width="1080"
+                    height="1920"
+                    priority
+                  />
+                </DialogTrigger>
+                <ActivityDialog
+                  item={item}
+                  username={params.username}
+                  activity_owner_id={viewedUserId}
                 />
-              </Link>
+              </Dialog>
             ))}
           </div>
         </div>
