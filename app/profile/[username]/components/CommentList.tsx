@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { formatDistanceToNowStrict, set } from "date-fns";
-import { Heart, Reply } from "lucide-react";
+import { Reply } from "lucide-react";
 import CommentInputBox from "./CommentInputBox";
 import useSWR from "swr";
 import { fetcher } from "@/utils/fetcher";
@@ -17,6 +17,7 @@ type Comment = {
   created_at: string;
   likes: number;
   parent_comment_id: string;
+  hasLiked: boolean;
 };
 
 type User = {
@@ -57,7 +58,9 @@ export default function CommentList({
     error,
     isLoading,
   } = useSWR(
-    `http://localhost:8080/api/comments/${activity_id}/${user.id}`,
+    `http://localhost:8080/api/comments/${activity_id}${
+      user ? `/${user.id}` : ""
+    }`,
     fetcher
   );
 
@@ -102,21 +105,23 @@ export default function CommentList({
               {formatDistanceToNowStrict(new Date(comment.created_at))}
             </div>
           </div>
-          <div className="flex gap-2 items-center">
-            <button
-              onClick={() =>
-                handleClick(comment.user_id, comment.id, comment.username)
-              }
-            >
-              <Reply className="size-6" />
-            </button>
-            <div className="relative">
-              <CommentLikeButton />
-              <div className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-sm">
-                {comment.likes}
+          {user && (
+            <div className="flex gap-2 items-center">
+              <button
+                onClick={() =>
+                  handleClick(comment.user_id, comment.id, comment.username)
+                }
+              >
+                <Reply className="size-6" />
+              </button>
+              <div className="relative">
+                <CommentLikeButton comment={comment} />
+                <div className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-sm">
+                  {comment.likes}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
         <p className="text-sm">{comment.content}</p>
         <div className="ml-4 border-l border-muted-foreground pl-2 mb-2">

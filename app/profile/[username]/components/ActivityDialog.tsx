@@ -1,12 +1,8 @@
 "use server";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { DialogContent } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, ArrowRight, Heart, Reply } from "lucide-react";
 import Image from "next/image";
-import CommentInputBox from "./CommentInputBox";
 import { createClient } from "@/utils/supabase/server";
 import CommentList from "./CommentList";
 import ActivityLikeButton from "./ActivityLikeButton";
@@ -17,15 +13,16 @@ type Item = {
   item_poster: string;
   item_title: string;
   activity_id: string;
+  hasLiked?: boolean;
 };
 export default async function ActivityDialog({
   item,
   username,
-  activity_owner_id,
+  hasLiked,
 }: {
   item: Item;
   username: string;
-  activity_owner_id: string;
+  hasLiked: boolean;
 }) {
   const supabase = createClient();
 
@@ -55,7 +52,13 @@ export default async function ActivityDialog({
           />
           <div className="text-sm flex max-md:hidden leading-6">
             {`${username} added ${item.item_title} to their Library`}
-            <ActivityLikeButton activity_id={item.activity_id} />
+            {user && (
+              <ActivityLikeButton
+                activity_id={item.activity_id}
+                user_id={user?.id!}
+                hasLiked={hasLiked}
+              />
+            )}
           </div>
         </div>
 
@@ -80,7 +83,13 @@ export default async function ActivityDialog({
         <div className="flex flex-col gap-2 md:hidden">
           <div className="flex justify-between gap-2">
             <div>{`${username} added ${item.item_title} to their Library`}</div>
-            <ActivityLikeButton activity_id={item.activity_id} />
+            {user && (
+              <ActivityLikeButton
+                activity_id={item.activity_id}
+                user_id={user?.id!}
+                hasLiked={hasLiked}
+              />
+            )}
           </div>
           <div className="text-sm text-muted-foreground">12 likes</div>
         </div>
