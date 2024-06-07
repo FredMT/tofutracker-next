@@ -18,6 +18,7 @@ type Comment = {
   likes: number;
   parent_comment_id: string;
   hasLiked: boolean;
+  activity_id: string;
 };
 
 type User = {
@@ -58,7 +59,7 @@ export default function CommentList({
     error,
     isLoading,
   } = useSWR(
-    `http://localhost:8080/api/comments/${activity_id}${
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/comments/${activity_id}${
       user ? `/${user.id}` : ""
     }`,
     fetcher
@@ -116,9 +117,6 @@ export default function CommentList({
               </button>
               <div className="relative">
                 <CommentLikeButton comment={comment} />
-                <div className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-sm">
-                  {comment.likes}
-                </div>
               </div>
             </div>
           )}

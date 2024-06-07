@@ -12,11 +12,15 @@ type PosterItem = {
   item_poster: string;
   item_title: string;
   activity_id: string;
+  item_created_at: string;
   hasLiked?: boolean;
+  likes: number;
 };
 
 async function getActivityData(user_id: string) {
-  const data = await fetch(`http://localhost:8080/api/getposters/${user_id}`);
+  const data = await fetch(
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/getposters/${user_id}`
+  );
   return data;
 }
 
@@ -25,7 +29,7 @@ async function getActivityDataLoggedInUser(
   logged_in_user_id: string
 ) {
   const data = await fetch(
-    `http://localhost:8080/api/getpostersloggedinuser/${viewed_user_id}/${logged_in_user_id}`
+    `https://tofutracker-3pt5y.ondigitalocean.app/api/getposters/${viewed_user_id}/${logged_in_user_id}`
   );
   return data;
 }
@@ -123,6 +127,6 @@ export default async function Profile({
       </div>
     );
   } else {
-    return <div>Loading... or error occured fetching activity data</div>;
+    return <div>No activity found</div>;
   }
 }

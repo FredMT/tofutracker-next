@@ -17,6 +17,7 @@ type Comment = {
 
 export default function CommentLikeButton({ comment }: { comment: Comment }) {
   const [isLiked, setIsLiked] = useState(comment.hasLiked);
+  const [likes, setLikes] = useState(comment.likes);
 
   const handleLike = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,6 +35,11 @@ export default function CommentLikeButton({ comment }: { comment: Comment }) {
       });
 
       setIsLiked(!isLiked);
+      if (isLiked) {
+        setLikes(likes - 1);
+      } else {
+        setLikes(likes + 1);
+      }
     } catch (error) {
       console.error("Error submitting like:", error);
     }
@@ -45,6 +51,9 @@ export default function CommentLikeButton({ comment }: { comment: Comment }) {
         <Heart
           className={`size-6 ${isLiked ? "text-red-500 fill-red-500" : ""}`}
         />
+        <div className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-sm">
+          {likes}
+        </div>
       </button>
     </form>
   );

@@ -6,14 +6,17 @@ import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
 import CommentList from "./CommentList";
 import ActivityLikeButton from "./ActivityLikeButton";
+import { formatDistanceToNowStrict } from "date-fns";
 
 type Item = {
   item_id: number;
+  item_created_at: string;
   item_type: string;
   item_poster: string;
   item_title: string;
   activity_id: string;
   hasLiked?: boolean;
+  likes: number;
 };
 export default async function ActivityDialog({
   item,
@@ -31,7 +34,7 @@ export default async function ActivityDialog({
   } = await supabase.auth.getUser();
 
   return (
-    <DialogContent className="min-h-full sm:min-h-[500px] md:min-h-[472px] md:max-w-[85vw] p-6 flex overflow-y-scroll max-h-screen">
+    <DialogContent className="min-h-full sm:min-h-[500px] md:max-w-[85vw] p-6 flex overflow-y-scroll max-h-screen">
       <div className="flex max-md:flex-col gap-5 w-screen">
         <div className="flex gap-2 items-center md:hidden">
           <Avatar className="size-8">
@@ -39,7 +42,9 @@ export default async function ActivityDialog({
           </Avatar>
 
           <div className="  text-sm font-semibold">{username}</div>
-          <div className="  text-sm text-muted-foreground">30 min ago</div>
+          <div className="  text-sm text-muted-foreground">
+            {formatDistanceToNowStrict(new Date(item.item_created_at))} ago
+          </div>
         </div>
 
         <div className="flex justify-center md:justify-center md:flex-col md:gap-4 md:max-w-[224px]">
@@ -51,7 +56,13 @@ export default async function ActivityDialog({
             className=" rounded-md sm:w-[300px] sm:h-[450px] md:w-[224px] md:h-[336px]"
           />
           <div className="text-sm flex max-md:hidden leading-6">
-            {`${username} added ${item.item_title} to their Library`}
+            <div className="flex flex-col">
+              <div>{`${username} added ${item.item_title} to their Library`}</div>
+              <div className="text-sm text-muted-foreground">
+                {item.likes ? `${item.likes} likes` : ""}
+              </div>
+            </div>
+
             {user && (
               <ActivityLikeButton
                 activity_id={item.activity_id}
@@ -68,7 +79,9 @@ export default async function ActivityDialog({
               <AvatarImage src="https://github.com/shadcn.png" />
             </Avatar>
             <div className="  text-sm font-medium">{username}</div>
-            <div className="  text-sm text-muted-foreground">30 min ago</div>
+            <div className="  text-sm text-muted-foreground">
+              {formatDistanceToNowStrict(new Date(item.item_created_at))} ago
+            </div>
           </div>
 
           <Separator className="my-2" />
@@ -91,7 +104,9 @@ export default async function ActivityDialog({
               />
             )}
           </div>
-          <div className="text-sm text-muted-foreground">12 likes</div>
+          <div className="text-sm text-muted-foreground">
+            {item.likes ? `${item.likes} likes` : ""}
+          </div>
         </div>
 
         <Separator className="my-2 md:hidden" />
