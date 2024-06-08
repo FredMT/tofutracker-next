@@ -102,13 +102,13 @@ export default async function Profile({
             <div className="text-xl max-md:mt-6">Activity</div>
             <Separator className="mt-2" />
 
-            <div className="grid gap-4 mt-6 grid-cols-3 lg:grid-cols-4 place-items-center mb-6">
+            <div className="grid gap-4 mt-6 grid-cols-3 sm:grid-cols-4  mb-6">
               {activityData.posters.map((item: PosterItem) => (
                 <Dialog key={item.item_id}>
                   <DialogTrigger>
                     <Image
                       key={item.item_id}
-                      className=" min-w-[88px] min-h-[132px] sm:min-w-[124px] sm:min-h-[186px] md:min-w-[152px] md:min-h-[228px] lg:min-w-[176px] lg:min-h-[264px] xl:min-w-[200px] xl:min-h-[300px] rounded-md"
+                      className=" min-w-[88px] min-h-[132px] sm:w-[152px] sm:h-[228px] lg:w-[176px] lg:h-[264px] xl:w-[200px] xl:h-[300px] rounded-md"
                       src={item.item_poster}
                       alt={item.item_title}
                       width="1080"
