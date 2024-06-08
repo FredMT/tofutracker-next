@@ -51,9 +51,10 @@ export default function ItemRating({
             value={optimisticCurrentRating !== -1 ? optimisticCurrentRating : 0}
             totalStars={10}
             precision={1}
+            size={2}
             onRatingChange={(rating: number) => {
-              setRating(rating, item_id, item_type);
               startTransition(() => {
+                setRating(rating, item_id, item_type);
                 if (!optimisticIsInLibrary) {
                   setOptimisticIsInLibrary(true);
                 }

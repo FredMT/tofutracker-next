@@ -2,13 +2,15 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import ThemeButton from "./ThemeButton";
 import AuthButton from "@/components/AuthButton";
-import { Menu } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import SearchButton from "./SearchButton";
 
 export default function Navbar() {
   return (
@@ -20,10 +22,12 @@ export default function Navbar() {
           </div>
         </Link>
         <div className="hidden sm:flex gap-x-4 p-4">
+          <SearchButton />
           <ThemeButton />
           <AuthButton />
         </div>
-        <div className="flex sm:hidden">
+        <div className="flex sm:hidden py-4 gap-4">
+          <SearchButton />
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Menu />

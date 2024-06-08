@@ -93,7 +93,8 @@ export default function HomepageTrendingMovieCarousel() {
 
               <HomepageTrendingMovieBadges genre_ids={item.genre_ids} />
 
-              <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-gradient-to-t from-black to-transparent p-5 opacity-35" />
+              <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-gradient-to-t from-black to-transparent p-12 opacity-35" />
+              <div className="absolute top-0 left-0 right-0 flex justify-center bg-gradient-to-b from-black to-transparent p-12 opacity-50" />
             </div>
           </CarouselItem>
         ))}

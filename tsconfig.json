@@ -27,7 +27,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/providers.jsx",
-    "app/activity/[id]/components/CommentsTargetUserIdContext.jsx"
+    "app/activity/[id]/components/CommentsTargetUserIdContext.jsx",
+    "app/components/Rating.jsx"
   ],
   "exclude": ["node_modules"]
 }

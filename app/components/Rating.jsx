@@ -8,6 +8,7 @@ const Rating = ({
   value = -1,
   readOnly = false,
   onRatingChange,
+  size = 2,
 }) => {
   const [activeStar, setActiveStar] = useState(value);
   const [hoverActiveStar, setHoverActiveStar] = useState(-1);
@@ -85,7 +86,7 @@ const Rating = ({
               <div
                 className="absolute overflow-hidden"
                 style={{
-                  fontSize: "2rem",
+                  fontSize: `${size}rem`,
                   width: showRatingWithPrecision
                     ? `${(activeState % 1) * 100}%`
                     : "0%",
@@ -96,7 +97,7 @@ const Rating = ({
               </div>
               <div
                 style={{
-                  fontSize: "2rem",
+                  fontSize: `${size}rem`,
                   color: showEmptyIcon
                     ? "gray"
                     : readOnly

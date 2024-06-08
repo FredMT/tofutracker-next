@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="flex gap-x-6 w-full justify-around px-6">
         <Link
           href="https://bento.me/notacookiefactory"
-          className="min-w-[50%]"
+          className="min-w-[45%]"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -22,7 +22,7 @@ export default function Footer() {
         </Link>
         <Link
           href="https://github.com/FredMT"
-          className="min-w-[50%]"
+          className="min-w-[45%]"
           target="_blank"
           rel="noopener noreferrer"
         >

@@ -72,6 +72,8 @@ export default async function AnimeBackdrop({
           className="absolute -bottom-[45%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] object-contain"
         />
       )}
+      <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-gradient-to-t from-black to-transparent p-12 opacity-35" />
+      <div className="absolute top-0 left-0 right-0 flex justify-center bg-gradient-to-b from-black to-transparent p-12 opacity-50" />
     </div>
   );
 }
