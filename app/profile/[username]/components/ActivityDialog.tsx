@@ -1,13 +1,12 @@
-"use server";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { DialogContent } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { createClient } from "@/utils/supabase/server";
 import CommentList from "./CommentList";
-import ActivityLikeButton from "./ActivityLikeButton";
 import { formatDistanceToNowStrict } from "date-fns";
 import { likeActivity, likeComment, createComment } from "./actions";
+import ActivityLike from "./ActivityLike";
 
 type Item = {
   item_id: number;
@@ -56,23 +55,15 @@ export default async function ActivityDialog({
             height={1920}
             className=" rounded-md sm:w-[300px] sm:h-[450px] md:w-[224px] md:h-[336px]"
           />
-          <div className="text-sm flex max-md:hidden leading-6">
-            <div className="flex flex-col">
-              <div>{`${username} added ${item.item_title} to their Library`}</div>
-              <div className="text-sm text-muted-foreground">
-                {item.likes ? `${item.likes} likes` : ""}
-              </div>
-            </div>
-
-            {user && (
-              <ActivityLikeButton
-                activity_id={item.activity_id}
-                user_id={user?.id!}
-                hasLiked={hasLiked}
-                likeActivity={likeActivity}
-              />
-            )}
-          </div>
+          <ActivityLike
+            hasLiked={hasLiked}
+            likes={item.likes}
+            username={username}
+            title={item.item_title}
+            activity_id={item.activity_id}
+            likeActivity={likeActivity}
+            userId={user?.id!}
+          />
         </div>
 
         <div className="flex flex-col max-md:hidden w-full gap-4 max-h-[472px] ">
@@ -98,20 +89,15 @@ export default async function ActivityDialog({
         </div>
 
         <div className="flex flex-col gap-2 md:hidden">
-          <div className="flex justify-between gap-2">
-            <div>{`${username} added ${item.item_title} to their Library`}</div>
-            {user && (
-              <ActivityLikeButton
-                activity_id={item.activity_id}
-                user_id={user?.id!}
-                hasLiked={hasLiked}
-                likeActivity={likeActivity}
-              />
-            )}
-          </div>
-          <div className="text-sm text-muted-foreground">
-            {item.likes ? `${item.likes} likes` : ""}
-          </div>
+          <ActivityLike
+            hasLiked={hasLiked}
+            likes={item.likes}
+            username={username}
+            title={item.item_title}
+            activity_id={item.activity_id}
+            likeActivity={likeActivity}
+            userId={user?.id!}
+          />
         </div>
 
         <Separator className="my-2 md:hidden" />
