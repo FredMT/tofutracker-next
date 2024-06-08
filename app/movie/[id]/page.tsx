@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Title from "../components/Title";
 import Backdrop from "../components/Backdrop";
-import Poster from "../components/Poster";
+import Poster from "../../components/Poster";
 import { Skeleton } from "@/components/ui/skeleton";
 import Tagline from "../components/Tagline";
 import MovieInfo from "../components/MovieInfo";
-import MobileButtons from "../components/MobileButtons";
+import MobileButtons from "../../components/MobileButtons";
 import Details from "../components/Details";
 import Overview from "../components/Overview";
 import CastAndCrew from "../components/CastAndCrew";
@@ -80,7 +80,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
               <Skeleton className="w-[124px] sm:w-full h-[186px] mt-2" />
             }
           >
-            <Poster poster_path={poster_path} title={title} />
+            <Poster poster_path={poster_path} title={title} id={movie.id} />
           </Suspense>
         </div>
         <div className="flex flex-col basis-4/5">

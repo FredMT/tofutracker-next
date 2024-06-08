@@ -1,16 +1,19 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import React from "react";
+import MobileButtons from "./MobileButtons";
 
 export default async function Poster({
   poster_path,
   title,
+  id,
 }: {
   poster_path: string;
   title: string;
+  id: number;
 }) {
   return (
-    <div className="flex flex-col gap-y-6 max-w-[182px]">
+    <div className="flex flex-col gap-y-6 max-w-[182px] ">
       <Image
         className="w-[124px] h-[186px] sm:w-[182px] sm:h-[273px] object-cover rounded-sm border border-muted"
         src={`https://image.tmdb.org/t/p/original${poster_path}`}
@@ -20,11 +23,7 @@ export default async function Poster({
         priority
       />
       <div className="sm:flex sm:flex-col gap-y-4 hidden">
-        <Button className="w-full">Add to Library</Button>
-        {/* <Button className="w-full">Add to Watchlist</Button> */}
-        {/* <Button className="w-full">Add to Custom List</Button> */}
-        <Button className="w-full">Rate</Button>
-        {/* <Button className="w-full">Watch</Button> */}
+        <MobileButtons item_id={id} item_type="movie" />
       </div>
     </div>
   );

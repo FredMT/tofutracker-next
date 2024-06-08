@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import React, { Suspense } from "react";
 import Title from "@/app/movie/components/Title";
 import AnimeInfo from "../components/AnimeInfo";
-import MobileButtons from "@/app/movie/components/MobileButtons";
+import MobileButtons from "@/app/components/MobileButtons";
 import AnimeDetails from "../components/AnimeDetails";
 import AnimeBackdrop from "../components/AnimeBackdrop";
 import AnimePoster from "../components/AnimePoster";

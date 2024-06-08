@@ -3,10 +3,10 @@ import type { Metadata } from "next";
 import Title from "@/app/movie/components/Title";
 import { Skeleton } from "@/components/ui/skeleton";
 import Backdrop from "@/app/movie/components/Backdrop";
-import Poster from "@/app/movie/components/Poster";
+import Poster from "@/app/components/Poster";
 import Tagline from "@/app/movie/components/Tagline";
 import MovieInfo from "@/app/movie/components/MovieInfo";
-import MobileButtons from "@/app/movie/components/MobileButtons";
+import MobileButtons from "@/app/components/MobileButtons";
 import Details from "../components/Details";
 import Overview from "@/app/movie/components/Overview";
 import SeasonsAndEpisodes from "../components/SeasonsAndEpisodes";
@@ -67,7 +67,7 @@ export default async function TVShow({ params }: { params: { id: string } }) {
               <Skeleton className="w-[124px] sm:w-full h-[186px] sm:h-[full] mt-2" />
             }
           >
-            <Poster poster_path={tv.poster_path} title={tv.name} />
+            <Poster poster_path={tv.poster_path} title={tv.name} id={tv.id} />
           </Suspense>
         </div>
         <div className="flex flex-col basis-4/5">

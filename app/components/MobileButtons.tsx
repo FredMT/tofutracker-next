@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/server";
-import { addOrRemoveFromLibrary } from "./actions";
-import AddToLibraryAndRate from "./AddToLibraryAndRate";
+import { addOrRemoveFromLibrary } from "../movie/components/actions";
+import AddToLibraryAndRate from "../movie/components/AddToLibraryAndRate";
 
 export default async function MobileButtons({
   item_id,
