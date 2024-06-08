@@ -98,7 +98,7 @@ export default async function Profile({
             </div>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <div className="text-xl max-md:mt-6">Activity</div>
             <Separator className="mt-2" />
 

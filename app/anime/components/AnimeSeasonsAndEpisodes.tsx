@@ -112,7 +112,7 @@ export default function AnimeSeasonsAndEpisodes({
 
   function handleSeasonChange(id: string) {
     setSelectedSeason(id);
-    router.push(`/anime/${id}`);
+    router.push(`/anime/${id}`, { scroll: false });
   }
 
   return (

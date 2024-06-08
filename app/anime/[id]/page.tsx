@@ -13,6 +13,7 @@ import AnimeSeasonsAndEpisodes from "../components/AnimeSeasonsAndEpisodes";
 import SimilarAnime from "../components/SimilarAnime";
 import RelatedAnime from "../components/RelatedAnime";
 import { createClient } from "@/utils/supabase/server";
+import { unstable_noStore } from "next/cache";
 
 export const generateMetadata = ({ params }: Props): Metadata => {
   const title = params.id.split("-").slice(1).join(" ").replace(/%20/g, " ");
