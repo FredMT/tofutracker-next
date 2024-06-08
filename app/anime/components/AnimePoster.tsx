@@ -1,9 +1,7 @@
 import Image from "next/image";
 import React from "react";
-import AnimeLibraryButton from "./AnimeLibraryButton";
-import { addAnimeToLibrary, removeAnimeFromLibrary } from "./actions";
 import { createClient } from "@/utils/supabase/server";
-import ItemRating from "@/app/components/ItemRating";
+import MobileButtons from "@/app/movie/components/MobileButtons";
 
 type Images = {
   aspect_ratio: number;
@@ -107,21 +105,7 @@ export default async function AnimePoster({
         priority
       />
       <div className="sm:flex sm:flex-col gap-y-4 hidden">
-        <AnimeLibraryButton
-          id={id}
-          addAnimeToLibrary={addAnimeToLibrary}
-          removeAnimeFromLibrary={removeAnimeFromLibrary}
-          user={user}
-          isInLibrary={isInLibrary}
-        />
-        {/* <Button className="w-full">Add to Watchlist</Button> */}
-        {/* <Button className="w-full">Add to Custom List</Button> */}
-        <ItemRating
-          item_id={id}
-          item_type="anime"
-          currentRating={currentRating}
-        />
-        {/* <Button className="w-full">Watch</Button> */}
+        <MobileButtons item_id={id} item_type="anime" />
       </div>
     </div>
   );

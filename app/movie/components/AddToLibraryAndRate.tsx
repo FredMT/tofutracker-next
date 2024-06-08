@@ -29,7 +29,7 @@ export default function AddToLibraryAndRate({
 
   const [optimisticCurrentRating, setOptimisticCurrentRating] = useOptimistic(
     currentRating,
-    (currentRating, newRating: number) => newRating
+    (newRating: number) => newRating
   );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
