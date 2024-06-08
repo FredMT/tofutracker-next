@@ -1,7 +1,8 @@
 "use client";
 
 import { Heart } from "lucide-react";
-import { useState } from "react";
+import { startTransition, useState } from "react";
+import { useOptimistic } from "react"; // Ensure you import useOptimistic
 
 type Comment = {
   id: string;
@@ -22,8 +23,16 @@ export default function CommentLikeButton({
   comment: Comment;
   likeComment: (data: any) => void;
 }) {
-  const [isLiked, setIsLiked] = useState(comment.hasLiked);
-  const [likes, setLikes] = useState(comment.likes);
+  const [optimisticIsLiked, setOptimisticIsLiked] = useOptimistic(
+    comment.hasLiked,
+    (isLiked) => !isLiked
+  );
+  const [optimisticLikes, setOptimisticLikes] = useOptimistic(
+    comment.likes,
+    (currentLikes, action: "INCREMENT" | "DECREMENT") => {
+      return action === "INCREMENT" ? currentLikes + 1 : currentLikes - 1;
+    }
+  );
 
   const handleLike = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,12 +46,10 @@ export default function CommentLikeButton({
     try {
       likeComment({ formData });
 
-      setIsLiked(!isLiked);
-      if (isLiked) {
-        setLikes(likes - 1);
-      } else {
-        setLikes(likes + 1);
-      }
+      startTransition(() => {
+        setOptimisticIsLiked("TOGGLE");
+        setOptimisticLikes(optimisticIsLiked ? "DECREMENT" : "INCREMENT");
+      });
     } catch (error) {
       console.error("Error submitting like:", error);
     }
@@ -52,10 +59,12 @@ export default function CommentLikeButton({
     <form onSubmit={handleLike}>
       <button className="self-baseline" type="submit">
         <Heart
-          className={`size-6 ${isLiked ? "text-red-500 fill-red-500" : ""}`}
+          className={`size-6 ${
+            optimisticIsLiked ? "text-red-500 fill-red-500" : ""
+          }`}
         />
         <div className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 text-sm">
-          {likes}
+          {optimisticLikes}
         </div>
       </button>
     </form>

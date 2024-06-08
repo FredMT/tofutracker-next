@@ -10,37 +10,56 @@ import {
 import { Star } from "lucide-react";
 import Rating from "./Rating";
 import { setRating } from "../movie/components/actions";
+import { startTransition } from "react";
 
 export default function ItemRating({
   item_id,
   item_type,
-  currentRating,
+  optimisticIsInLibrary,
+  setOptimisticIsInLibrary,
+  optimisticCurrentRating,
+  setOptimisticCurrentRating,
 }: {
   item_id: number;
   item_type: string;
-  currentRating: number;
+  optimisticIsInLibrary: boolean;
+  setOptimisticIsInLibrary: (value: boolean) => void;
+  optimisticCurrentRating: number;
+  setOptimisticCurrentRating: (value: number) => void;
 }) {
+  optimisticCurrentRating = optimisticIsInLibrary
+    ? optimisticCurrentRating
+    : -1;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button className="w-full flex justify-start" variant="secondary">
-          {currentRating !== -1 ? (
+          {optimisticCurrentRating !== -1 ? (
             <Star className="mr-2 fill-yellow-500" />
           ) : (
             <Star className="mr-2 " />
           )}{" "}
-          {currentRating !== -1 ? `Your rating: ${currentRating}` : "Rate"}
+          {optimisticCurrentRating !== -1
+            ? `Your rating: ${optimisticCurrentRating}`
+            : "Rate"}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[80vw] flex justify-center">
         <DropdownMenuItem>
           <Rating
-            value={currentRating !== -1 ? currentRating : 0}
+            value={optimisticCurrentRating !== -1 ? optimisticCurrentRating : 0}
             totalStars={10}
             precision={1}
-            onRatingChange={(rating: number) =>
-              setRating(rating, item_id, item_type)
-            }
+            onRatingChange={(rating: number) => {
+              setRating(rating, item_id, item_type);
+              startTransition(() => {
+                if (!optimisticIsInLibrary) {
+                  setOptimisticIsInLibrary(true);
+                }
+                setOptimisticCurrentRating(rating);
+              });
+            }}
           />
         </DropdownMenuItem>
       </DropdownMenuContent>

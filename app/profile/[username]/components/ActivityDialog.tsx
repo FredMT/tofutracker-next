@@ -7,6 +7,7 @@ import CommentList from "./CommentList";
 import { formatDistanceToNowStrict } from "date-fns";
 import { likeActivity, likeComment, createComment } from "./actions";
 import ActivityLike from "./ActivityLike";
+import MobileActivityLike from "./MobileActivityLike";
 
 type Item = {
   item_id: number;
@@ -89,7 +90,7 @@ export default async function ActivityDialog({
         </div>
 
         <div className="flex flex-col gap-2 md:hidden">
-          <ActivityLike
+          <MobileActivityLike
             hasLiked={hasLiked}
             likes={item.likes}
             username={username}
