@@ -52,7 +52,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
       <Suspense fallback={<Skeleton className="h-[288px] w-full" />}>
         <AnimeBackdrop title={anime.title} type={anime.type} id={anime.id} />
       </Suspense>
-      <div className="flex flex-col sm:flex-row sm:flex basis-1/5 sm:gap-x-8 px-5">
+      <div className="flex flex-col sm:flex-row sm:flex basis-1/5 sm:gap-x-8 px-5 xl:px-10 2xl:px-[168px]">
         <div className="flex justify-center">
           <Suspense
             fallback={

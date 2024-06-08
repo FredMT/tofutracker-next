@@ -13,9 +13,9 @@ export default async function Poster({
   id: number;
 }) {
   return (
-    <div className="flex flex-col gap-y-6 max-w-[182px] ">
+    <div className="flex flex-col gap-y-6 ">
       <Image
-        className="w-[124px] h-[186px] sm:w-[182px] sm:h-[273px] object-cover rounded-sm border border-muted"
+        className="w-[124px] h-[186px] sm:w-[182px] sm:h-[273px] md:w-[224px] md:h-[336px] object-cover rounded-sm border border-muted"
         src={`https://image.tmdb.org/t/p/original${poster_path}`}
         alt={title}
         width={600}

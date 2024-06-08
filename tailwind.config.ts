@@ -20,6 +20,9 @@ const config = {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         syne: ["var(--font-syne)", ...fontFamily.sans],
       },
+      screens: {
+        "2xl": "1400px",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

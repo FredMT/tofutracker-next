@@ -12,11 +12,13 @@ import Overview from "@/app/movie/components/Overview";
 import SeasonsAndEpisodes from "../components/SeasonsAndEpisodes";
 import CastAndCrew from "../components/CastAndCrew";
 import SimilarTVShows from "../components/SimilarTVShows";
+import { redirect } from "next/navigation";
 
 export const generateMetadata = ({ params }: Props): Metadata => {
   const title = params.id.split("-").slice(1).join(" ").replace(/%20/g, " ");
+  const decoded_title = decodeURIComponent(title);
   return {
-    title: `${title} - Tofutracker`,
+    title: `${decoded_title} - Tofutracker`,
   };
 };
 
@@ -27,10 +29,11 @@ type Props = {
 };
 
 async function getTVData(id: number) {
-  const data = await fetch(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/gettv/${id}`
-  );
+  const data = await fetch(`http://localhost:8080/api/gettv/${id}`);
   const result = await data.json();
+  if (result?.data?.message === "This is an anime.") {
+    redirect(`/anime/${result.data.data.anidb_id}`);
+  }
   return result;
 }
 
@@ -60,7 +63,7 @@ export default async function TVShow({ params }: { params: { id: string } }) {
           logo_path={logo_path}
         />
       </Suspense>
-      <div className="flex flex-col sm:flex-row sm:flex basis-1/5 sm:gap-x-8 px-5">
+      <div className="flex flex-col sm:flex-row sm:flex basis-1/5 sm:gap-x-8 px-5 xl:px-10 2xl:px-[168px]">
         <div className="flex justify-center">
           <Suspense
             fallback={

@@ -11,6 +11,7 @@ import Details from "../components/Details";
 import Overview from "../components/Overview";
 import CastAndCrew from "../components/CastAndCrew";
 import SimilarMovies from "../components/SimilarMovies";
+import { redirect } from "next/navigation";
 
 type Props = {
   params: {
@@ -26,10 +27,11 @@ export const generateMetadata = ({ params }: Props): Metadata => {
 };
 
 async function getMovieData(id: number) {
-  const data = await fetch(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/getmovie/${id}`
-  );
+  const data = await fetch(`http://localhost:8080/api/getmovie/${id}`);
   const result = await data.json();
+  if (result.message === "This is an anime.") {
+    redirect(`/anime/${result.data.anidb_id}`);
+  }
   return result;
 }
 
@@ -73,7 +75,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
           logo_path={logo_path}
         />
       </Suspense>
-      <div className="flex flex-col sm:flex-row sm:flex basis-1/5 sm:gap-x-8 px-5">
+      <div className="flex flex-col sm:flex-row sm:flex basis-1/5 sm:gap-x-8 px-5 xl:px-10 2xl:px-[168px]">
         <div className="flex justify-center">
           <Suspense
             fallback={
