@@ -75,7 +75,10 @@ export default function Search() {
   };
 
   const { data: searchResults, error: searchResultsError } = useSWR(
-    () => (query ? `http://localhost:8080/api/search/${query}` : null),
+    () =>
+      query
+        ? `https://tofutracker-3pt5y.ondigitalocean.app/api/search/${query}`
+        : null,
     fetcher
   );
 
