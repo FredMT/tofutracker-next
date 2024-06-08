@@ -189,6 +189,7 @@ export default function Search() {
                       precision={0.1}
                       size={1}
                       readOnly={true}
+                      onRatingChange={() => {}}
                     />
                   </div>
                   <p
