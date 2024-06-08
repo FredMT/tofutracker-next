@@ -1,7 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
-export const comment = async ({ formData }: { formData: FormData }) => {
+export const createComment = async ({ formData }: { formData: FormData }) => {
   "use server";
   const user_id = formData.get("user_id") as string;
   const activity_id = formData.get("activity_id") as string;
@@ -29,8 +29,6 @@ export const comment = async ({ formData }: { formData: FormData }) => {
   if (error) {
     console.log(error);
   }
-
-  revalidatePath(`/profile/${username}`);
 };
 
 export const likeActivity = async ({ formData }: { formData: FormData }) => {
@@ -38,7 +36,6 @@ export const likeActivity = async ({ formData }: { formData: FormData }) => {
   const supabase = createClient();
   const user_id = formData.get("user_id") as string;
   const activity_id = formData.get("activity_id") as string;
-  const username = formData.get("username") as string;
 
   const { data: existingLike, error: fetchLikeError } = await supabase
     .from("likes")
@@ -75,7 +72,7 @@ export const likeActivity = async ({ formData }: { formData: FormData }) => {
     }
   }
 
-  revalidatePath(`/profile/${username}`);
+  revalidateTag("activities");
 };
 
 export const likeComment = async ({ formData }: { formData: FormData }) => {

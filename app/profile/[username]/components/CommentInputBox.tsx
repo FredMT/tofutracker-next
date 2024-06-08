@@ -22,6 +22,7 @@ const CommentInputBox = forwardRef<
     setParentCommentId: (parent_comment_id: string) => void;
     targetUsername: string;
     setTargetUsername: (target_username: string) => void;
+    createComment: (data: any) => void;
   }
 >((props, ref) => {
   const {
@@ -34,6 +35,7 @@ const CommentInputBox = forwardRef<
     setParentCommentId,
     targetUsername,
     setTargetUsername,
+    createComment,
   } = props;
   const [comment, setComment] = useState("");
 
@@ -49,11 +51,7 @@ const CommentInputBox = forwardRef<
     formData.append("parent_comment_id", parent_comment_id);
 
     try {
-      await fetch("/api/comment", {
-        method: "POST",
-        body: formData,
-      });
-
+      createComment({ formData });
       setComment("");
       setTargetUserId("");
       setTargetUsername("");

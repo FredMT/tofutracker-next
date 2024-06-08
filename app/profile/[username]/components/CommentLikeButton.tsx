@@ -15,7 +15,13 @@ type Comment = {
   hasLiked: boolean;
 };
 
-export default function CommentLikeButton({ comment }: { comment: Comment }) {
+export default function CommentLikeButton({
+  comment,
+  likeComment,
+}: {
+  comment: Comment;
+  likeComment: (data: any) => void;
+}) {
   const [isLiked, setIsLiked] = useState(comment.hasLiked);
   const [likes, setLikes] = useState(comment.likes);
 
@@ -29,10 +35,7 @@ export default function CommentLikeButton({ comment }: { comment: Comment }) {
     formData.append("activity_id", comment.activity_id);
 
     try {
-      await fetch("/api/likeComment", {
-        method: "POST",
-        body: formData,
-      });
+      likeComment({ formData });
 
       setIsLiked(!isLiked);
       if (isLiked) {

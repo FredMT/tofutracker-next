@@ -6,12 +6,14 @@ type Props = {
   activity_id: string;
   user_id: string;
   hasLiked: boolean;
+  likeActivity: (data: any) => void;
 };
 
-const LikeActivityButton: React.FC<Props> = ({
+const ActivityLikeButton: React.FC<Props> = ({
   user_id,
   activity_id,
   hasLiked,
+  likeActivity,
 }) => {
   const [isLiked, setIsLiked] = useState(hasLiked);
 
@@ -22,16 +24,8 @@ const LikeActivityButton: React.FC<Props> = ({
     formData.append("user_id", user_id);
     formData.append("activity_id", activity_id);
 
-    try {
-      await fetch("/api/likeActivity", {
-        method: "POST",
-        body: formData,
-      });
-
-      setIsLiked(!isLiked);
-    } catch (error) {
-      console.error("Error submitting like:", error);
-    }
+    likeActivity({ formData });
+    setIsLiked(!isLiked);
   };
 
   return (
@@ -45,4 +39,4 @@ const LikeActivityButton: React.FC<Props> = ({
   );
 };
 
-export default LikeActivityButton;
+export default ActivityLikeButton;

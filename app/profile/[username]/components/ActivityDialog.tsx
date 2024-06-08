@@ -7,6 +7,7 @@ import { createClient } from "@/utils/supabase/server";
 import CommentList from "./CommentList";
 import ActivityLikeButton from "./ActivityLikeButton";
 import { formatDistanceToNowStrict } from "date-fns";
+import { likeActivity, likeComment, createComment } from "./actions";
 
 type Item = {
   item_id: number;
@@ -68,6 +69,7 @@ export default async function ActivityDialog({
                 activity_id={item.activity_id}
                 user_id={user?.id!}
                 hasLiked={hasLiked}
+                likeActivity={likeActivity}
               />
             )}
           </div>
@@ -90,6 +92,8 @@ export default async function ActivityDialog({
             activity_id={item.activity_id}
             user={user!}
             username={username}
+            likeComment={likeComment}
+            createComment={createComment}
           />
         </div>
 
@@ -101,6 +105,7 @@ export default async function ActivityDialog({
                 activity_id={item.activity_id}
                 user_id={user?.id!}
                 hasLiked={hasLiked}
+                likeActivity={likeActivity}
               />
             )}
           </div>
@@ -116,6 +121,8 @@ export default async function ActivityDialog({
             activity_id={item.activity_id}
             user={user!}
             username={username}
+            likeComment={likeComment}
+            createComment={createComment}
           />
         </div>
       </div>
