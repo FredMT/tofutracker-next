@@ -1,14 +1,14 @@
-"use client";
-import React from "react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { FaFigma, FaTerminal } from "react-icons/fa";
-import { Code, Layers2 } from "lucide-react";
+'use client'
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+import { FaFigma, FaTerminal } from 'react-icons/fa'
+import { Code, Layers2 } from 'lucide-react'
 
 export default function Footer() {
   return (
-    <div className="flex flex-col gap-y-4 mx-6">
-      <div className="flex gap-x-6 w-full justify-around px-6">
+    <div className="mx-6 flex flex-col gap-y-4">
+      <div className="flex w-full justify-around gap-x-6 px-6">
         <Link
           href="https://bento.me/notacookiefactory"
           className="min-w-[45%]"
@@ -16,7 +16,7 @@ export default function Footer() {
           rel="noopener noreferrer"
         >
           <Button className="flex w-full">
-            <FaFigma className="mr-[10px] h-4 w-4" /> Designer{" "}
+            <FaFigma className="mr-[10px] h-4 w-4" /> Designer{' '}
             <Layers2 className="ml-[10px] hidden h-4 w-4 sm:flex" />
           </Button>
         </Link>
@@ -33,10 +33,10 @@ export default function Footer() {
         </Link>
       </div>
       <div className="w-full">
-        <p className="text-center select-none font-syne text-[10vw] font-semibold uppercase not-italic leading-[normal] text-[color:var(--primary)]">
+        <p className="select-none text-center font-syne text-[10vw] font-semibold uppercase not-italic leading-[normal] text-[color:var(--primary)]">
           TOFUTRACKER
         </p>
       </div>
     </div>
-  );
+  )
 }

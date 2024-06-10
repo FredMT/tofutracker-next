@@ -1,78 +1,78 @@
-"use client";
+'use client'
 
-import SearchInputForm from "./components/SearchInputForm";
-import { useSearchParams } from "next/navigation";
-import useSWR from "swr";
-import { fetcher } from "@/utils/fetcher";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
-import Rating from "../components/Rating";
-import { ChevronDown, ChevronUp } from "lucide-react";
-import Image from "next/image";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
+import SearchInputForm from './components/SearchInputForm'
+import { useSearchParams } from 'next/navigation'
+import useSWR from 'swr'
+import { fetcher } from '@/utils/fetcher'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Badge } from '@/components/ui/badge'
+import { useState } from 'react'
+import Rating from '../components/Rating'
+import { ChevronDown, ChevronUp } from 'lucide-react'
+import Image from 'next/image'
+import { Separator } from '@/components/ui/separator'
+import Link from 'next/link'
 
 type MovieItem = {
-  id: number;
-  title: string;
-  vote_average: number;
-  release_date: string;
-  poster_path: string;
-  overview: string;
-  description: never;
-  rating: never;
-  poster: never;
-  name: never;
-  first_air_date: never;
-  start_date: never;
-};
+  id: number
+  title: string
+  vote_average: number
+  release_date: string
+  poster_path: string
+  overview: string
+  description: never
+  rating: never
+  poster: never
+  name: never
+  first_air_date: never
+  start_date: never
+}
 
 type TVItem = {
-  id: number;
-  name: string;
-  vote_average: number;
-  first_air_date: string;
-  poster_path: string;
-  overview: string;
-  description: never;
-  rating: never;
-  poster: never;
-  title: never;
-  release_date: never;
-  start_date: never;
-};
+  id: number
+  name: string
+  vote_average: number
+  first_air_date: string
+  poster_path: string
+  overview: string
+  description: never
+  rating: never
+  poster: never
+  title: never
+  release_date: never
+  start_date: never
+}
 
 type AnimeItem = {
-  id: number;
-  title: string;
-  rating: number;
-  poster_path: never;
-  description: string;
-  poster: string;
-  name: never;
-  start_date: string;
-  first_air_date: never;
-  release_date: never;
-  vote_average: never;
-  overview: never;
-};
+  id: number
+  title: string
+  rating: number
+  poster_path: never
+  description: string
+  poster: string
+  name: never
+  start_date: string
+  first_air_date: never
+  release_date: never
+  vote_average: never
+  overview: never
+}
 
 export default function Search() {
-  const search = useSearchParams();
-  const query = search ? search.get("q") : null;
+  const search = useSearchParams()
+  const query = search ? search.get('q') : null
 
-  const [categorySelected, setCategorySelected] = useState("movie");
+  const [categorySelected, setCategorySelected] = useState('movie')
   const [expandedStates, setExpandedStates] = useState<Record<number, boolean>>(
     {}
-  );
+  )
 
   const toggleOverview = (id: number) => {
     setExpandedStates((prev) => ({
       ...prev,
       [id]: !prev[id],
-    }));
-  };
+    }))
+  }
 
   const { data: searchResults, error: searchResultsError } = useSWR(
     () =>
@@ -80,52 +80,52 @@ export default function Search() {
         ? `https://tofutracker-3pt5y.ondigitalocean.app/api/search/${query}`
         : null,
     fetcher
-  );
+  )
 
   if (searchResultsError) {
     return (
-      <div className="mt-20 px-4 flex flex-col gap-6">
+      <div className="mt-20 flex flex-col gap-6 px-4">
         <p>
           There was
           <SearchInputForm /> an error retrieving the search results
         </p>
       </div>
-    );
+    )
   }
 
   if (searchResults) {
-    console.log(searchResults);
+    console.log(searchResults)
     return (
       <>
-        <div className="mt-20 px-4 flex flex-col gap-6">
+        <div className="mt-20 flex flex-col gap-6 px-4">
           <SearchInputForm />
           <div className="flex gap-4">
             <Badge
               variant="outline"
-              className={`text-sm py-2 px-4 ${
-                categorySelected === "movie" ? "ring-2 ring-purple-500" : ""
+              className={`px-4 py-2 text-sm ${
+                categorySelected === 'movie' ? 'ring-2 ring-purple-500' : ''
               }`}
-              onClick={() => setCategorySelected("movie")}
+              onClick={() => setCategorySelected('movie')}
             >
               Movies
               <span className="ml-2">{searchResults.data.movies.length}</span>
             </Badge>
             <Badge
               variant="outline"
-              className={`text-sm py-2 px-4 ${
-                categorySelected === "tv" ? "ring-2 ring-purple-500" : ""
+              className={`px-4 py-2 text-sm ${
+                categorySelected === 'tv' ? 'ring-2 ring-purple-500' : ''
               }`}
-              onClick={() => setCategorySelected("tv")}
+              onClick={() => setCategorySelected('tv')}
             >
               TV Shows
               <span className="ml-2">{searchResults.data.tv.length}</span>
             </Badge>
             <Badge
               variant="outline"
-              className={`text-sm py-2 px-4 ${
-                categorySelected === "anime" ? "ring-2 ring-purple-500" : ""
+              className={`px-4 py-2 text-sm ${
+                categorySelected === 'anime' ? 'ring-2 ring-purple-500' : ''
               }`}
-              onClick={() => setCategorySelected("anime")}
+              onClick={() => setCategorySelected('anime')}
             >
               Anime
               <span className="ml-2">{searchResults.data.anime.length}</span>
@@ -133,47 +133,47 @@ export default function Search() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-8 px-8 mt-8 w-full mb-6">
-          {(categorySelected === "movie"
+        <div className="mb-6 mt-8 flex w-full flex-col gap-8 px-8">
+          {(categorySelected === 'movie'
             ? searchResults.data.movies
-            : categorySelected === "tv"
-            ? searchResults.data.tv
-            : searchResults.data.anime
+            : categorySelected === 'tv'
+              ? searchResults.data.tv
+              : searchResults.data.anime
           ).map((item: MovieItem | TVItem | AnimeItem) => (
             <div key={item.id} className="flex gap-2">
               <Link href={`/${categorySelected}/${item.id}`}>
                 <Image
                   src={
-                    categorySelected === "anime"
+                    categorySelected === 'anime'
                       ? Boolean(item.poster)
                         ? `https://cdn.anidb.net/images/main/${item.poster}`
-                        : "https://placehold.co/80x120/jpg"
+                        : 'https://placehold.co/80x120/jpg'
                       : Boolean(item.poster_path)
-                      ? `https://image.tmdb.org/t/p/original${item.poster_path}`
-                      : "https://placehold.co/80x120/jpg"
+                        ? `https://image.tmdb.org/t/p/original${item.poster_path}`
+                        : 'https://placehold.co/80x120/jpg'
                   }
-                  alt={categorySelected === "tv" ? item.name : item.title}
+                  alt={categorySelected === 'tv' ? item.name : item.title}
                   width={80}
                   height={120}
-                  className="min-w-[calc(2*40px)] max-h-[calc(3*40px)]"
+                  className="max-h-[calc(3*40px)] min-w-[calc(2*40px)]"
                 />
               </Link>
               <div className="flex flex-col">
                 <Link href={`/${categorySelected}/${item.id}`}>
-                  <p className="font-medium leading-6 mb-2">
-                    {categorySelected === "tv" ? item.name : item.title}
-                    {(categorySelected === "tv" && item.first_air_date) ||
-                    (categorySelected === "movie" && item.release_date) ||
-                    (categorySelected === "anime" && item.start_date) ? (
+                  <p className="mb-2 font-medium leading-6">
+                    {categorySelected === 'tv' ? item.name : item.title}
+                    {(categorySelected === 'tv' && item.first_air_date) ||
+                    (categorySelected === 'movie' && item.release_date) ||
+                    (categorySelected === 'anime' && item.start_date) ? (
                       <span className="ml-1 text-sm font-medium leading-6">
                         (
                         {
-                          (categorySelected === "tv"
+                          (categorySelected === 'tv'
                             ? item.first_air_date
-                            : categorySelected === "movie"
-                            ? item.release_date
-                            : item.start_date
-                          ).split("-")[0]
+                            : categorySelected === 'movie'
+                              ? item.release_date
+                              : item.start_date
+                          ).split('-')[0]
                         }
                         )
                       </span>
@@ -183,7 +183,7 @@ export default function Search() {
                   <div className="mb-2">
                     <Rating
                       value={parseFloat(
-                        (categorySelected === "anime"
+                        (categorySelected === 'anime'
                           ? item.rating
                           : item.vote_average
                         ).toFixed(1)
@@ -196,24 +196,24 @@ export default function Search() {
                     />
                   </div>
                   <p
-                    className={`max-sm:hidden text-sm mb-2 ${
+                    className={`mb-2 text-sm max-sm:hidden ${
                       expandedStates[item.id]
-                        ? "line-clamp-none"
-                        : "line-clamp-2"
+                        ? 'line-clamp-none'
+                        : 'line-clamp-2'
                     }`}
                   >
-                    {categorySelected === "anime"
+                    {categorySelected === 'anime'
                       ? item.description
                       : item.overview}
                   </p>
                 </Link>
 
-                {(categorySelected === "anime" &&
+                {(categorySelected === 'anime' &&
                   item.description &&
-                  item.description.split(" ").length > 30) ||
-                  (categorySelected === "movie" &&
+                  item.description.split(' ').length > 30) ||
+                  (categorySelected === 'movie' &&
                     item.overview &&
-                    item.overview.split(" ").length > 30 && (
+                    item.overview.split(' ').length > 30 && (
                       <div className="flex justify-center">
                         {expandedStates[item.id] ? (
                           <ChevronUp
@@ -235,12 +235,12 @@ export default function Search() {
 
         <Separator className="my-4" />
       </>
-    );
+    )
   }
 
   return (
-    <div className="mt-20 px-4 flex flex-col gap-6">
+    <div className="mt-20 flex flex-col gap-6 px-4">
       <SearchInputForm />
     </div>
-  );
+  )
 }

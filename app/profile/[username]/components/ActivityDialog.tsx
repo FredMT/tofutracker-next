@@ -1,60 +1,60 @@
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { DialogContent } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
-import { createClient } from "@/utils/supabase/server";
-import CommentList from "./CommentList";
-import { formatDistanceToNowStrict } from "date-fns";
-import { likeActivity, likeComment, createComment } from "./actions";
-import ActivityLike from "./ActivityLike";
-import MobileActivityLike from "./MobileActivityLike";
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { DialogContent } from '@/components/ui/dialog'
+import { Separator } from '@/components/ui/separator'
+import Image from 'next/image'
+import { createClient } from '@/utils/supabase/server'
+import CommentList from './CommentList'
+import { formatDistanceToNowStrict } from 'date-fns'
+import { likeActivity, likeComment, createComment } from './actions'
+import ActivityLike from './ActivityLike'
+import MobileActivityLike from './MobileActivityLike'
 
 type Item = {
-  item_id: number;
-  item_created_at: string;
-  item_type: string;
-  item_poster: string;
-  item_title: string;
-  activity_id: string;
-  hasLiked?: boolean;
-  likes: number;
-};
+  item_id: number
+  item_created_at: string
+  item_type: string
+  item_poster: string
+  item_title: string
+  activity_id: string
+  hasLiked?: boolean
+  likes: number
+}
 export default async function ActivityDialog({
   item,
   username,
   hasLiked,
 }: {
-  item: Item;
-  username: string;
-  hasLiked: boolean;
+  item: Item
+  username: string
+  hasLiked: boolean
 }) {
-  const supabase = createClient();
+  const supabase = createClient()
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
   return (
-    <DialogContent className="min-h-full sm:min-h-[500px] md:max-w-[85vw] p-6 flex overflow-y-scroll max-h-screen">
-      <div className="flex max-md:flex-col gap-5 w-screen">
-        <div className="flex gap-2 items-center md:hidden">
+    <DialogContent className="flex max-h-screen min-h-full overflow-y-scroll p-6 sm:min-h-[500px] md:max-w-[85vw]">
+      <div className="flex w-screen gap-5 max-md:flex-col">
+        <div className="flex items-center gap-2 md:hidden">
           <Avatar className="size-8">
             <AvatarImage src="https://github.com/shadcn.png" />
           </Avatar>
 
-          <div className="  text-sm font-semibold">{username}</div>
-          <div className="  text-sm text-muted-foreground">
+          <div className="text-sm font-semibold">{username}</div>
+          <div className="text-sm text-muted-foreground">
             {formatDistanceToNowStrict(new Date(item.item_created_at))} ago
           </div>
         </div>
 
-        <div className="flex justify-center md:justify-center md:flex-col md:gap-4 md:max-w-[224px]">
+        <div className="flex justify-center md:max-w-[224px] md:flex-col md:justify-center md:gap-4">
           <Image
             src={item.item_poster}
             alt={item.item_title}
             width={1080}
             height={1920}
-            className=" rounded-md sm:w-[300px] sm:h-[450px] md:w-[224px] md:h-[336px]"
+            className="rounded-md sm:h-[450px] sm:w-[300px] md:h-[336px] md:w-[224px]"
           />
           <ActivityLike
             hasLiked={hasLiked}
@@ -67,13 +67,13 @@ export default async function ActivityDialog({
           />
         </div>
 
-        <div className="flex flex-col max-md:hidden w-full gap-4 max-h-[472px] ">
-          <div className="flex gap-4 items-center">
+        <div className="flex max-h-[472px] w-full flex-col gap-4 max-md:hidden">
+          <div className="flex items-center gap-4">
             <Avatar className="size-8">
               <AvatarImage src="https://github.com/shadcn.png" />
             </Avatar>
-            <div className="  text-sm font-medium">{username}</div>
-            <div className="  text-sm text-muted-foreground">
+            <div className="text-sm font-medium">{username}</div>
+            <div className="text-sm text-muted-foreground">
               {formatDistanceToNowStrict(new Date(item.item_created_at))} ago
             </div>
           </div>
@@ -103,7 +103,7 @@ export default async function ActivityDialog({
 
         <Separator className="my-2 md:hidden" />
 
-        <div className="md:hidden flex flex-col gap-4">
+        <div className="flex flex-col gap-4 md:hidden">
           <CommentList
             activity_id={item.activity_id}
             user={user!}
@@ -114,5 +114,5 @@ export default async function ActivityDialog({
         </div>
       </div>
     </DialogContent>
-  );
+  )
 }

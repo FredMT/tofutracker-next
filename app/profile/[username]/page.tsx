@@ -1,28 +1,28 @@
-"use server";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
-import { createClient } from "@/utils/supabase/server";
-import Image from "next/image";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import ActivityDialog from "./components/ActivityDialog";
+'use server'
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { Separator } from '@/components/ui/separator'
+import { createClient } from '@/utils/supabase/server'
+import Image from 'next/image'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import ActivityDialog from './components/ActivityDialog'
 
 type PosterItem = {
-  item_id: number;
-  item_type: string;
-  item_poster: string;
-  item_title: string;
-  activity_id: string;
-  item_created_at: string;
-  hasLiked?: boolean;
-  likes: number;
-};
+  item_id: number
+  item_type: string
+  item_poster: string
+  item_title: string
+  activity_id: string
+  item_created_at: string
+  hasLiked?: boolean
+  likes: number
+}
 
 async function getActivityData(user_id: string) {
   const data = await fetch(
     `https://tofutracker-3pt5y.ondigitalocean.app/api/getposters/${user_id}`,
-    { next: { tags: ["activities"] } }
-  );
-  return data;
+    { next: { tags: ['activities'] } }
+  )
+  return data
 }
 
 async function getActivityDataLoggedInUser(
@@ -31,59 +31,59 @@ async function getActivityDataLoggedInUser(
 ) {
   const data = await fetch(
     `https://tofutracker-3pt5y.ondigitalocean.app/api/getposters/${viewed_user_id}/${logged_in_user_id}`,
-    { next: { tags: ["activities"] } }
-  );
-  return data;
+    { next: { tags: ['activities'] } }
+  )
+  return data
 }
 
 export default async function Profile({
   params,
 }: {
-  params: { username: string };
+  params: { username: string }
 }) {
-  const supabase = createClient();
+  const supabase = createClient()
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
   const { data, error } = await supabase
-    .from("profile")
-    .select("bio")
-    .eq("username", params.username)
-    .single();
+    .from('profile')
+    .select('bio')
+    .eq('username', params.username)
+    .single()
 
-  if (error) console.log(error.message);
+  if (error) console.log(error.message)
 
   const { data: userData, error: userError } = await supabase
-    .from("profile")
-    .select("id")
-    .eq("username", params.username)
-    .single();
+    .from('profile')
+    .select('id')
+    .eq('username', params.username)
+    .single()
 
   if (userError) {
-    console.error(userError.message);
-    return;
+    console.error(userError.message)
+    return
   }
 
-  const viewedUserId = userData.id;
+  const viewedUserId = userData.id
 
-  let activityData;
+  let activityData
   if (user) {
-    const response = await getActivityDataLoggedInUser(viewedUserId, user.id);
-    activityData = await response.json();
+    const response = await getActivityDataLoggedInUser(viewedUserId, user.id)
+    activityData = await response.json()
   } else {
-    const response = await getActivityData(viewedUserId);
-    activityData = await response.json();
+    const response = await getActivityData(viewedUserId)
+    activityData = await response.json()
   }
 
   if (activityData) {
     return (
-      <div className="mt-20 mx-6">
+      <div className="mx-6 mt-20">
         <div className="flex max-md:flex-col md:gap-20">
-          <div className="flex max-md:gap-6 md:gap-2 md:max-w-[240px] md:flex-col">
+          <div className="flex max-md:gap-6 md:max-w-[240px] md:flex-col md:gap-2">
             <div className="flex justify-center">
-              <Avatar className="size-12 md:size-24 ">
+              <Avatar className="size-12 md:size-24">
                 <AvatarImage
                   src="https://github.com/shadcn.png"
                   alt="Profile picture"
@@ -94,21 +94,21 @@ export default async function Profile({
               <div className="font-syne text-lg font-semibold">
                 {params.username}
               </div>
-              <div className="text-gray-500 text-sm">{data?.bio}</div>
+              <div className="text-sm text-gray-500">{data?.bio}</div>
             </div>
           </div>
 
-          <div className="flex flex-col w-full">
+          <div className="flex w-full flex-col">
             <div className="text-xl max-md:mt-6">Activity</div>
             <Separator className="mt-2" />
 
-            <div className="grid gap-4 mt-6 grid-cols-3 sm:grid-cols-4  mb-6">
+            <div className="mb-6 mt-6 grid grid-cols-3 gap-4 sm:grid-cols-4">
               {activityData.posters.map((item: PosterItem) => (
                 <Dialog key={item.item_id}>
                   <DialogTrigger>
                     <Image
                       key={item.item_id}
-                      className=" min-w-[88px] min-h-[132px] sm:w-[152px] sm:h-[228px] lg:w-[176px] lg:h-[264px] xl:w-[200px] xl:h-[300px] rounded-md"
+                      className="min-h-[132px] min-w-[88px] rounded-md sm:h-[228px] sm:w-[152px] lg:h-[264px] lg:w-[176px] xl:h-[300px] xl:w-[200px]"
                       src={item.item_poster}
                       alt={item.item_title}
                       width="1080"
@@ -127,8 +127,8 @@ export default async function Profile({
           </div>
         </div>
       </div>
-    );
+    )
   } else {
-    return <div>No activity found</div>;
+    return <div>No activity found</div>
   }
 }

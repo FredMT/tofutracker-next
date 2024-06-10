@@ -1,8 +1,8 @@
-import { createClient } from "@/utils/supabase/server";
-import Link from "next/link";
-import { redirect } from "next/navigation";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "./ui/button";
+import { createClient } from '@/utils/supabase/server'
+import Link from 'next/link'
+import { redirect } from 'next/navigation'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Button } from './ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,37 +16,37 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Separator } from "@/components/ui/separator";
+} from '@/components/ui/dropdown-menu'
+import { Separator } from '@/components/ui/separator'
 
 export default async function AuthButton() {
-  const supabase = createClient();
+  const supabase = createClient()
 
   const {
     data: { user },
-  } = await supabase.auth.getUser();
+  } = await supabase.auth.getUser()
 
-  let username = null;
+  let username = null
   if (user?.id) {
     const { data, error } = await supabase
-      .from("profile")
-      .select("username")
-      .eq("id", user.id)
-      .single();
+      .from('profile')
+      .select('username')
+      .eq('id', user.id)
+      .single()
     if (error) {
-      console.error("Failed to fetch username:", error.message);
+      console.error('Failed to fetch username:', error.message)
     } else {
-      username = data?.username;
+      username = data?.username
     }
   }
 
   const signOut = async () => {
-    "use server";
+    'use server'
 
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    return redirect("/");
-  };
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    return redirect('/')
+  }
 
   return user ? (
     <>
@@ -74,31 +74,31 @@ export default async function AuthButton() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="flex max-sm:flex-col gap-2 sm:hidden">
+      <div className="flex gap-2 max-sm:flex-col sm:hidden">
         <Avatar>
           <AvatarImage src="https://github.com/shadcn.png" />
         </Avatar>
 
-        <Separator className="sm:hidden my-2" />
+        <Separator className="my-2 sm:hidden" />
 
-        <div className="sm:hidden flex flex-col gap-2">
+        <div className="flex flex-col gap-2 sm:hidden">
           <Link href={`/profile/${username}`}>
             <button>Profile</button>
           </Link>
 
-          <Separator className="sm:hidden my-1" />
+          <Separator className="my-1 sm:hidden" />
 
           <Link href={`/profile/${username}/settings`}>
             <button>Settings</button>
           </Link>
 
-          <Separator className="sm:hidden my-1" />
+          <Separator className="my-1 sm:hidden" />
 
           <form action={signOut}>
             <button>Logout</button>
           </form>
 
-          <Separator className="sm:hidden my-1" />
+          <Separator className="my-1 sm:hidden" />
         </div>
       </div>
     </>
@@ -106,5 +106,5 @@ export default async function AuthButton() {
     <Link href="/login">
       <Button variant="secondary">Login/Sign Up</Button>
     </Link>
-  );
+  )
 }

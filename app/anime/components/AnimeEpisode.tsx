@@ -1,30 +1,30 @@
-import Image from "next/image";
-import React, { useState } from "react";
-import { format } from "date-fns";
+import Image from 'next/image'
+import React, { useState } from 'react'
+import { format } from 'date-fns'
 
 type Episode = {
-  air_date: string;
-  episode_number: number;
-  episode_name: string;
-  episode_overview: string;
-  runtime: number;
-  still_path: string;
-};
+  air_date: string
+  episode_number: number
+  episode_name: string
+  episode_overview: string
+  runtime: number
+  still_path: string
+}
 
 export default function AnimeEpisode({ episode }: { episode: Episode }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
 
   const handleToggleExpand = () => {
-    setExpanded(!expanded);
-  };
+    setExpanded(!expanded)
+  }
 
   const overviewText = expanded
     ? episode.episode_overview
-    : episode.episode_overview.split(" ").slice(0, 10).join(" ");
+    : episode.episode_overview.split(' ').slice(0, 10).join(' ')
 
   return (
     <div className="flex gap-x-5">
-      <div className="flex min-w-[140px] h-[80px]">
+      <div className="flex h-[80px] min-w-[140px]">
         <Image
           src={
             episode.still_path
@@ -36,26 +36,26 @@ export default function AnimeEpisode({ episode }: { episode: Episode }) {
           height={80}
         />
       </div>
-      <div className="flex justify-between flex-col py-1">
+      <div className="flex flex-col justify-between py-1">
         <div className="flex flex-col">
           <div className="text-[14px] font-normal leading-[24px]">
             {episode.episode_name}
           </div>
-          <div className="text-[12px] text-muted-foreground leading-[20px]">
-            {format(new Date(episode.air_date), "dd MMM yyyy")} •{" "}
+          <div className="text-[12px] leading-[20px] text-muted-foreground">
+            {format(new Date(episode.air_date), 'dd MMM yyyy')} •{' '}
             {episode.runtime}m
           </div>
         </div>
         <div className="text-[12px] font-normal leading-[20px]">
           {overviewText && (
-            <div className="text-[14px] text-muted-foreground font-medium leading-[24px]">
+            <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
               {overviewText}
-              {episode.episode_overview.split(" ") && (
+              {episode.episode_overview.split(' ') && (
                 <span
-                  className="text-blue-500 cursor-pointer"
+                  className="cursor-pointer text-blue-500"
                   onClick={handleToggleExpand}
                 >
-                  {expanded ? " Show less" : " ...Show more"}
+                  {expanded ? ' Show less' : ' ...Show more'}
                 </span>
               )}
             </div>
@@ -63,5 +63,5 @@ export default function AnimeEpisode({ episode }: { episode: Episode }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

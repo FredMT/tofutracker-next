@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button'
 
 type User = {
-  id: string;
-};
+  id: string
+}
 
 export default function AnimeLibraryButton({
   id,
@@ -11,11 +11,11 @@ export default function AnimeLibraryButton({
   removeAnimeFromLibrary,
   isInLibrary,
 }: {
-  id: number;
-  user: User | null;
-  addAnimeToLibrary: (formData: FormData) => Promise<void>;
-  removeAnimeFromLibrary: (formData: FormData) => Promise<void>;
-  isInLibrary: boolean;
+  id: number
+  user: User | null
+  addAnimeToLibrary: (formData: FormData) => Promise<void>
+  removeAnimeFromLibrary: (formData: FormData) => Promise<void>
+  isInLibrary: boolean
 }) {
   if (user && isInLibrary) {
     return (
@@ -26,7 +26,7 @@ export default function AnimeLibraryButton({
           Remove from Library
         </Button>
       </form>
-    );
+    )
   } else if (user && !isInLibrary) {
     return (
       <form action={addAnimeToLibrary}>
@@ -37,6 +37,6 @@ export default function AnimeLibraryButton({
           Add to Library
         </Button>
       </form>
-    );
+    )
   }
 }

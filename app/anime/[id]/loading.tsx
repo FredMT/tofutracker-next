@@ -1,28 +1,28 @@
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function Loading() {
   return (
     <>
-      <div className="sm:hidden flex flex-col gap-6">
+      <div className="flex flex-col gap-6 sm:hidden">
         <Skeleton className="h-[300px] w-full"></Skeleton>
         <div className="flex justify-center">
           <Skeleton className="h-[186px] w-[124px]"></Skeleton>
         </div>
-        <div className="px-4 flex flex-col">
+        <div className="flex flex-col px-4">
           <Skeleton className="h-16"></Skeleton>
           <Separator className="my-4" />
           <Skeleton className="h-16"></Skeleton>
           <Separator className="my-4" />
-          <Skeleton className="h-10 mb-2"></Skeleton>
+          <Skeleton className="mb-2 h-10"></Skeleton>
         </div>
       </div>
 
-      <div className="max-sm:hidden flex flex-col mb-6">
-        <Skeleton className="h-[576px] w-full mb-6"></Skeleton>
-        <div className="flex px-4 gap-6">
+      <div className="mb-6 flex flex-col max-sm:hidden">
+        <Skeleton className="mb-6 h-[576px] w-full"></Skeleton>
+        <div className="flex gap-6 px-4">
           <div className="flex flex-col gap-6">
-            <Skeleton className="w-[182px] h-[273px]"></Skeleton>
+            <Skeleton className="h-[273px] w-[182px]"></Skeleton>
             <Skeleton className="h-10"></Skeleton>
             <Skeleton className="h-10"></Skeleton>
           </div>
@@ -36,5 +36,5 @@ export default function Loading() {
         </div>
       </div>
     </>
-  );
+  )
 }

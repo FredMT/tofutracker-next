@@ -1,48 +1,69 @@
-"use client";
+'use client'
 
-import ItemRating from "@/app/components/ItemRating";
-import { Button } from "@/components/ui/button";
-import { Library } from "lucide-react";
-import { startTransition, useOptimistic } from "react";
+import ItemRating from '@/app/components/ItemRating'
+import { Button } from '@/components/ui/button'
+import { BookmarkPlus, Library } from 'lucide-react'
+import { startTransition, useOptimistic } from 'react'
 
 export default function AddToLibraryAndRate({
   addOrRemoveFromLibrary,
+  addOrRemoveFromWatchlist,
   userId,
   itemId,
   itemType,
   isInLibrary,
+  isInWatchlist,
   currentRating,
 }: {
-  addOrRemoveFromLibrary: (formData: FormData) => void;
-  userId: string;
-  itemId: number;
-  itemType: string;
-  isInLibrary: boolean;
-  currentRating: number;
+  addOrRemoveFromLibrary: (formData: FormData) => void
+  addOrRemoveFromWatchlist: (formData: FormData) => void
+  userId: string
+  itemId: number
+  itemType: string
+  isInLibrary: boolean
+  currentRating: number
+  isInWatchlist: boolean
 }) {
   const [optimisticIsInLibrary, setOptimisticIsInLibrary] = useOptimistic(
     isInLibrary,
     (isInLibrary) => {
-      return !isInLibrary;
+      return !isInLibrary
     }
-  );
+  )
+
+  const [optimisticIsInWatchlist, setOptimisticIsInWatchlist] = useOptimistic(
+    isInWatchlist,
+    (isInWatchlist) => {
+      return !isInWatchlist
+    }
+  )
 
   const [optimisticCurrentRating, setOptimisticCurrentRating] = useOptimistic(
     currentRating,
     (newRating: number) => newRating
-  );
+  )
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    addOrRemoveFromLibrary(new FormData(event.currentTarget));
+    event.preventDefault()
+    addOrRemoveFromLibrary(new FormData(event.currentTarget))
     startTransition(() => {
-      setOptimisticIsInLibrary(!optimisticIsInLibrary);
-    });
-  };
+      setOptimisticIsInLibrary(!optimisticIsInLibrary)
+    })
+  }
+
+  const handleWatchlistSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault()
+    addOrRemoveFromWatchlist(new FormData(event.currentTarget))
+    startTransition(() => {
+      setOptimisticIsInWatchlist(!optimisticIsInWatchlist)
+    })
+  }
 
   return (
     <>
-      <div className="w-full relative">
+      <div className="relative w-full">
         <form onSubmit={handleSubmit}>
           <input type="hidden" name="user_id" value={userId} />
           <input type="hidden" name="item_id" value={itemId} />
@@ -53,18 +74,19 @@ export default function AddToLibraryAndRate({
             name="isInLibrary"
             value={optimisticIsInLibrary.toString()}
           />
-          <Button className="w-full flex justify-between" type="submit">
+          <Button className="flex w-full justify-between" type="submit">
             <div className="flex gap-x-2">
               <Library />
               <span>
                 {optimisticIsInLibrary
-                  ? "Remove from Library"
-                  : "Add to Library"}
+                  ? 'Remove from Library'
+                  : 'Add to Library'}
               </span>
             </div>
           </Button>
         </form>
       </div>
+
       <ItemRating
         item_id={itemId}
         item_type={itemType}
@@ -73,6 +95,27 @@ export default function AddToLibraryAndRate({
         optimisticCurrentRating={optimisticCurrentRating}
         setOptimisticCurrentRating={setOptimisticCurrentRating}
       />
+
+      <form onSubmit={handleWatchlistSubmit}>
+        <input type="hidden" name="user_id" value={userId} />
+        <input type="hidden" name="item_id" value={itemId} />
+        <input type="hidden" name="item_type" value={itemType} />
+        <input
+          type="hidden"
+          name="isInWatchlist"
+          value={optimisticIsInWatchlist.toString()}
+        />
+        <Button
+          variant="secondary"
+          className="w-full justify-start"
+          type="submit"
+        >
+          <BookmarkPlus className="mr-2" />{' '}
+          {optimisticIsInWatchlist
+            ? 'Remove from Watchlist'
+            : 'Add to Watchlist'}
+        </Button>
+      </form>
     </>
-  );
+  )
 }

@@ -1,14 +1,14 @@
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function loading() {
   return (
-    <div className="flex flex-col mt-16 text-xl px-6 gap-4">
-      <div className="text-2xl py-4 w-20">Settings</div>
+    <div className="mt-16 flex flex-col gap-4 px-6 text-xl">
+      <div className="w-20 py-4 text-2xl">Settings</div>
       <Skeleton className="py-4"></Skeleton>
       <Separator />
       <Skeleton className="py-4"></Skeleton>
       <Separator />
     </div>
-  );
+  )
 }

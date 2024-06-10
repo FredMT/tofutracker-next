@@ -1,16 +1,16 @@
-import React from "react";
-import { Card } from "./ui/card";
-import Image from "next/image";
-import Link from "next/link";
+import React from 'react'
+import { Card } from './ui/card'
+import Image from 'next/image'
+import Link from 'next/link'
 
 type Movie = {
-  id: number;
-  title: string;
-  poster_path: string;
-  year: string;
-  rating: number;
-  media_type: string;
-};
+  id: number
+  title: string
+  poster_path: string
+  year: string
+  rating: number
+  media_type: string
+}
 
 export default function MovieCard({
   id,
@@ -21,17 +21,17 @@ export default function MovieCard({
   media_type,
 }: Movie) {
   return (
-    <Card className="min-w-[112px] min-h-[260px] sm:min-w-[140px] sm:min-h-[302px] border-0">
+    <Card className="min-h-[260px] min-w-[112px] border-0 sm:min-h-[302px] sm:min-w-[140px]">
       <Link
         href={`/${media_type}/${id}-${title
-          .replace(/ /g, "-")
-          .replace(/:/g, "")}`}
+          .replace(/ /g, '-')
+          .replace(/:/g, '')}`}
       >
         <div>
           <Image
-            className="w-full object-cover rounded-sm lg:w-[140px] lg:h-[210px]"
+            className="w-full rounded-sm object-cover lg:h-[210px] lg:w-[140px]"
             src={
-              media_type !== "anime"
+              media_type !== 'anime'
                 ? `https://image.tmdb.org/t/p/w440_and_h660_face${poster_path}`
                 : `https://cdn.anidb.net/images/main/${poster_path}`
             }
@@ -42,22 +42,22 @@ export default function MovieCard({
           />
         </div>
       </Link>
-      <div className="flex flex-col gap-y-2 mt-4">
-      <Link
-        href={`/${media_type}/${id}-${title
-          .replace(/ /g, "-")
-          .replace(/:/g, "")}`}
-      >
-          <h3 className="text-[14px] leading-6 font-semibold line-clamp-2 text-secondary-foreground">
+      <div className="mt-4 flex flex-col gap-y-2">
+        <Link
+          href={`/${media_type}/${id}-${title
+            .replace(/ /g, '-')
+            .replace(/:/g, '')}`}
+        >
+          <h3 className="line-clamp-2 text-[14px] font-semibold leading-6 text-secondary-foreground">
             {title}
           </h3>
         </Link>
 
-        <span className="text-xs text-muted-foreground flex gap-1">
+        <span className="flex gap-1 text-xs text-muted-foreground">
           <div>{year && <p>{`${year}`}</p>}</div>
           <div>{rating > 0 && <p>{`• ${rating}`}</p>}</div>
         </span>
       </div>
     </Card>
-  );
+  )
 }

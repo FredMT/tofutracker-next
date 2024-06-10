@@ -1,9 +1,9 @@
-"use client";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+'use client'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
   FormControl,
@@ -11,15 +11,15 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "@/components/ui/form";
+} from '@/components/ui/form'
 
 type ActivityPrivacyData = {
-  activity_privacy: boolean;
-};
+  activity_privacy: boolean
+}
 
 const FormSchema = z.object({
   activity_privacy: z.boolean().default(false),
-});
+})
 
 export default function PrivateActivityCheckbox({
   user_id,
@@ -27,24 +27,24 @@ export default function PrivateActivityCheckbox({
   activityIsPrivate,
   updateActivityPrivacySetting,
 }: {
-  user_id: string;
-  username: string;
-  activityIsPrivate: boolean;
+  user_id: string
+  username: string
+  activityIsPrivate: boolean
   updateActivityPrivacySetting: (
     data: ActivityPrivacyData,
     userId: string,
     username: string
-  ) => Promise<void>;
+  ) => Promise<void>
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       activity_privacy: activityIsPrivate,
     },
-  });
+  })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    await updateActivityPrivacySetting(data, user_id, username);
+    await updateActivityPrivacySetting(data, user_id, username)
   }
 
   return (
@@ -67,8 +67,8 @@ export default function PrivateActivityCheckbox({
                 </FormLabel>
                 <FormDescription>
                   {activityIsPrivate
-                    ? "Your activity is currently private. No one else can see your activity. Unchecking this box and saving will make your activity public."
-                    : "Your activity is currently public. Everyone can see your activity. Checking this box and saving will make your activity private."}
+                    ? 'Your activity is currently private. No one else can see your activity. Unchecking this box and saving will make your activity public.'
+                    : 'Your activity is currently public. Everyone can see your activity. Checking this box and saving will make your activity private.'}
                 </FormDescription>
               </div>
             </FormItem>
@@ -77,5 +77,5 @@ export default function PrivateActivityCheckbox({
         <Button type="submit">Save</Button>
       </form>
     </Form>
-  );
+  )
 }

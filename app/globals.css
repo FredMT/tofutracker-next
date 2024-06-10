@@ -77,6 +77,6 @@
 
 @layer utilities {
   .contentpagedetailtitle {
-    @apply text-[18px] leading-[28px] font-semibold sm:text-[24px] sm:leading-[32px];
+    @apply text-[18px] font-semibold leading-[28px] sm:text-[24px] sm:leading-[32px];
   }
 }

@@ -1,17 +1,17 @@
-import { Separator } from "@/components/ui/separator";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function Loading() {
   return (
     <div className="mt-20 px-6">
-      <div className="flex max-sm:flex-col gap-6">
-        <Skeleton className="h-12 sm:h-40 w-80"></Skeleton>
-        <div className="flex flex-col w-full">
+      <div className="flex gap-6 max-sm:flex-col">
+        <Skeleton className="h-12 w-80 sm:h-40"></Skeleton>
+        <div className="flex w-full flex-col">
           <div>
             <div className="text-xl font-medium">Activity</div>
             <Separator className="mt-2" />
           </div>
-          <div className="grid gap-4 sm:mt-6 grid-cols-3 sm:grid-cols-4 mb-6">
+          <div className="mb-6 grid grid-cols-3 gap-4 sm:mt-6 sm:grid-cols-4">
             {Array.from({ length: 3 }).map((_, i) => (
               <Skeleton key={i} className="min-h-[228px] min-w-12"></Skeleton>
             ))}
@@ -19,5 +19,5 @@ export default function Loading() {
         </div>
       </div>
     </div>
-  );
+  )
 }

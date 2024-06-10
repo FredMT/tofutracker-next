@@ -1,62 +1,62 @@
-"use client";
+'use client'
 
-import { useParams } from "next/navigation";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React from "react";
-import useSWR from "swr";
-import { Card } from "@/components/ui/card";
-import { useRouter } from "next/navigation";
-import AnimeEpisodes from "./AnimeEpisodes";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useParams } from 'next/navigation'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import React from 'react'
+import useSWR from 'swr'
+import { Card } from '@/components/ui/card'
+import { useRouter } from 'next/navigation'
+import AnimeEpisodes from './AnimeEpisodes'
+import { Skeleton } from '@/components/ui/skeleton'
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 
 type AnimeSeasonResponse = {
-  success: boolean;
-  data: AnimeSeason[];
-};
+  success: boolean
+  data: AnimeSeason[]
+}
 
 type AnimeSeason = {
-  sequel_id: number;
-};
+  sequel_id: number
+}
 
 type AnimeRelationsResponse = {
-  success: boolean;
-  message: string;
-  data: AnimeRelation[] | string;
-};
+  success: boolean
+  message: string
+  data: AnimeRelation[] | string
+}
 
 type AnimeRelation = {
-  anime_id: number;
-  related_id: number;
-  type: string;
-};
+  anime_id: number
+  related_id: number
+  type: string
+}
 
 type AnimeEpisodesResponse = {
-  success: boolean;
-  data: AnimeEpisode[];
-};
+  success: boolean
+  data: AnimeEpisode[]
+}
 
 type AnimeEpisode = {
-  air_date: string;
-  episode_number: number;
-  episode_name: string;
-  episode_overview: string;
-  runtime: number;
-  still_path: string;
-};
+  air_date: string
+  episode_number: number
+  episode_name: string
+  episode_overview: string
+  runtime: number
+  still_path: string
+}
 
 export default function AnimeSeasonsAndEpisodes({
   start_date,
   end_date,
 }: {
-  start_date: string;
-  end_date: string;
+  start_date: string
+  end_date: string
 }) {
-  const slug = useParams().id;
-  const router = useRouter();
-  const id = typeof slug === "string" ? slug.split("-")[0] : slug[0];
-  const [selectedSeason, setSelectedSeason] = React.useState(id);
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const slug = useParams().id
+  const router = useRouter()
+  const id = typeof slug === 'string' ? slug.split('-')[0] : slug[0]
+  const [selectedSeason, setSelectedSeason] = React.useState(id)
+  const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
   const {
     data: fetchedData,
@@ -65,7 +65,7 @@ export default function AnimeSeasonsAndEpisodes({
   } = useSWR<AnimeSeasonResponse>(
     `https://tofutracker-3pt5y.ondigitalocean.app/api/getanimechain/${id}`,
     fetcher
-  );
+  )
 
   const {
     data: relations,
@@ -76,7 +76,7 @@ export default function AnimeSeasonsAndEpisodes({
       selectedSeason
     )}`,
     fetcher
-  );
+  )
 
   const {
     data: episodes,
@@ -87,39 +87,39 @@ export default function AnimeSeasonsAndEpisodes({
       selectedSeason
     )}/${start_date}/${end_date}`,
     fetcher
-  );
+  )
 
-  if (error || relationsError || episodesError) console.log(error);
+  if (error || relationsError || episodesError) console.log(error)
 
   if (isLoading || relationsLoading || episodesLoading)
-    return <Skeleton className="w-full h-[500px] mt-6" />;
+    return <Skeleton className="mt-6 h-[500px] w-full" />
 
   const getBackgroundColor = (sequelId: string) => {
     if (relations && relations.success && Array.isArray(relations.data)) {
       const relation = relations.data.find(
         (rel) => rel.related_id.toString() === sequelId
-      );
+      )
       if (relation) {
-        return relation.type === "Sequel"
-          ? "text-purple-500 "
-          : relation.type === "Prequel"
-          ? "text-orange-500"
-          : "";
+        return relation.type === 'Sequel'
+          ? 'text-purple-500 '
+          : relation.type === 'Prequel'
+            ? 'text-orange-500'
+            : ''
       }
     }
-    return "bg-transparent rounded-none data-[state=active]:border-b-2 border-white";
-  };
+    return 'bg-transparent rounded-none data-[state=active]:border-b-2 border-white'
+  }
 
   function handleSeasonChange(id: string) {
-    setSelectedSeason(id);
-    router.push(`/anime/${id}`, { scroll: false });
+    setSelectedSeason(id)
+    router.push(`/anime/${id}`, { scroll: false })
   }
 
   return (
-    <Card className="border-x-0 border-t-0 rounded-none pb-8">
+    <Card className="rounded-none border-x-0 border-t-0 pb-8">
       <Tabs value={selectedSeason}>
         <ScrollArea
-          className="relative mb-4 rounded-md h-12 sm:w-[60vw] "
+          className="relative mb-4 h-12 rounded-md sm:w-[60vw]"
           type="always"
         >
           <TabsList className="bg-transparent">
@@ -141,5 +141,5 @@ export default function AnimeSeasonsAndEpisodes({
         </TabsContent>
       </Tabs>
     </Card>
-  );
+  )
 }

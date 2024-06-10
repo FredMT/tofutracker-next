@@ -4,31 +4,31 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+} from '@/components/ui/carousel'
+import Image from 'next/image'
+import Link from 'next/link'
+import React from 'react'
 
 type MediaItem = {
-  id: number;
-  title: string;
-  poster_path: string;
-  popularity: number;
-  release_date: string;
-  vote_average: number;
-};
+  id: number
+  title: string
+  poster_path: string
+  popularity: number
+  release_date: string
+  vote_average: number
+}
 
 type SimilarMediaProps = {
-  items: MediaItem[];
-  basePath: string;
-};
+  items: MediaItem[]
+  basePath: string
+}
 
 export default function SimilarMedia({ items, basePath }: SimilarMediaProps) {
   return (
     <div className="my-6">
       <Carousel
         opts={{
-          align: "start",
+          align: 'start',
           dragFree: true,
         }}
       >
@@ -37,16 +37,15 @@ export default function SimilarMedia({ items, basePath }: SimilarMediaProps) {
             <CarouselItem key={index}>
               <Link
                 href={`/${basePath}/${item.id}-${item.title
-                  .replace(/ /g, "-")
-                  .replace(/:/g, "")
-                  .replace(/'/g, "")}`}
+                  .replace(/ /g, '-')
+                  .replace(/:/g, '')
+                  .replace(/'/g, '')}`}
               >
                 <div className="flex flex-col">
                   <Image
                     src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${item.poster_path}`}
                     alt={`${item.title} Poster`}
-                    className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px]
-                          lg:h-[211px] lg:w-[140px]"
+                    className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px] lg:h-[211px] lg:w-[140px]"
                     width={300}
                     height={450}
                   />
@@ -70,5 +69,5 @@ export default function SimilarMedia({ items, basePath }: SimilarMediaProps) {
         </div>
       </Carousel>
     </div>
-  );
+  )
 }

@@ -1,38 +1,38 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import ThemeButton from "./ThemeButton";
-import AuthButton from "@/components/AuthButton";
-import { Menu, Search } from "lucide-react";
+import React from 'react'
+import { Button } from '@/components/ui/button'
+import ThemeButton from './ThemeButton'
+import AuthButton from '@/components/AuthButton'
+import { Menu, Search } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import SearchButton from "./SearchButton";
+} from '@/components/ui/dropdown-menu'
+import Link from 'next/link'
+import { Input } from '@/components/ui/input'
+import SearchButton from './SearchButton'
 
 export default function Navbar() {
   return (
-    <div className="w-full absolute top-0 z-50">
-      <div className="flex justify-between w-[80%] mx-auto">
+    <div className="absolute top-0 z-50 w-full">
+      <div className="mx-auto flex w-[80%] justify-between">
         <Link href="/">
-          <div className="font-syne p-4 text-white font-semibold text-[24px] uppercase select-none">
+          <div className="select-none p-4 font-syne text-[24px] font-semibold uppercase text-white">
             TOFUTRACKER
           </div>
         </Link>
-        <div className="hidden sm:flex gap-x-4 p-4">
+        <div className="hidden gap-x-4 p-4 sm:flex">
           <SearchButton />
           <ThemeButton />
           <AuthButton />
         </div>
-        <div className="flex sm:hidden py-4 gap-4">
+        <div className="flex gap-4 py-4 sm:hidden">
           <SearchButton />
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Menu />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="p-4 w-40">
+            <DropdownMenuContent className="w-40 p-4">
               <div className="flex flex-col gap-y-2">
                 <AuthButton />
                 <ThemeButton />
@@ -42,5 +42,5 @@ export default function Navbar() {
         </div>
       </div>
     </div>
-  );
+  )
 }

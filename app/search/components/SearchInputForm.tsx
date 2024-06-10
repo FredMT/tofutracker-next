@@ -1,31 +1,31 @@
-"use client";
-import { Input } from "@/components/ui/input";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+'use client'
+import { Input } from '@/components/ui/input'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function SearchInputForm() {
-  const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+  const router = useRouter()
+  const [searchQuery, setSearchQuery] = useState('')
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     if (timer) {
-      clearTimeout(timer);
+      clearTimeout(timer)
     }
     const newTimer = setTimeout(() => {
       if (searchQuery) {
-        const encodedSearchQuery = encodeURIComponent(searchQuery);
-        router.push(`/search?q=${encodedSearchQuery}`);
+        const encodedSearchQuery = encodeURIComponent(searchQuery)
+        router.push(`/search?q=${encodedSearchQuery}`)
       }
-    }, 1000); // 1000 ms delay
-    setTimer(newTimer);
+    }, 1000) // 1000 ms delay
+    setTimer(newTimer)
 
     return () => {
       if (timer) {
-        clearTimeout(timer);
+        clearTimeout(timer)
       }
-    };
-  }, [searchQuery]);
+    }
+  }, [searchQuery])
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>
@@ -38,5 +38,5 @@ export default function SearchInputForm() {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
     </form>
-  );
+  )
 }

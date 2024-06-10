@@ -1,64 +1,64 @@
-"use client";
-import React from "react";
+'use client'
+import React from 'react'
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
-import Image from "next/image";
-import Link from "next/link";
-import useSWR from "swr";
-import { Card } from "@/components/ui/card";
+} from '@/components/ui/carousel'
+import Image from 'next/image'
+import Link from 'next/link'
+import useSWR from 'swr'
+import { Card } from '@/components/ui/card'
 
 type SimilarProps = {
-  type: string;
-  id: number;
-};
+  type: string
+  id: number
+}
 
 type SimilarAnime = {
-  id: number;
-  title: string;
-  rating: string;
-  start_date: string;
-  poster: string;
-  type: string;
-};
+  id: number
+  title: string
+  rating: string
+  start_date: string
+  poster: string
+  type: string
+}
 
 async function getSeasonYear(startDate: string) {
-  const [year, month] = startDate.split("-").map(Number);
-  const seasons = ["Winter", "Spring", "Summer", "Fall"];
-  const seasonIndex = Math.floor((month - 1) / 3);
-  return `${seasons[seasonIndex]} ${year}`;
+  const [year, month] = startDate.split('-').map(Number)
+  const seasons = ['Winter', 'Spring', 'Summer', 'Fall']
+  const seasonIndex = Math.floor((month - 1) / 3)
+  return `${seasons[seasonIndex]} ${year}`
 }
 
 export default function SimilarAnime({ type, id }: SimilarProps) {
-  const fetcher = (url: string) => fetch(url).then((res) => res.json());
+  const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
-  let animeType = type !== "Movie" ? "tv" : "movie";
+  let animeType = type !== 'Movie' ? 'tv' : 'movie'
 
   const { data, error, isLoading } = useSWR(
     `https://tofutracker-3pt5y.ondigitalocean.app/api/getsimilaranime/${animeType}/${id}`,
     fetcher
-  );
+  )
 
   if (error) {
-    return <div>Error...</div>;
+    return <div>Error...</div>
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
 
-  const similar = data.data;
+  const similar = data.data
 
   return (
-    <Card className="border-x-0 border-t-0 rounded-none pb-8">
+    <Card className="rounded-none border-x-0 border-t-0 pb-8">
       <div className="mt-6">
         <Carousel
           opts={{
-            align: "start",
+            align: 'start',
             dragFree: true,
             slidesToScroll: 3,
           }}
@@ -70,16 +70,15 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
                 <CarouselItem key={item.id}>
                   <Link
                     href={`/anime/${item.id}-${item.title
-                      .replace(/ /g, "-")
-                      .replace(/:/g, "")
-                      .replace(/'/g, "")}`}
+                      .replace(/ /g, '-')
+                      .replace(/:/g, '')
+                      .replace(/'/g, '')}`}
                   >
                     <div className="flex flex-col">
                       <Image
                         src={`https://cdn.anidb.net/images/main/${item.poster}`}
                         alt={`${item.title} Poster`}
-                        className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px]
-                              lg:h-[211px] lg:w-[140px]"
+                        className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px] lg:h-[211px] lg:w-[140px]"
                         width={300}
                         height={450}
                       />
@@ -106,5 +105,5 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
         </Carousel>
       </div>
     </Card>
-  );
+  )
 }
