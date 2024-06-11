@@ -12,7 +12,10 @@ import { createClient } from '@/utils/supabase/server'
 import {
   getActivityPrivacySetting,
   updateActivityPrivacySetting,
+  updateUsername,
 } from './actions'
+import UsernameChange from './UsernameChange'
+import { redirect } from 'next/navigation'
 
 export default async function SettingsAccordion() {
   const supabase = createClient()
@@ -25,6 +28,10 @@ export default async function SettingsAccordion() {
     .select('*')
     .eq('id', user?.id)
     .single()
+
+  if (userError) {
+    redirect('/?message=error_retrieving_user_data')
+  }
 
   let activityIsPrivate = false
   if (user) {
@@ -47,16 +54,10 @@ export default async function SettingsAccordion() {
                   Used to identify you on the website
                 </p>
               </div>
-              <div className="flex flex-col gap-2">
-                <Input
-                  id="username"
-                  type="text"
-                  placeholder={userData.username}
-                />
-                <Button variant="secondary" className="w-20">
-                  Save
-                </Button>
-              </div>
+              <UsernameChange
+                user_id={user.id}
+                updateUsername={updateUsername}
+              />
             </div>
             <div className="flex flex-col gap-4 rounded-md border-2 p-4">
               <div className="flex flex-col">

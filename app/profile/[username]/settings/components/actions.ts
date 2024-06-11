@@ -1,6 +1,7 @@
 'use server'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 type ActivityPrivacyData = {
   activity_privacy: boolean
@@ -42,4 +43,26 @@ export const updateActivityPrivacySetting = async (
   if (!error) {
     revalidatePath(`/profile/${username}/settings`)
   }
+}
+
+export const updateUsername = async (formData: FormData) => {
+  'use server'
+  const supabase = createClient()
+  const newUsername = formData.get('newUsername')
+  const user_id = formData.get('user_id')
+
+  console.log(newUsername)
+
+  const { error } = await supabase
+    .from('profile')
+    .update({ username: newUsername })
+    .eq('id', user_id)
+
+  if (error) {
+    console.error(error.message)
+    return false
+  }
+
+  redirect(`/profile/${newUsername}/settings`)
+  return true
 }

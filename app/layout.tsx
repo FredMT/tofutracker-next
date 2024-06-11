@@ -7,6 +7,7 @@ import { ThemeProvider } from '@/components/ui/theme-provider'
 import Navbar from '@/app/components/Navbar'
 import Footer from '@/app/components/Footer'
 import { Toaster } from '@/components/ui/toaster'
+import { Analytics } from '@vercel/analytics/react'
 
 export const metadata: Metadata = {
   title: 'Tofutracker - Homepage',
@@ -49,6 +50,7 @@ export default function RootLayout({
           <Toaster />
           <Footer />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
