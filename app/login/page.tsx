@@ -64,7 +64,7 @@ export default async function Login({
       const item_type = searchParams.from.split('/')[0]
       const item_id = searchParams.from.split('/')[1]
       bg_img = await fetch(
-        `http://localhost:8080/api/getbackdropimage/${item_type}/${item_id}`
+        `https://tofutracker-3pt5y.ondigitalocean.app/api/getbackdropimage/${item_type}/${item_id}`
       ).then((res) => res.json())
     }
     return (
