@@ -11,12 +11,6 @@ export const createComment = async ({ formData }: { formData: FormData }) => {
   const parent_comment_id = formData.get('parent_comment_id') as string
   const supabase = createClient()
 
-  console.log(`user_id: ${user_id}`)
-  console.log(`activity_id: ${activity_id}`)
-  console.log(`comment: ${comment}`)
-  console.log(`target_user_id: ${target_user_id}`)
-  console.log(`username: ${username}`)
-  console.log(`parent_comment_id: ${parent_comment_id}`)
 
   const { error } = await supabase.from('comments').insert({
     user_id,

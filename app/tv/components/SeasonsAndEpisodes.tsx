@@ -31,17 +31,14 @@ export default function SeasonsAndEpisodes() {
     data: fetchedData,
     error,
     isLoading,
-  } = useSWR(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/gettv/${id}`,
-    fetcher
-  )
+  } = useSWR(`http://localhost:8080/api/gettv/${id}`, fetcher)
 
   const {
     data: seasonData,
     error: seasonDataError,
     isLoading: seasonDataLoading,
   } = useSWR(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/gettvseason/${id}/${seasonNumber}`,
+    `http://localhost:8080/api/gettvseason/${id}/${seasonNumber}`,
     fetcher
   )
 

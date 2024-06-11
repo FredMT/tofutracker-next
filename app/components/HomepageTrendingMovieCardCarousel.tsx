@@ -68,7 +68,6 @@ export default function HomepageTrendingMovieCardCarousel() {
           className="w-full"
           opts={{
             dragFree: true,
-            slidesToScroll: 3,
             align: 'start',
           }}
         >
@@ -105,7 +104,6 @@ export default function HomepageTrendingMovieCardCarousel() {
           className="w-full"
           opts={{
             dragFree: true,
-            slidesToScroll: 3,
             align: 'start',
           }}
         >
@@ -148,7 +146,6 @@ export default function HomepageTrendingMovieCardCarousel() {
           className="w-full"
           opts={{
             dragFree: true,
-            slidesToScroll: 3,
             align: 'start',
           }}
         >

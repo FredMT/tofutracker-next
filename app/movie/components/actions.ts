@@ -39,7 +39,7 @@ export async function addOrRemoveFromLibrary(formData: FormData) {
     }
     revalidatePath(`/${item_type}/${item_id}`)
   } else {
-    redirect('/login')
+    redirect(`/login?from=${item_type}/${item_id}`)
   }
 }
 
@@ -99,20 +99,46 @@ export async function setRating(
   } = await supabase.auth.getUser()
 
   if (user) {
-    const { error } = await supabase.from('item_lists').upsert(
-      {
+    const { data: itemIsInLibrary, error: itemIsInLibraryError } =
+      await supabase
+        .from('item_lists')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('item_id', item_id)
+        .eq('list_type', 'Library')
+        .eq('item_type', item_type)
+        .maybeSingle()
+
+    if (itemIsInLibraryError) {
+      console.error('Failed to set rating:', itemIsInLibraryError.message)
+    }
+
+    if (itemIsInLibrary) {
+      const { error } = await supabase
+        .from('item_lists')
+        .update({ rating })
+        .eq('user_id', user.id)
+        .eq('item_id', item_id)
+        .eq('list_type', 'Library')
+        .eq('item_type', item_type)
+
+      if (error) {
+        console.error('Failed to set rating:', error.message)
+      }
+    } else {
+      const { error } = await supabase.from('item_lists').insert({
         user_id: user.id,
         item_id,
         rating,
         item_type,
         list_type: 'Library',
-      },
-      { onConflict: 'user_id, item_id' }
-    )
+      })
 
-    if (error) {
-      console.error('Failed to set rating:', error.message)
+      if (error) {
+        console.error('Failed to set rating:', error.message)
+      }
     }
+
     revalidatePath(`/${item_type}/${item_id}`)
   } else {
     redirect('/login')

@@ -81,11 +81,10 @@ export default function CastAndCrew({
 
       <TabsContent value="cast" className="mt-4">
         <Carousel
-          className="relative min-h-[200px]"
+          className="relative min-h-[300px]"
           opts={{
             align: 'start',
             dragFree: true,
-            slidesToScroll: 3,
           }}
         >
           <CarouselContent className="max-w-[120px] md:max-w-[140px] lg:max-w-[165px]">
@@ -116,11 +115,10 @@ export default function CastAndCrew({
       </TabsContent>
       <TabsContent value="crew" className="mt-4">
         <Carousel
-          className="relative min-h-[200px]"
+          className="relative min-h-[300px]"
           opts={{
             align: 'start',
             dragFree: true,
-            slidesToScroll: 3,
           }}
         >
           <CarouselContent className="max-w-[120px] md:max-w-[140px] lg:max-w-[165px]">

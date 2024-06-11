@@ -94,7 +94,6 @@ export default function Search() {
   }
 
   if (searchResults) {
-    console.log(searchResults)
     return (
       <>
         <div className="mt-20 flex flex-col gap-6 px-4">
@@ -182,12 +181,14 @@ export default function Search() {
 
                   <div className="mb-2">
                     <Rating
-                      value={parseFloat(
-                        (categorySelected === 'anime'
-                          ? item.rating
-                          : item.vote_average
-                        ).toFixed(1)
-                      )}
+                      value={
+                        parseFloat(
+                          (categorySelected === 'anime'
+                            ? item.rating
+                            : item.vote_average
+                          ).toFixed(1)
+                        ) / 2
+                      }
                       totalStars={5}
                       precision={0.1}
                       size={1}

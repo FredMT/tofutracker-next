@@ -59,7 +59,6 @@ export default function RelatedAnime({ id }: { id: number }) {
               opts={{
                 align: 'start',
                 dragFree: true,
-                slidesToScroll: 2,
               }}
             >
               <CarouselContent className="max-w-[120px] md:max-w-[140px] lg:max-w-[165px]">

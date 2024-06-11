@@ -72,8 +72,8 @@ export default function Episode({ episode }: { episode: Episode }) {
             {episode.name}
           </div>
           <div className="text-[12px] leading-[20px] text-muted-foreground">
-            {format(new Date(episode.air_date), 'dd MMM yyyy')} •{' '}
-            {episode.runtime}m
+            {format(new Date(episode.air_date), 'dd MMM yyyy')}
+            {episode.runtime && ` • ${episode.runtime}m`}
           </div>
         </div>
         <div className="text-[12px] font-normal leading-[20px]">

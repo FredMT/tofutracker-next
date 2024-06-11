@@ -58,19 +58,19 @@ export default async function AuthButton() {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-40">
-            <DropdownMenuItem>
-              <Link href={`/profile/${username}`}>Profile</Link>
-            </DropdownMenuItem>
+            <Link href={`/profile/${username}`}>
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+            </Link>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href={`/profile/${username}/settings`}>Settings</Link>
-            </DropdownMenuItem>
+            <Link href={`/profile/${username}/settings`}>
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+            </Link>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <form action={signOut}>
+            <form action={signOut}>
+              <DropdownMenuItem>
                 <button>Logout</button>
-              </form>
-            </DropdownMenuItem>
+              </DropdownMenuItem>
+            </form>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

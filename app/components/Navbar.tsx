@@ -17,7 +17,7 @@ export default function Navbar() {
     <div className="absolute top-0 z-50 w-full">
       <div className="mx-auto flex w-[80%] justify-between">
         <Link href="/">
-          <div className="select-none p-4 font-syne text-[24px] font-semibold uppercase text-white">
+          <div className="select-none p-4 font-syne text-[24px] font-semibold uppercase">
             TOFUTRACKER
           </div>
         </Link>

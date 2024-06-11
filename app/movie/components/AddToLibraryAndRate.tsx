@@ -75,7 +75,7 @@ export default function AddToLibraryAndRate({
             value={optimisticIsInLibrary.toString()}
           />
           <Button className="flex w-full justify-between" type="submit">
-            <div className="flex gap-x-2">
+            <div className="flex items-center gap-x-2">
               <Library />
               <span>
                 {optimisticIsInLibrary

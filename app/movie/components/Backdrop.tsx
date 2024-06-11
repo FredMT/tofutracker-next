@@ -11,7 +11,7 @@ export default async function Backdrop({
   logo_path: string
 }) {
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
       <Image
         className="h-[288px] w-full object-cover sm:h-[576px] sm:w-full"
         src={`https://image.tmdb.org/t/p/original${backdrop_path}`}

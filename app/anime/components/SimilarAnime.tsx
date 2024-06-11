@@ -60,7 +60,6 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
           opts={{
             align: 'start',
             dragFree: true,
-            slidesToScroll: 3,
           }}
           className="w-full"
         >
