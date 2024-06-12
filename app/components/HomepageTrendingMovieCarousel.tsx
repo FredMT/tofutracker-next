@@ -80,7 +80,11 @@ export default function HomepageTrendingMovieCarousel() {
                 >
                   <div className="relative h-[100px] w-[200px] sm:h-[200px] sm:w-[400px]">
                     <Image
-                      src={item.logo_path}
+                      src={
+                        item.logo_path
+                          ? item.logo_path
+                          : `https://placehold.co/600x400/jpg?text=${item.title}`
+                      }
                       alt={item.title}
                       className="object-contain object-center"
                       sizes="100vw, 100vw"

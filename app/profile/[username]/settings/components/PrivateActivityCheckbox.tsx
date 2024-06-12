@@ -12,7 +12,6 @@ import {
   FormItem,
   FormLabel,
 } from '@/components/ui/form'
-import { updateActivityPrivacySetting } from './actions'
 
 type ActivityPrivacyData = {
   activity_privacy: boolean
@@ -26,10 +25,16 @@ export default function PrivateActivityCheckbox({
   user_id,
   username,
   activityIsPrivate,
+  updateActivityPrivacySetting,
 }: {
   user_id: string
   username: string
   activityIsPrivate: boolean
+  updateActivityPrivacySetting: (
+    data: ActivityPrivacyData,
+    userId: string,
+    username: string
+  ) => Promise<void>
 }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

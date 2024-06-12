@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { createClient } from '@/utils/supabase/server'
 import CommentList from './CommentList'
 import { formatDistanceToNowStrict } from 'date-fns'
+import { likeActivity, likeComment, createComment } from './actions'
 import ActivityLike from './ActivityLike'
 import MobileActivityLike from './MobileActivityLike'
 
@@ -62,6 +63,8 @@ export default async function ActivityDialog({
             title={item.item_title}
             activity_id={item.activity_id}
             userId={user?.id!}
+            item_type={item.item_type}
+            item_id={item.item_id}
           />
         </div>
 
@@ -93,6 +96,8 @@ export default async function ActivityDialog({
             title={item.item_title}
             activity_id={item.activity_id}
             userId={user?.id!}
+            item_type={item.item_type}
+            item_id={item.item_id}
           />
         </div>
 

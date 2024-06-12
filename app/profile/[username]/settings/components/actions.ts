@@ -2,6 +2,7 @@
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { z } from 'zod'
 
 type ActivityPrivacyData = {
   activity_privacy: boolean
@@ -11,7 +12,6 @@ export const getActivityPrivacySetting = async (
   user_id: string,
   username: string
 ) => {
-  'use server'
   const supabase = createClient()
   const { data, error } = await supabase
     .from('profile')
@@ -32,7 +32,6 @@ export const updateActivityPrivacySetting = async (
   user_id: string,
   username: string
 ) => {
-  'use server'
   const supabase = createClient()
 
   const { error } = await supabase
@@ -46,12 +45,9 @@ export const updateActivityPrivacySetting = async (
 }
 
 export const updateUsername = async (formData: FormData) => {
-  'use server'
   const supabase = createClient()
   const newUsername = formData.get('newUsername')
   const user_id = formData.get('user_id')
-
-  console.log(newUsername)
 
   const { error } = await supabase
     .from('profile')
@@ -64,5 +60,38 @@ export const updateUsername = async (formData: FormData) => {
   }
 
   redirect(`/profile/${newUsername}/settings`)
-  return true
+}
+
+const passwordSchema = z
+  .string()
+  .min(8, 'Password must be at least 8 characters long')
+
+export const changePassword = async (state: any, formData: FormData) => {
+  const newPassword = formData.get('newPassword') as string
+  const result = passwordSchema.safeParse(newPassword)
+
+  if (result.success) {
+    const supabase = createClient()
+
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    })
+
+    if (error) {
+      return {
+        success: false,
+        error: error.message,
+      }
+    }
+
+    return {
+      success: true,
+      data: result.data,
+    }
+  } else {
+    return {
+      success: false,
+      error: result.error.message,
+    }
+  }
 }

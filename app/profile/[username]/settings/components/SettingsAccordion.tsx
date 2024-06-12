@@ -4,14 +4,18 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import PrivateActivityCheckbox from './PrivateActivityCheckbox'
 import { createClient } from '@/utils/supabase/server'
-import { getActivityPrivacySetting } from './actions'
+import {
+  getActivityPrivacySetting,
+  updateActivityPrivacySetting,
+  updateUsername,
+} from './actions'
 import UsernameChange from './UsernameChange'
 import { redirect } from 'next/navigation'
+import ChangePasswordSubmitButton from './ChangePasswordSubmitButton'
+import PasswordChange from './PasswordChange'
 
 export default async function SettingsAccordion() {
   const supabase = createClient()
@@ -50,23 +54,13 @@ export default async function SettingsAccordion() {
                   Used to identify you on the website
                 </p>
               </div>
-              <UsernameChange user_id={user.id} />
+              <UsernameChange
+                user_id={user.id}
+                updateUsername={updateUsername}
+              />
             </div>
             <div className="flex flex-col gap-4 rounded-md border-2 p-4">
-              <div className="flex flex-col">
-                <Label htmlFor="username" className="text-xl">
-                  Change password
-                </Label>
-                <p className="text-sm text-muted-foreground">
-                  Used to sign you into your account
-                </p>
-              </div>
-              <div className="flex flex-col gap-2">
-                <Input id="password" type="text" />
-                <Button variant="secondary" className="w-20">
-                  Save
-                </Button>
-              </div>
+              <PasswordChange />
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -77,6 +71,7 @@ export default async function SettingsAccordion() {
               user_id={user.id}
               username={userData.username}
               activityIsPrivate={activityIsPrivate}
+              updateActivityPrivacySetting={updateActivityPrivacySetting}
             />
           </AccordionContent>
         </AccordionItem>

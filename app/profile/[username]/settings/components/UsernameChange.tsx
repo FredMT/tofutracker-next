@@ -3,8 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useState } from 'react'
+import { useFormStatus } from 'react-dom'
 import { z } from 'zod'
-import { updateUsername } from './actions'
 
 const usernameSchema = z
   .string()
@@ -15,7 +15,14 @@ const usernameSchema = z
       'Username can only contain alphanumeric characters and underscores',
   })
 
-export default function UsernameChange({ user_id }: { user_id: string }) {
+export default function UsernameChange({
+  user_id,
+  updateUsername,
+}: {
+  user_id: string
+  updateUsername: (formData: FormData) => Promise<boolean>
+}) {
+  const status = useFormStatus()
   const [username, setUsername] = useState('')
   const [error, setError] = useState<string | null>(null)
 

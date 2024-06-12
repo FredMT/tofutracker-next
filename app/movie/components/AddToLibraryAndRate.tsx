@@ -1,4 +1,5 @@
 'use client'
+
 import ItemRating from '@/app/components/ItemRating'
 import { Button } from '@/components/ui/button'
 import { BookmarkPlus, Library } from 'lucide-react'
@@ -41,7 +42,7 @@ export default function AddToLibraryAndRate({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    await addOrRemoveFromLibrary(new FormData(event.currentTarget))
+    addOrRemoveFromLibrary(new FormData(event.currentTarget))
     startTransition(() => {
       setOptimisticIsInLibrary(!optimisticIsInLibrary)
     })
@@ -51,7 +52,7 @@ export default function AddToLibraryAndRate({
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault()
-    await addOrRemoveFromWatchlist(new FormData(event.currentTarget))
+    addOrRemoveFromWatchlist(new FormData(event.currentTarget))
     startTransition(() => {
       setOptimisticIsInWatchlist(!optimisticIsInWatchlist)
     })

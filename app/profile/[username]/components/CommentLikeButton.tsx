@@ -1,7 +1,7 @@
 'use client'
 
 import { Heart } from 'lucide-react'
-import { startTransition } from 'react'
+import { startTransition, useState } from 'react'
 import { useOptimistic } from 'react'
 import { likeComment } from './actions'
 
@@ -39,7 +39,7 @@ export default function CommentLikeButton({ comment }: { comment: Comment }) {
     formData.append('activity_id', comment.activity_id)
 
     try {
-      await likeComment({ formData })
+      likeComment({ formData })
 
       startTransition(() => {
         setOptimisticIsLiked('TOGGLE')

@@ -2,6 +2,7 @@
 
 import { startTransition, useOptimistic } from 'react'
 import { Heart } from 'lucide-react'
+import Link from 'next/link'
 import { likeActivity } from './actions'
 
 export default function MobileActivityLike({
@@ -11,6 +12,8 @@ export default function MobileActivityLike({
   title,
   activity_id,
   userId,
+  item_type,
+  item_id,
 }: {
   userId: string
   hasLiked: boolean
@@ -18,6 +21,8 @@ export default function MobileActivityLike({
   username: string
   title: string
   activity_id: string
+  item_type: string
+  item_id: number
 }) {
   const [optimisticIsLiked, setOptimisticIsLiked] = useOptimistic(
     hasLiked,
@@ -44,7 +49,7 @@ export default function MobileActivityLike({
     formData.append('user_id', userId)
     formData.append('activity_id', activity_id)
 
-    await likeActivity({ formData })
+    likeActivity({ formData })
 
     startTransition(() => {
       setOptimisticLikes(optimisticIsLiked ? 'DISLIKE' : 'LIKE')
@@ -53,9 +58,18 @@ export default function MobileActivityLike({
   }
 
   return (
-    <div className="flex text-sm leading-6">
-      <div className="flex flex-col">
-        <div>{`${username} added ${title} to their Library`}</div>
+    <div className="flex justify-between text-sm leading-6">
+      <div className="flex">
+        <div>
+          <Link href={`/profile/${username}`}>
+            <span>{username}</span>
+          </Link>
+          <span> added </span>
+          <Link href={`/${item_type}/${item_id}`}>
+            <span>{title}</span>
+          </Link>
+          <span> to their Library</span>
+        </div>
         <div className="text-sm text-muted-foreground">
           {optimisticLikes ? `${optimisticLikes} likes` : ''}
         </div>
