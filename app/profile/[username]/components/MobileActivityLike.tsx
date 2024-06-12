@@ -2,6 +2,7 @@
 
 import { startTransition, useOptimistic } from 'react'
 import { Heart } from 'lucide-react'
+import { likeActivity } from './actions'
 
 export default function MobileActivityLike({
   hasLiked,
@@ -9,7 +10,6 @@ export default function MobileActivityLike({
   username,
   title,
   activity_id,
-  likeActivity,
   userId,
 }: {
   userId: string
@@ -18,7 +18,6 @@ export default function MobileActivityLike({
   username: string
   title: string
   activity_id: string
-  likeActivity: (data: any) => void
 }) {
   const [optimisticIsLiked, setOptimisticIsLiked] = useOptimistic(
     hasLiked,
@@ -45,7 +44,7 @@ export default function MobileActivityLike({
     formData.append('user_id', userId)
     formData.append('activity_id', activity_id)
 
-    likeActivity({ formData })
+    await likeActivity({ formData })
 
     startTransition(() => {
       setOptimisticLikes(optimisticIsLiked ? 'DISLIKE' : 'LIKE')

@@ -1,8 +1,8 @@
+'use server'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath, revalidateTag } from 'next/cache'
 
 export const createComment = async ({ formData }: { formData: FormData }) => {
-  'use server'
   const user_id = formData.get('user_id') as string
   const activity_id = formData.get('activity_id') as string
   const comment = formData.get('comment') as string
@@ -10,7 +10,6 @@ export const createComment = async ({ formData }: { formData: FormData }) => {
   const username = formData.get('username') as string
   const parent_comment_id = formData.get('parent_comment_id') as string
   const supabase = createClient()
-
 
   const { error } = await supabase.from('comments').insert({
     user_id,

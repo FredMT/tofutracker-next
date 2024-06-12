@@ -1,8 +1,4 @@
 import { createClient } from '@/utils/supabase/server'
-import {
-  addOrRemoveFromLibrary,
-  addOrRemoveFromWatchlist,
-} from '../movie/components/actions'
 import AddToLibraryAndRate from '../movie/components/AddToLibraryAndRate'
 
 export default async function MobileButtons({
@@ -44,14 +40,12 @@ export default async function MobileButtons({
   return (
     <div className="flex w-full flex-col gap-y-4">
       <AddToLibraryAndRate
-        addOrRemoveFromLibrary={addOrRemoveFromLibrary}
         userId={user?.id!}
         itemId={item_id}
         itemType={item_type}
         isInLibrary={isInLibrary}
         currentRating={currentRating}
         isInWatchlist={isInWatchlist}
-        addOrRemoveFromWatchlist={addOrRemoveFromWatchlist}
       />
     </div>
   )

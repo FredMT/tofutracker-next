@@ -29,14 +29,10 @@ export default function CommentList({
   activity_id,
   user,
   username,
-  likeComment,
-  createComment,
 }: {
   activity_id: string
   user: User
   username: string
-  likeComment: (data: any) => void
-  createComment: (data: any) => void
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [targetUserId, setTargetUserId] = useState<string>('')
@@ -121,10 +117,7 @@ export default function CommentList({
                 <Reply className="size-6" />
               </button>
               <div className="relative">
-                <CommentLikeButton
-                  comment={comment}
-                  likeComment={likeComment}
-                />
+                <CommentLikeButton comment={comment} />
               </div>
             </div>
           )}
@@ -154,7 +147,6 @@ export default function CommentList({
           setParentCommentId={setParentCommentId}
           targetUsername={targetUsername}
           setTargetUsername={setTargetUsername}
-          createComment={createComment}
         />
       )}
     </>

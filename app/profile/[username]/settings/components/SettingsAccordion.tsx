@@ -9,11 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import PrivateActivityCheckbox from './PrivateActivityCheckbox'
 import { createClient } from '@/utils/supabase/server'
-import {
-  getActivityPrivacySetting,
-  updateActivityPrivacySetting,
-  updateUsername,
-} from './actions'
+import { getActivityPrivacySetting } from './actions'
 import UsernameChange from './UsernameChange'
 import { redirect } from 'next/navigation'
 
@@ -54,10 +50,7 @@ export default async function SettingsAccordion() {
                   Used to identify you on the website
                 </p>
               </div>
-              <UsernameChange
-                user_id={user.id}
-                updateUsername={updateUsername}
-              />
+              <UsernameChange user_id={user.id} />
             </div>
             <div className="flex flex-col gap-4 rounded-md border-2 p-4">
               <div className="flex flex-col">
@@ -84,7 +77,6 @@ export default async function SettingsAccordion() {
               user_id={user.id}
               username={userData.username}
               activityIsPrivate={activityIsPrivate}
-              updateActivityPrivacySetting={updateActivityPrivacySetting}
             />
           </AccordionContent>
         </AccordionItem>

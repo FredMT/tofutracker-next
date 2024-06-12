@@ -1,13 +1,11 @@
 'use client'
-
 import ItemRating from '@/app/components/ItemRating'
 import { Button } from '@/components/ui/button'
 import { BookmarkPlus, Library } from 'lucide-react'
 import { startTransition, useOptimistic } from 'react'
+import { addOrRemoveFromLibrary, addOrRemoveFromWatchlist } from './actions'
 
 export default function AddToLibraryAndRate({
-  addOrRemoveFromLibrary,
-  addOrRemoveFromWatchlist,
   userId,
   itemId,
   itemType,
@@ -15,8 +13,6 @@ export default function AddToLibraryAndRate({
   isInWatchlist,
   currentRating,
 }: {
-  addOrRemoveFromLibrary: (formData: FormData) => void
-  addOrRemoveFromWatchlist: (formData: FormData) => void
   userId: string
   itemId: number
   itemType: string
@@ -45,7 +41,7 @@ export default function AddToLibraryAndRate({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    addOrRemoveFromLibrary(new FormData(event.currentTarget))
+    await addOrRemoveFromLibrary(new FormData(event.currentTarget))
     startTransition(() => {
       setOptimisticIsInLibrary(!optimisticIsInLibrary)
     })
@@ -55,7 +51,7 @@ export default function AddToLibraryAndRate({
     event: React.FormEvent<HTMLFormElement>
   ) => {
     event.preventDefault()
-    addOrRemoveFromWatchlist(new FormData(event.currentTarget))
+    await addOrRemoveFromWatchlist(new FormData(event.currentTarget))
     startTransition(() => {
       setOptimisticIsInWatchlist(!optimisticIsInWatchlist)
     })

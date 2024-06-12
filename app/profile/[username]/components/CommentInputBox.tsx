@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { X } from 'lucide-react'
 import { forwardRef, useState } from 'react'
+import { createComment } from './actions'
 
 type User = {
   id: string
@@ -22,7 +23,6 @@ const CommentInputBox = forwardRef<
     setParentCommentId: (parent_comment_id: string) => void
     targetUsername: string
     setTargetUsername: (target_username: string) => void
-    createComment: (data: any) => void
   }
 >((props, ref) => {
   const {
@@ -35,7 +35,6 @@ const CommentInputBox = forwardRef<
     setParentCommentId,
     targetUsername,
     setTargetUsername,
-    createComment,
   } = props
   const [comment, setComment] = useState('')
 
