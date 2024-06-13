@@ -87,7 +87,7 @@ export default async function Profile({
           <div className="flex justify-center">
             <Avatar className="size-12 md:size-24">
               <AvatarImage
-                src="https://github.com/shadcn.png"
+                src={user?.user_metadata.profile_picture}
                 alt="Profile picture"
               />
             </Avatar>

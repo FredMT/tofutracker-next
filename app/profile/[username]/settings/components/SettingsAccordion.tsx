@@ -4,18 +4,16 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Label } from '@/components/ui/label'
 import PrivateActivityCheckbox from './PrivateActivityCheckbox'
 import { createClient } from '@/utils/supabase/server'
 import {
   getActivityPrivacySetting,
   updateActivityPrivacySetting,
-  updateUsername,
 } from './actions'
 import UsernameChange from './UsernameChange'
 import { redirect } from 'next/navigation'
-import ChangePasswordSubmitButton from './ChangePasswordSubmitButton'
 import PasswordChange from './PasswordChange'
+import UpdateAvatar from './UpdateAvatar'
 
 export default async function SettingsAccordion() {
   const supabase = createClient()
@@ -47,20 +45,14 @@ export default async function SettingsAccordion() {
           <AccordionContent className="ml-2 flex flex-col gap-4">
             <div className="flex flex-col gap-4 rounded-md border-2 p-4">
               <div className="flex flex-col">
-                <Label htmlFor="username" className="text-xl">
-                  Change username
-                </Label>
-                <p className="text-sm text-muted-foreground">
-                  Used to identify you on the website
-                </p>
+                <UsernameChange user_id={user.id} />
               </div>
-              <UsernameChange
-                user_id={user.id}
-                updateUsername={updateUsername}
-              />
             </div>
             <div className="flex flex-col gap-4 rounded-md border-2 p-4">
               <PasswordChange />
+            </div>
+            <div className="flex flex-col gap-4 rounded-md border-2 p-4">
+              <UpdateAvatar />
             </div>
           </AccordionContent>
         </AccordionItem>

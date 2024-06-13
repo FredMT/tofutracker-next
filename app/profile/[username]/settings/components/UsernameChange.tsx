@@ -1,67 +1,50 @@
 'use client'
-
-import { Button } from '@/components/ui/button'
+import React, { useEffect } from 'react'
+import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { useState } from 'react'
-import { useFormStatus } from 'react-dom'
-import { z } from 'zod'
+import UseFormStatusPendingButton from '../../../../../components/UseFormStatusPendingButton'
+import { updateUsername } from './actions'
+import { useToast } from '@/components/ui/use-toast'
+import { useFormState } from 'react-dom'
 
-const usernameSchema = z
-  .string()
-  .min(3, { message: 'Username must be at least 3 characters long' })
-  .max(20, { message: 'Username must not exceed 20 characters' })
-  .regex(/^[a-zA-Z0-9_]+$/, {
-    message:
-      'Username can only contain alphanumeric characters and underscores',
-  })
+export default function UsernameChange({ user_id }: { user_id: string }) {
+  const [state, formAction] = useFormState(updateUsername, null)
+  const { toast } = useToast()
 
-export default function UsernameChange({
-  user_id,
-  updateUsername,
-}: {
-  user_id: string
-  updateUsername: (formData: FormData) => Promise<boolean>
-}) {
-  const status = useFormStatus()
-  const [username, setUsername] = useState('')
-  const [error, setError] = useState<string | null>(null)
-
-  function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setUsername(e.target.value)
-    setError(null)
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    try {
-      usernameSchema.parse(username)
-      const formData = new FormData()
-      formData.append('user_id', user_id)
-      formData.append('newUsername', username)
-      await updateUsername(formData)
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        setError(error.errors[0].message)
-      }
+  useEffect(() => {
+    if (state?.error) {
+      console.log(state.error)
+      toast({
+        title: 'Error',
+        description: `${JSON.parse(state.error)[0].message}`,
+        variant: 'destructive',
+      })
     }
-  }
+  }, [state])
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="flex flex-col gap-2">
+    <form action={formAction}>
+      <Label htmlFor="username" className="text-xl">
+        Change username
+      </Label>
+      <p className="text-sm text-muted-foreground">
+        Used to identify you on the platform
+      </p>
+      <div className="mt-4 flex flex-col gap-2">
         <input type="hidden" name="user_id" value={user_id} />
         <Input
           id="username"
           type="text"
-          value={username}
+          placeholder="Enter new username"
           name="newUsername"
-          onChange={handleUsernameChange}
-          placeholder="Enter your new username"
+          required
         />
-        {error && <p className="text-red-500">{error}</p>}
-        <Button variant="secondary" className="w-20" type="submit">
-          Save
-        </Button>
+
+        <p className="text-xs text-muted-foreground">
+          Username must be at least 3 characters long and not exceed 16
+          characters
+        </p>
+        <UseFormStatusPendingButton text="Save" />
       </div>
     </form>
   )

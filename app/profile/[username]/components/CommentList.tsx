@@ -19,6 +19,7 @@ type Comment = {
   parent_comment_id: string
   hasLiked: boolean
   activity_id: string
+  profile_picture_url: string
 }
 
 type User = {
@@ -100,7 +101,7 @@ export default function CommentList({
         <div className="flex justify-between">
           <div className="flex items-center gap-2">
             <Avatar className="size-8">
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src={comment.profile_picture_url} />
             </Avatar>
             <div className="text-sm font-medium">{comment.username}</div>
             <div className="text-sm text-muted-foreground">

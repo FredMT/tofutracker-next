@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import React from 'react'
 import { useFormStatus } from 'react-dom'
 
-export default function ChangePasswordSubmitButton() {
+export default function UseFormStatusPendingButton({ text }: { text: string }) {
   const { pending } = useFormStatus()
   return pending ? (
     <Button variant="secondary" className="w-20">
@@ -16,7 +16,7 @@ export default function ChangePasswordSubmitButton() {
       type="submit"
       disabled={pending}
     >
-      Save
+      {text}
     </Button>
   )
 }

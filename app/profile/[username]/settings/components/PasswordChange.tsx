@@ -1,8 +1,8 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import ChangePasswordSubmitButton from './ChangePasswordSubmitButton'
+import UseFormStatusPendingButton from '../../../../../components/UseFormStatusPendingButton'
 import { changePassword } from './actions'
 import { useToast } from '@/components/ui/use-toast'
 import { useFormState } from 'react-dom'
@@ -46,7 +46,7 @@ export default function PasswordChange() {
         <p className="text-xs text-muted-foreground">
           Password must be at least 8 characters long
         </p>
-        <ChangePasswordSubmitButton />
+        <UseFormStatusPendingButton text="Save" />
       </div>
     </form>
   )

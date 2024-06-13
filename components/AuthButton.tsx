@@ -6,15 +6,8 @@ import { Button } from './ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
@@ -54,21 +47,25 @@ export default async function AuthButton() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src={user.user_metadata.profile_picture} />
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-40">
             <Link href={`/profile/${username}`}>
-              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Profile
+              </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
             <Link href={`/profile/${username}/settings`}>
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Settings
+              </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
             <form action={signOut}>
-              <DropdownMenuItem>
-                <button>Logout</button>
+              <DropdownMenuItem className="cursor-pointer">
+                <button className="flex w-full justify-start">Logout</button>
               </DropdownMenuItem>
             </form>
           </DropdownMenuContent>
@@ -76,7 +73,7 @@ export default async function AuthButton() {
       </div>
       <div className="flex gap-2 max-sm:flex-col sm:hidden">
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src={user.user_metadata.profile_picture} />
         </Avatar>
 
         <Separator className="my-2 sm:hidden" />

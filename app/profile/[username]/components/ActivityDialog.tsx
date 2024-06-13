@@ -39,7 +39,7 @@ export default async function ActivityDialog({
       <div className="flex w-screen gap-5 max-md:flex-col">
         <div className="flex items-center gap-2 md:hidden">
           <Avatar className="size-8">
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage src={user?.user_metadata.profile_picture} />
           </Avatar>
 
           <div className="text-sm font-semibold">{username}</div>
@@ -71,7 +71,7 @@ export default async function ActivityDialog({
         <div className="flex max-h-[472px] w-full flex-col gap-4 max-md:hidden">
           <div className="flex items-center gap-4">
             <Avatar className="size-8">
-              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarImage src={user?.user_metadata.profile_picture} />
             </Avatar>
             <div className="text-sm font-medium">{username}</div>
             <div className="text-sm text-muted-foreground">
