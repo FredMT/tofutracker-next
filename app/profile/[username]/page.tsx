@@ -7,7 +7,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import ActivityDialog from './components/ActivityDialog'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-import ProfileBanner from './components/ProfileBanner'
+// import ProfileBanner from './components/ProfileBanner'
 
 type PosterItem = {
   item_id: number
