@@ -13,7 +13,6 @@ export default function UsernameChange({ user_id }: { user_id: string }) {
 
   useEffect(() => {
     if (state?.error) {
-      console.log(state.error)
       toast({
         title: 'Error',
         description: `${JSON.parse(state.error)[0].message}`,
@@ -44,7 +43,7 @@ export default function UsernameChange({ user_id }: { user_id: string }) {
           Username must be at least 3 characters long and not exceed 16
           characters
         </p>
-        <UseFormStatusPendingButton text="Save" />
+        <UseFormStatusPendingButton text="Save" style="w-20" />
       </div>
     </form>
   )

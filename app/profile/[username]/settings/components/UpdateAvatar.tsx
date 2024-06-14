@@ -95,7 +95,7 @@ export default async function UpdateAvatar() {
           accept="image/*"
           required
         />
-        <UseFormStatusPendingButton text="Update" />
+        <UseFormStatusPendingButton text="Update" style="w-20" />
       </form>
     </div>
   )

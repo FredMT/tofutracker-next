@@ -7,7 +7,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import ActivityDialog from './components/ActivityDialog'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-// import ProfileBanner from './components/ProfileBanner'
+import ProfileBanner from './components/ProfileBanner'
 
 type PosterItem = {
   item_id: number
@@ -73,7 +73,7 @@ export default async function Profile({
 
   const { data: userData, error: userError } = await supabase
     .from('profile')
-    .select('id')
+    .select('id, profile_banner_picture')
     .eq('username', params.username)
     .maybeSingle()
 
@@ -87,6 +87,7 @@ export default async function Profile({
   }
 
   const viewedUserId = userData.id
+  const viewedUserBannerPicture = userData.profile_banner_picture
 
   let activityData
   if (user) {
@@ -97,9 +98,13 @@ export default async function Profile({
 
   return (
     <>
-      {/* <div className="h-[288px] w-full bg-[#888888] sm:h-[360px]">
-        <ProfileBanner viewedUserUsername={params.username} />
-      </div> */}
+      <div className="flex h-full min-h-[288px] w-full items-center justify-center bg-[#888888] sm:max-h-[360px]">
+        <ProfileBanner
+          viewedUserUsername={params.username}
+          activityData={activityData}
+          viewedUserBannerPicture={viewedUserBannerPicture}
+        />
+      </div>
       <div className="mx-6 mt-6">
         <div className="flex max-md:flex-col md:gap-20">
           <div className="flex max-md:gap-6 md:max-w-[240px] md:flex-col md:gap-2">

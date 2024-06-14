@@ -46,7 +46,7 @@ export default function PasswordChange() {
         <p className="text-xs text-muted-foreground">
           Password must be at least 8 characters long
         </p>
-        <UseFormStatusPendingButton text="Save" />
+        <UseFormStatusPendingButton text="Save" style="w-20" />
       </div>
     </form>
   )

@@ -171,3 +171,40 @@ export const uploadAvatar = async (formData: FormData) => {
 
   revalidatePath(`/profile/${username}`)
 }
+
+export const updateBannerFromLibraryItems = async (
+  state: any,
+  formData: FormData
+) => {
+  const supabase = createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const file_path = formData.get('file_path') as string
+
+  if (user) {
+    const username = user.user_metadata.username
+    const { error } = await supabase.auth.updateUser({
+      data: {
+        profile_banner_picture: `https://image.tmdb.org/t/p/w1280${file_path}`,
+      },
+    })
+
+    if (error) {
+      console.error('Error updating banner:', error.message)
+      return {
+        success: false,
+        message: error.message,
+      }
+    }
+
+    revalidatePath(`/profile/${username}`)
+
+    return {
+      success: true,
+      message: 'Banner updated',
+      redirectUrl: `/profile/${username}`,
+    }
+  }
+}
