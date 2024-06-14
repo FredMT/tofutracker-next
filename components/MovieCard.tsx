@@ -33,7 +33,7 @@ export default function MovieCard({
             src={
               media_type !== 'anime'
                 ? `https://image.tmdb.org/t/p/w440_and_h660_face${poster_path}`
-                : `https://cdn.anidb.net/images/main/${poster_path}`
+                : `https://tofutrackeranime2.b-cdn.net/posters/${poster_path}`
             }
             alt={title}
             width={112}
