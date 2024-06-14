@@ -1,6 +1,10 @@
 import HomepageTrendingMovieCarousel from './components/HomepageTrendingMovieCarousel'
 import HomepageTrendingMovieCardCarousel from './components/HomepageTrendingMovieCardCarousel'
 
+export const metadata = {
+  title: 'Homepage - TofuTracker',
+}
+
 export default async function Home() {
   return (
     <main className="flex min-h-dvh flex-col gap-y-6">

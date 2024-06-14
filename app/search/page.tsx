@@ -145,7 +145,7 @@ export default function Search() {
                   src={
                     categorySelected === 'anime'
                       ? Boolean(item.poster)
-                        ? `https://cdn.anidb.net/images/main/${item.poster}`
+                        ? `https://tofutrackeranime2.b-cdn.net/posters/${item.poster}`
                         : 'https://placehold.co/80x120/jpg'
                       : Boolean(item.poster_path)
                         ? `https://image.tmdb.org/t/p/original${item.poster_path}`

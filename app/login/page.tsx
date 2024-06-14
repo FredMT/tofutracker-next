@@ -3,6 +3,13 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import { SubmitButton } from './submit-button'
 import Image from 'next/image'
+import { Metadata } from 'next'
+
+export const generateMetadata = (): Metadata => {
+  return {
+    title: 'Login',
+  }
+}
 
 export default async function Login({
   searchParams,

@@ -75,7 +75,7 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
                   >
                     <div className="flex flex-col">
                       <Image
-                        src={`https://cdn.anidb.net/images/main/${item.poster}`}
+                        src={`https://tofutrackeranime2.b-cdn.net/posters/${item.poster}`}
                         alt={`${item.title} Poster`}
                         className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px] lg:h-[211px] lg:w-[140px]"
                         width={300}

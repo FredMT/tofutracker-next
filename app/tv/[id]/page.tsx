@@ -18,7 +18,7 @@ export const generateMetadata = ({ params }: Props): Metadata => {
   const title = params.id.split('-').slice(1).join(' ').replace(/%20/g, ' ')
   const decoded_title = decodeURIComponent(title)
   return {
-    title: `${decoded_title} - Tofutracker`,
+    title: `${decoded_title}`,
   }
 }
 

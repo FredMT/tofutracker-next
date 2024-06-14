@@ -17,19 +17,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'cdn.anidb.net',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
         hostname: 'pngudnlyaeyujvgndkse.supabase.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'i.imgur.com',
         port: '',
         pathname: '/**',
       },

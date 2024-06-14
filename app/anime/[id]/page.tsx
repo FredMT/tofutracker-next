@@ -12,12 +12,12 @@ import Overview from '@/app/movie/components/Overview'
 import AnimeSeasonsAndEpisodes from '../components/AnimeSeasonsAndEpisodes'
 import SimilarAnime from '../components/SimilarAnime'
 import RelatedAnime from '../components/RelatedAnime'
-import { createClient } from '@/utils/supabase/server'
 
 export const generateMetadata = ({ params }: Props): Metadata => {
   const title = params.id.split('-').slice(1).join(' ').replace(/%20/g, ' ')
+  const decoded_title = decodeURIComponent(title)
   return {
-    title: `${title} - Tofutracker`,
+    title: `${decoded_title}`,
   }
 }
 
@@ -27,13 +27,7 @@ type Props = {
   }
 }
 
-export default async function Anime({ params }: { params: { id: string } }) {
-  const supabase = createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
+export default async function Anime({ params }: Props) {
   const result = await fetch(
     'https://tofutracker-3pt5y.ondigitalocean.app/api/getanime/' +
       params.id.split('-')[0]

@@ -6,6 +6,8 @@ import Image from 'next/image'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import ActivityDialog from './components/ActivityDialog'
 import { notFound } from 'next/navigation'
+import { Metadata } from 'next'
+import ProfileBanner from './components/ProfileBanner'
 
 type PosterItem = {
   item_id: number
@@ -16,6 +18,16 @@ type PosterItem = {
   item_created_at: string
   hasLiked?: boolean
   likes: number
+}
+
+export const generateMetadata = ({
+  params,
+}: {
+  params: { username: string }
+}): Metadata => {
+  return {
+    title: `${params.username}'s Profile`,
+  }
 }
 
 async function getActivityData(user_id: string) {
@@ -54,7 +66,10 @@ export default async function Profile({
     .eq('username', params.username)
     .single()
 
-  if (error) console.log(error.message)
+  if (error) {
+    console.log(error.message)
+    return
+  }
 
   const { data: userData, error: userError } = await supabase
     .from('profile')
@@ -81,80 +96,85 @@ export default async function Profile({
   }
 
   return (
-    <div className="mx-6 mt-20">
-      <div className="flex max-md:flex-col md:gap-20">
-        <div className="flex max-md:gap-6 md:max-w-[240px] md:flex-col md:gap-2">
-          <div className="flex justify-center">
-            <Avatar className="size-12 md:size-24">
-              <AvatarImage
-                src={user?.user_metadata.profile_picture}
-                alt="Profile picture"
-              />
-            </Avatar>
-          </div>
-          <div className="flex flex-col">
-            <div className="font-syne text-lg font-semibold">
-              {params.username}
+    <>
+      {/* <div className="h-[288px] w-full bg-[#888888] sm:h-[360px]">
+        <ProfileBanner viewedUserUsername={params.username} />
+      </div> */}
+      <div className="mx-6 mt-6">
+        <div className="flex max-md:flex-col md:gap-20">
+          <div className="flex max-md:gap-6 md:max-w-[240px] md:flex-col md:gap-2">
+            <div className="flex justify-center">
+              <Avatar className="size-12 md:size-24">
+                <AvatarImage
+                  src={user?.user_metadata.profile_picture}
+                  alt="Profile picture"
+                />
+              </Avatar>
             </div>
-            <div className="text-sm text-gray-500">{data?.bio}</div>
+            <div className="flex flex-col">
+              <div className="font-syne text-lg font-semibold">
+                {params.username}
+              </div>
+              <div className="text-sm text-gray-500">{data?.bio}</div>
+            </div>
           </div>
-        </div>
 
-        <div className="flex w-full flex-col">
-          <div className="text-xl max-md:mt-6">Activity</div>
-          <Separator className="mt-2" />
+          <div className="flex w-full flex-col">
+            <div className="text-xl max-md:mt-6">Activity</div>
+            <Separator className="mt-2" />
 
-          <div className="mb-6 mt-6 grid grid-cols-3 gap-4 sm:grid-cols-4">
-            {activityData.success === false &&
-              activityData.message === 'Unauthorized' && (
-                <div className="flex flex-col">
-                  <p className="text-lg text-muted-foreground">
-                    This user has their activity hidden
-                  </p>
-                </div>
-              )}
+            <div className="mb-6 mt-6 grid grid-cols-3 gap-4 sm:grid-cols-4">
+              {activityData.success === false &&
+                activityData.message === 'Unauthorized' && (
+                  <div className="flex flex-col">
+                    <p className="text-lg text-muted-foreground">
+                      This user has their activity hidden
+                    </p>
+                  </div>
+                )}
 
-            {activityData.success === false &&
-              activityData.message !== 'Unauthorized' && (
-                <div className="flex flex-col">
-                  <p className="text-lg text-muted-foreground">
-                    Error retrieving user activity
-                  </p>
-                </div>
-              )}
-            {activityData.success === true &&
-              activityData.posters.length === 0 && (
-                <div className="flex flex-col">
-                  <p className="text-lg text-muted-foreground">
-                    This user has no activity yet :(
-                  </p>
-                </div>
-              )}
+              {activityData.success === false &&
+                activityData.message !== 'Unauthorized' && (
+                  <div className="flex flex-col">
+                    <p className="text-lg text-muted-foreground">
+                      Error retrieving user activity
+                    </p>
+                  </div>
+                )}
+              {activityData.success === true &&
+                activityData.posters.length === 0 && (
+                  <div className="flex flex-col">
+                    <p className="text-lg text-muted-foreground">
+                      This user has no activity yet :(
+                    </p>
+                  </div>
+                )}
 
-            {activityData.success === true &&
-              activityData.posters.map((item: PosterItem) => (
-                <Dialog key={item.item_id}>
-                  <DialogTrigger>
-                    <Image
-                      key={item.item_id}
-                      className="min-h-[132px] min-w-[88px] rounded-md sm:h-[228px] sm:w-[152px] lg:h-[264px] lg:w-[176px] xl:h-[300px] xl:w-[200px]"
-                      src={item.item_poster}
-                      alt={item.item_title}
-                      width="1080"
-                      height="1920"
-                      priority
+              {activityData.success === true &&
+                activityData.posters.map((item: PosterItem) => (
+                  <Dialog key={item.item_id}>
+                    <DialogTrigger>
+                      <Image
+                        key={item.item_id}
+                        className="min-h-[132px] min-w-[88px] rounded-md sm:h-[228px] sm:w-[152px] lg:h-[264px] lg:w-[176px] xl:h-[300px] xl:w-[200px]"
+                        src={item.item_poster}
+                        alt={item.item_title}
+                        width="1080"
+                        height="1920"
+                        priority
+                      />
+                    </DialogTrigger>
+                    <ActivityDialog
+                      item={item}
+                      username={params.username}
+                      hasLiked={item.hasLiked || false}
                     />
-                  </DialogTrigger>
-                  <ActivityDialog
-                    item={item}
-                    username={params.username}
-                    hasLiked={item.hasLiked || false}
-                  />
-                </Dialog>
-              ))}
+                  </Dialog>
+                ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }

@@ -10,8 +10,14 @@ import { Toaster } from '@/components/ui/toaster'
 import { Analytics } from '@vercel/analytics/react'
 
 export const metadata: Metadata = {
-  title: 'Tofutracker - Homepage',
-  description: 'Track your favorite movies and TV shows.',
+  title: {
+    default: 'TofuTracker',
+    template: '%s - TofuTracker',
+  },
+  description: 'Track your favorite Movies, TV Shows, and Anime.',
+  twitter: {
+    card: 'summary_large_image',
+  },
 }
 
 const fontSans = FontSans({
