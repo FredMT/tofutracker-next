@@ -8,13 +8,27 @@ import {
 import { useState } from 'react'
 import ProfileBannerChosenItemBackdrops from './ProfileBannerChosenItemBackdrops'
 
+type Props = {
+  activityData: {
+    success: boolean
+    posters: {
+      item_id: number
+      item_type: string
+      item_poster: string
+      item_title: string
+      activity_id: string
+      item_created_at: string
+      hasLiked?: boolean
+      likes: number
+    }[]
+  }
+  updateBannerFromLibraryItems: any
+}
+
 export default function ProfileBannerChosenItemDialog({
   activityData,
   updateBannerFromLibraryItems,
-}: {
-  activityData: any
-  updateBannerFromLibraryItems: any
-}) {
+}: Props) {
   const [selectedItemID, setSelectedItemID] = useState<number>(0)
   const [selectedItemType, setSelectedItemType] = useState<string>('')
   const [selectedTitle, setSelectedTitle] = useState<string>('')

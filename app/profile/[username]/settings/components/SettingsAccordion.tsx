@@ -14,6 +14,7 @@ import UsernameChange from './UsernameChange'
 import { redirect } from 'next/navigation'
 import PasswordChange from './PasswordChange'
 import UpdateAvatar from './UpdateAvatar'
+import UpdateBanner from './UpdateBanner'
 
 export default async function SettingsAccordion() {
   const supabase = createClient()
@@ -53,6 +54,9 @@ export default async function SettingsAccordion() {
             </div>
             <div className="flex flex-col gap-4 rounded-md border-2 p-4">
               <UpdateAvatar />
+            </div>
+            <div className="flex flex-col gap-4 rounded-md border-2 p-4">
+              <UpdateBanner />
             </div>
           </AccordionContent>
         </AccordionItem>

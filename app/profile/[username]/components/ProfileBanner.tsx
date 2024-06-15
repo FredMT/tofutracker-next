@@ -7,15 +7,29 @@ import { createClient } from '@/utils/supabase/server'
 import ProfileBannerButtonContent from './ProfileBannerButtonContent'
 import { Dialog } from '@/components/ui/dialog'
 
+type Props = {
+  viewedUserUsername: string
+  viewedUserBannerPicture: string
+  activityData: {
+    success: boolean
+    posters: {
+      item_id: number
+      item_type: string
+      item_poster: string
+      item_title: string
+      activity_id: string
+      item_created_at: string
+      hasLiked?: boolean
+      likes: number
+    }[]
+  }
+}
+
 export default async function ProfileBanner({
   viewedUserUsername,
   viewedUserBannerPicture,
   activityData,
-}: {
-  viewedUserUsername: string
-  viewedUserBannerPicture: string
-  activityData: any
-}) {
+}: Props) {
   const supabase = createClient()
 
   const {

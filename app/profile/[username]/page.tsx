@@ -128,7 +128,7 @@ export default async function Profile({
             <div className="text-xl max-md:mt-6">Activity</div>
             <Separator className="mt-2" />
 
-            <div className="mb-6 mt-6 grid grid-cols-3 gap-4 sm:grid-cols-4">
+            <div className="mb-6 mt-6 grid grid-cols-3 gap-4 sm:grid-cols-4 2xl:grid-cols-5">
               {activityData.success === false &&
                 activityData.message === 'Unauthorized' && (
                   <div className="flex flex-col">

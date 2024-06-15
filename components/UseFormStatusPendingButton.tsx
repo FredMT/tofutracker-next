@@ -14,7 +14,7 @@ export default function UseFormStatusPendingButton({
   return pending ? (
     <Button variant="secondary" className="w-20">
       <div
-        className={`h-5 animate-spin rounded-full border-b-2 border-white ${style}`}
+        className={`h-5 w-5 animate-spin rounded-full border-b-2 border-white`}
       ></div>
     </Button>
   ) : (

@@ -65,7 +65,7 @@ export default async function UpdateAvatar() {
 
   return (
     <div className="flex flex-col">
-      <div className="text-xl">UpdateAvatar</div>
+      <div className="text-xl">Update Avatar</div>
       <p className="mb-2 text-sm text-muted-foreground">
         Personalize your profile by updating your avatar!
       </p>

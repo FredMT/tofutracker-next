@@ -15,11 +15,25 @@ import { notFound } from 'next/navigation'
 import ProfileBannerChosenItemDialog from './ProfileBannerChosenItemDialog'
 import { updateBannerFromLibraryItems } from '../settings/components/actions'
 
+type Props = {
+  activityData: {
+    success: boolean
+    posters: {
+      item_id: number
+      item_type: string
+      item_poster: string
+      item_title: string
+      activity_id: string
+      item_created_at: string
+      hasLiked?: boolean
+      likes: number
+    }[]
+  }
+}
+
 export default async function ProfileBannerButtonContent({
   activityData,
-}: {
-  activityData: any
-}) {
+}: Props) {
   const supabase = createClient()
 
   const {
