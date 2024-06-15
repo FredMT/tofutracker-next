@@ -34,7 +34,7 @@ export default function ProfileBannerChosenItemDialog({
   const [selectedTitle, setSelectedTitle] = useState<string>('')
 
   return (
-    <div className="grid auto-cols-fr grid-cols-4 gap-x-2 gap-y-4">
+    <div className="grid w-full auto-cols-fr grid-cols-4 gap-x-2 gap-y-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 xl:gap-x-4 2xl:grid-cols-8">
       {activityData.posters.map((item: any) => (
         <div key={item.item_id}>
           <DialogTrigger
@@ -49,7 +49,7 @@ export default function ProfileBannerChosenItemDialog({
               loading="lazy"
               src={item.item_poster}
               alt={item.item_title}
-              className="h-[180px] w-[120px] object-cover"
+              className="rounded-md object-cover"
             />
           </DialogTrigger>
           <DialogContent key={item.item_id} className="overflow-y-scroll">

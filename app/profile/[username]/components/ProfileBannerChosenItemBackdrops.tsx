@@ -30,11 +30,6 @@ export default function ProfileBannerChosenItemBackdrops({
     `https://tofutracker-3pt5y.ondigitalocean.app/api/gettoptenbackdrops/${selectedItemType}/${selectedItemID}`,
     fetcher
   )
-  // useEffect(() => {
-  //   if (state) {
-  //     console.log(state)
-  //   }
-  // }, [state])
 
   if (error) {
     return notFound()
@@ -75,7 +70,7 @@ export default function ProfileBannerChosenItemBackdrops({
                     <form action={formAction}>
                       <input
                         type="hidden"
-                        value={item.file_path}
+                        value={selectedBackdrop}
                         name="file_path"
                       />
                       <UseFormStatusPendingButton

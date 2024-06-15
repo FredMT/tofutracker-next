@@ -56,6 +56,13 @@ export const updateUsername = async (state: any, formData: FormData) => {
       .eq('username', newUsername)
       .maybeSingle()
 
+  if (existingUsernameError) {
+    return {
+      success: false,
+      error: existingUsernameError.message,
+    }
+  }
+
   const usernameSchema = z
     .string()
     .min(3, 'Username must be at least 3 characters long')
@@ -194,8 +201,24 @@ export const updateBannerFromLibraryItems = async (
     if (error) {
       console.error('Error updating banner:', error.message)
       return {
-        success: false,
-        message: error.message,
+        error: error.message,
+      }
+    }
+
+    const { error: updateUserProfileBannerPictureError } = await supabase
+      .from('profile')
+      .update({
+        profile_banner_picture: `https://image.tmdb.org/t/p/w1280${file_path}`,
+      })
+      .eq('id', user.id)
+
+    if (updateUserProfileBannerPictureError) {
+      console.error(
+        'Error updating user profile banner picture:',
+        updateUserProfileBannerPictureError.message
+      )
+      return {
+        error: updateUserProfileBannerPictureError.message,
       }
     }
 
