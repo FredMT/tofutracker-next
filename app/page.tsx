@@ -1,17 +1,21 @@
-import HomepageTrendingMovieCarousel from './components/HomepageTrendingMovieCarousel'
-import HomepageTrendingMovieCardCarousel from './components/HomepageTrendingMovieCardCarousel'
+import HomepageTrendingCarousel from './components/HomepageTrendingCarousel'
+import HomepageTrendingCardCarousel from './components/HomepageTrendingCardCarousel'
 
 export const metadata = {
   title: 'Homepage - TofuTracker',
 }
 
 export default async function Home() {
+  const res = await fetch(
+    'https://tofutracker-3pt5y.ondigitalocean.app/api/trending'
+  )
+  const data = await res.json()
   return (
     <main className="flex min-h-dvh flex-col gap-y-6">
-      <HomepageTrendingMovieCarousel />
+      <HomepageTrendingCarousel fetchedData={data} />
 
       <div className="space-y-6 p-6">
-        <HomepageTrendingMovieCardCarousel />
+        <HomepageTrendingCardCarousel data={data} />
       </div>
     </main>
   )

@@ -19,7 +19,7 @@ export default function UsernameChange({ user_id }: { user_id: string }) {
         variant: 'destructive',
       })
     }
-  }, [state])
+  }, [state, toast])
 
   return (
     <form action={formAction}>

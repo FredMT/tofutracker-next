@@ -17,7 +17,7 @@ export default function SuccessToast() {
         description: 'Username updated successfully',
       })
     }
-  }, [success])
+  }, [success, toast])
 
   return <></>
 }

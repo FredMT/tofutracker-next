@@ -25,7 +25,7 @@ export default function SearchInputForm() {
         clearTimeout(timer)
       }
     }
-  }, [searchQuery])
+  }, [searchQuery, router])
 
   return (
     <form onSubmit={(e) => e.preventDefault()}>

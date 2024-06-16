@@ -69,7 +69,9 @@ export default async function AnimePoster({
     ? (images = await getAnimeImages('tv', id))
     : (images = await getAnimeImages('movie', id))
 
-  if (images?.posters && images.posters.length > 0) {
+  if (poster) {
+    poster_path = `https://tofutrackeranime2.b-cdn.net/posters/${poster}`
+  } else if (images?.posters && images.posters.length > 0) {
     const highestRatedPoster = images.posters.reduce(
       (prev: Images, current: Images) =>
         prev.vote_average > current.vote_average ? prev : current
@@ -77,8 +79,6 @@ export default async function AnimePoster({
     poster_path =
       'https://image.tmdb.org/t/p/w440_and_h660_face' +
       highestRatedPoster.file_path
-  } else {
-    poster_path = `https://tofutrackeranime2.b-cdn.net/posters/${poster}`
   }
 
   const supabase = createClient()
@@ -98,7 +98,7 @@ export default async function AnimePoster({
     <div className="flex flex-col gap-y-6">
       <Image
         className="h-[186px] w-[124px] rounded-sm border border-muted object-cover sm:h-[273px] sm:min-w-[182px] md:h-[336px] md:min-w-[224px]"
-        src={poster_path}
+        src={poster_path ? poster_path : 'https://placehold.co/600x900/jpg'}
         alt={title}
         width={600}
         height={900}

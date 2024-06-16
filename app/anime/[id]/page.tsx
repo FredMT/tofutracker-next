@@ -96,12 +96,14 @@ export default async function Anime({ params }: Props) {
               <Overview overview={anime.description} />
             </Suspense>
           </div>
-          <div className="mt-6">
-            <AnimeSeasonsAndEpisodes
-              start_date={anime.start_date}
-              end_date={anime.end_date}
-            />
-          </div>
+          {anime.type !== 'Movie' && (
+            <div className="mt-6">
+              <AnimeSeasonsAndEpisodes
+                start_date={anime.start_date}
+                end_date={anime.end_date}
+              />
+            </div>
+          )}
           <div>
             <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
               <RelatedAnime id={anime.id} />

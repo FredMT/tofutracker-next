@@ -11,7 +11,6 @@ import {
 import Image from 'next/image'
 import HomepageTrendingMovieBadges from './HomepageTrendingMovieBadges'
 import Autoplay from 'embla-carousel-autoplay'
-import SkeletonHomepageTrendingMovieCarousel from './SkeletonHomepageTrendingMovieCarousel'
 import Link from 'next/link'
 
 type Content = {
@@ -23,16 +22,37 @@ type Content = {
   media_type: string
 }
 
-export default function HomepageTrendingMovieCarousel() {
-  const {
-    data: fetchedData,
-    error,
-    isLoading,
-  } = useSWR(
-    'https://tofutracker-3pt5y.ondigitalocean.app/api/trending',
-    (url) => fetch(url).then((res) => res.json())
-  )
+type FetchedData = {
+  movies: {
+    id: number
+    title: string
+    poster_path: string
+    backdrop_path: string
+    release_date: string
+    vote_average: number
+    genre_ids: number[]
+    logo_path: string
+    media_type: string
+  }[]
+  tvShows: {
+    id: number
+    title: string
+    poster_path: string
+    backdrop_path: string
+    first_air_date: string
+    vote_average: number
+    genre_ids: number[]
+    origin_country: string[]
+    logo_path: string
+    media_type: string
+  }[]
+}
 
+export default function HomepageTrendingCarousel({
+  fetchedData,
+}: {
+  fetchedData: FetchedData
+}) {
   let data: Content[] = []
   if (fetchedData) {
     const minLength = Math.min(
@@ -45,10 +65,6 @@ export default function HomepageTrendingMovieCarousel() {
       data.push(fetchedData.tvShows[i]) // Add TV show
     }
   }
-
-  if (error) return <div>Failed to load</div>
-
-  if (isLoading) return <SkeletonHomepageTrendingMovieCarousel />
 
   return (
     <Carousel

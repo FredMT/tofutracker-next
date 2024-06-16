@@ -38,6 +38,7 @@ export default function MovieCard({
             alt={title}
             width={112}
             height={168}
+            priority
             sizes="100vw"
           />
         </div>
