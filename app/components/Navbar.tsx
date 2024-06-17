@@ -9,7 +9,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import Link from 'next/link'
-import { Input } from '@/components/ui/input'
 import SearchButton from './SearchButton'
 
 export default function Navbar() {
@@ -30,7 +29,9 @@ export default function Navbar() {
           <SearchButton />
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <Menu />
+              <div className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground ring-offset-background transition-colors hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+                <Menu />
+              </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40 p-4">
               <div className="flex flex-col gap-y-2">

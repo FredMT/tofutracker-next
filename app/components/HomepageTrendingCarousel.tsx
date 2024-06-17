@@ -1,6 +1,5 @@
 'use client'
 
-import useSWR from 'swr'
 import {
   Carousel,
   CarouselContent,
@@ -81,7 +80,7 @@ export default function HomepageTrendingCarousel({
           <CarouselItem key={index} className="h-[60vh]">
             <div className="relative h-full w-full">
               <Image
-                src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
+                src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
                 alt={item.title}
                 className="object-cover object-center"
                 fill

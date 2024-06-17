@@ -35,14 +35,14 @@ export default async function AnimeBackdrop({
 
   const backdrop_path =
     images?.backdrops && images.backdrops.length > 0
-      ? 'https://image.tmdb.org/t/p/original' +
+      ? 'https://image.tmdb.org/t/p/w1280' +
         images.backdrops.reduce((prev: Images, current: Images) =>
           prev.vote_average > current.vote_average ? prev : current
         ).file_path
       : undefined
 
   const logo_path =
-    'https://image.tmdb.org/t/p/original' + images?.logos &&
+    'https://image.tmdb.org/t/p/w300' + images?.logos &&
     images?.logos?.length > 0
       ? images.logos.reduce((prev: Images, current: Images) =>
           prev.vote_average > current.vote_average ? prev : current
@@ -55,8 +55,8 @@ export default async function AnimeBackdrop({
         className="h-[288px] w-full object-cover sm:h-[576px] sm:w-full"
         src={
           backdrop_path
-            ? `https://image.tmdb.org/t/p/original${backdrop_path}`
-            : 'https://placehold.co/1920x1080/000000/FFFFFF.png?text=Banner+Image+Not+Found'
+            ? `https://image.tmdb.org/t/p/w1280${backdrop_path}`
+            : 'https://placehold.co/1280x720/000000/FFFFFF.png?text=Banner+Image+Not+Found'
         }
         alt={title}
         width={1920}
@@ -65,7 +65,7 @@ export default async function AnimeBackdrop({
       />
       {logo_path && (
         <Image
-          src={`https://image.tmdb.org/t/p/original${logo_path}`}
+          src={`https://image.tmdb.org/t/p/w300${logo_path}`}
           alt={title}
           width={1920}
           height={1080}

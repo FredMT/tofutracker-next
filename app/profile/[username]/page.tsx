@@ -1,6 +1,5 @@
 'use server'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import { Separator } from '@/components/ui/separator'
 import { createClient } from '@/utils/supabase/server'
 import Image from 'next/image'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
@@ -8,8 +7,12 @@ import ActivityDialog from './components/ActivityDialog'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import ProfileBanner from './components/ProfileBanner'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { LayoutGrid, TableProperties } from 'lucide-react'
+import { DataTable } from './components/data-table'
+import { columns } from './components/columns'
 
-type PosterItem = {
+type Item = {
   item_id: number
   item_type: string
   item_poster: string
@@ -17,7 +20,16 @@ type PosterItem = {
   activity_id: string
   item_created_at: string
   hasLiked?: boolean
+  list_type: string
+  rating: number
   likes: number
+  comments: number
+}
+
+type ActivityData = {
+  success: boolean
+  message: string
+  posters: Item[]
 }
 
 export const generateMetadata = ({
@@ -47,6 +59,70 @@ async function getActivityDataLoggedInUser(
     { next: { tags: ['activities'] } }
   ).then((res) => res.json())
   return data
+}
+
+async function renderTabContent(
+  activityData: ActivityData,
+  tabType: string,
+  params: { username: string }
+) {
+  if (activityData.success === false) {
+    return (
+      <div className="flex flex-col">
+        <p className="text-lg text-muted-foreground">
+          {activityData.message === 'Unauthorized'
+            ? 'This user has their activity hidden'
+            : 'Error retrieving user activity'}
+        </p>
+      </div>
+    )
+  }
+
+  if (activityData.success === true && activityData.posters.length === 0) {
+    return (
+      <div className="flex flex-col">
+        <p className="text-lg text-muted-foreground">
+          This user has no activity yet :(
+        </p>
+      </div>
+    )
+  }
+
+  let filteredItems = activityData.posters
+  if (tabType !== 'Activity') {
+    filteredItems = activityData.posters.filter(
+      (item) => item.list_type === tabType
+    )
+  } else {
+    filteredItems = activityData.posters.filter(
+      (item) => item.list_type === 'Library' || item.list_type === 'Watchlist'
+    )
+  }
+
+  return (
+    <div className="my-6 grid grid-cols-3 place-items-center gap-4 sm:grid-cols-4 2xl:grid-cols-5">
+      {filteredItems.map((item: Item) => (
+        <Dialog key={item.activity_id}>
+          <DialogTrigger className="w-fit">
+            <Image
+              key={item.activity_id}
+              className="min-h-[132px] min-w-[88px] rounded-md sm:h-[228px] sm:w-[152px] lg:h-[264px] lg:w-[176px] xl:h-[300px] xl:w-[200px]"
+              src={item.item_poster}
+              alt={item.item_title}
+              width="1080"
+              height="1920"
+              priority
+            />
+          </DialogTrigger>
+          <ActivityDialog
+            item={item}
+            username={params.username}
+            hasLiked={item.hasLiked || false}
+          />
+        </Dialog>
+      ))}
+    </div>
+  )
 }
 
 export default async function Profile({
@@ -124,60 +200,53 @@ export default async function Profile({
             </div>
           </div>
 
-          <div className="flex w-full flex-col">
-            <div className="text-xl max-md:mt-6">Activity</div>
-            <Separator className="mt-2" />
+          <Tabs defaultValue="grid" className="flex w-full flex-col">
+            <TabsList className="justify-end bg-transparent">
+              <TabsTrigger
+                value="grid"
+                className="data-[state=active]:bg-muted"
+              >
+                <LayoutGrid />
+              </TabsTrigger>
+              <TabsTrigger
+                value="table"
+                className="data-[state=active]:bg-muted"
+              >
+                <TableProperties className="-rotate-180 transform" />
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="grid">
+              <div className="flex w-full flex-col">
+                <Tabs defaultValue="activity" className="mt-2">
+                  <TabsList className="w-full">
+                    <TabsTrigger value="activity" className="w-full">
+                      Activity
+                    </TabsTrigger>
+                    <TabsTrigger value="library" className="w-full">
+                      Library
+                    </TabsTrigger>
+                    <TabsTrigger value="watchlist" className="w-full">
+                      Watchlist
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="activity">
+                    {renderTabContent(activityData, 'Activity', params)}
+                  </TabsContent>
 
-            <div className="mb-6 mt-6 grid grid-cols-3 gap-4 sm:grid-cols-4 2xl:grid-cols-5">
-              {activityData.success === false &&
-                activityData.message === 'Unauthorized' && (
-                  <div className="flex flex-col">
-                    <p className="text-lg text-muted-foreground">
-                      This user has their activity hidden
-                    </p>
-                  </div>
-                )}
+                  <TabsContent value="library">
+                    {renderTabContent(activityData, 'Library', params)}
+                  </TabsContent>
 
-              {activityData.success === false &&
-                activityData.message !== 'Unauthorized' && (
-                  <div className="flex flex-col">
-                    <p className="text-lg text-muted-foreground">
-                      Error retrieving user activity
-                    </p>
-                  </div>
-                )}
-              {activityData.success === true &&
-                activityData.posters.length === 0 && (
-                  <div className="flex flex-col">
-                    <p className="text-lg text-muted-foreground">
-                      This user has no activity yet :(
-                    </p>
-                  </div>
-                )}
-
-              {activityData.success === true &&
-                activityData.posters.map((item: PosterItem) => (
-                  <Dialog key={item.item_id}>
-                    <DialogTrigger>
-                      <Image
-                        key={item.item_id}
-                        className="min-h-[132px] min-w-[88px] rounded-md sm:h-[228px] sm:w-[152px] lg:h-[264px] lg:w-[176px] xl:h-[300px] xl:w-[200px]"
-                        src={item.item_poster}
-                        alt={item.item_title}
-                        width="1080"
-                        height="1920"
-                        priority
-                      />
-                    </DialogTrigger>
-                    <ActivityDialog
-                      item={item}
-                      username={params.username}
-                      hasLiked={item.hasLiked || false}
-                    />
-                  </Dialog>
-                ))}
-            </div>
-          </div>
+                  <TabsContent value="watchlist">
+                    {renderTabContent(activityData, 'Watchlist', params)}
+                  </TabsContent>
+                </Tabs>
+              </div>
+            </TabsContent>
+            <TabsContent value="table" className="mb-6">
+              <DataTable columns={columns} data={activityData.posters} />
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </>
