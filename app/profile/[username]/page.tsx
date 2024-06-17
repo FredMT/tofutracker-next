@@ -216,7 +216,7 @@ export default async function Profile({
               </TabsTrigger>
             </TabsList>
             <TabsContent value="grid">
-              <div className="flex w-full flex-col">
+              <div className="flex w-fit flex-col">
                 <Tabs defaultValue="activity" className="mt-2">
                   <TabsList className="w-full">
                     <TabsTrigger value="activity" className="w-full">

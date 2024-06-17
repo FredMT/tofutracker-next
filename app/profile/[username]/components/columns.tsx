@@ -1,7 +1,9 @@
 'use client'
 
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { ColumnDef } from '@tanstack/react-table'
-import { Heart, MessageCircle } from 'lucide-react'
+import { Heart, MessageCircle, ArrowUpDown, MoreHorizontal } from 'lucide-react'
 import Link from 'next/link'
 
 export type Item = {
@@ -28,7 +30,7 @@ export const columns: ColumnDef<Item>[] = [
           <img
             src={row.getValue('item_poster')}
             alt="poster"
-            className="aspect-poster w-10"
+            className="aspect-poster w-10 sm:w-12 md:w-14 lg:w-16"
           />
         </Link>
       )
@@ -36,7 +38,17 @@ export const columns: ColumnDef<Item>[] = [
   },
   {
     accessorKey: 'item_title',
-    header: () => <div className="text-left">Title</div>,
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Title
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
       return (
         <div className="flex justify-between">
@@ -70,10 +82,34 @@ export const columns: ColumnDef<Item>[] = [
   {
     accessorKey: 'list_type',
     header: 'List Type',
+    cell: ({ row }) => {
+      return (
+        <Badge
+          variant="outline"
+          className={`${
+            row.getValue('list_type') === 'Watchlist'
+              ? 'border-blue-300 bg-blue-50 text-blue-700'
+              : 'border-purple-300 bg-purple-50 text-purple-700'
+          }`}
+        >
+          {row.getValue('list_type')}
+        </Badge>
+      )
+    },
   },
   {
     accessorKey: 'rating',
-    header: 'Rating',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Rating
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
   },
   {
     accessorKey: 'item_type',
