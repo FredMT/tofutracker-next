@@ -29,17 +29,15 @@ type Props = {
 
 export default async function Anime({ params }: Props) {
   const result = await fetch(
-    'https://tofutracker-3pt5y.ondigitalocean.app/api/getanime/' +
-      params.id.split('-')[0]
+    'http://209.38.190.143:8080/api/getanime/' + params.id.split('-')[0]
   )
-    .then((res) => res.json())
-    .catch((err) => console.log(err))
+  const data = await result.json()
 
-  if (result.message === 'Anime not found.') {
+  if (data.message === 'Anime not found.') {
     return notFound()
   }
 
-  const anime = result[0].anime[0]
+  const anime = data[0].anime[0]
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -72,9 +70,9 @@ export default async function Anime({ params }: Props) {
           <div className="flex justify-center">
             <Suspense fallback={<Skeleton className="mt-6 h-[94px] w-full" />}>
               <AnimeInfo
-                externalLinks={result[0]?.external_links[0]}
+                externalLinks={data[0]?.external_links[0]}
                 anime={anime}
-                creators={result[0]?.creators}
+                creators={data[0]?.creators}
               />
             </Suspense>
           </div>
@@ -86,7 +84,7 @@ export default async function Anime({ params }: Props) {
           <div className="mt-6">
             <div className="contentpagedetailtitle">Details</div>
             <Suspense fallback={<Skeleton className="mt-6 h-[253px] w-full" />}>
-              <AnimeDetails anime={anime} creators={result[0]?.creators} />
+              <AnimeDetails anime={anime} creators={data[0]?.creators} />
             </Suspense>
           </div>
           <div className="mt-6">

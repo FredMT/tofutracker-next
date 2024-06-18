@@ -44,7 +44,7 @@ export const generateMetadata = ({
 
 async function getActivityData(user_id: string) {
   const data = await fetch(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/getposters/${user_id}`,
+    `http://209.38.190.143:8080/api/getposters/${user_id}`,
     { next: { tags: ['activities'] } }
   ).then((res) => res.json())
   return data
@@ -55,7 +55,7 @@ async function getActivityDataLoggedInUser(
   logged_in_user_id: string
 ) {
   const data = await fetch(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/getposters/${viewed_user_id}/${logged_in_user_id}`,
+    `http://209.38.190.143:8080/api/getposters/${viewed_user_id}/${logged_in_user_id}`,
     { next: { tags: ['activities'] } }
   ).then((res) => res.json())
   return data
@@ -216,7 +216,7 @@ export default async function Profile({
               </TabsTrigger>
             </TabsList>
             <TabsContent value="grid">
-              <div className="flex w-fit flex-col">
+              <div className="flex flex-col">
                 <Tabs defaultValue="activity" className="mt-2">
                   <TabsList className="w-full">
                     <TabsTrigger value="activity" className="w-full">

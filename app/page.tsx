@@ -6,9 +6,7 @@ export const metadata = {
 }
 
 export default async function Home() {
-  const res = await fetch(
-    'https://tofutracker-3pt5y.ondigitalocean.app/api/trending'
-  )
+  const res = await fetch('http://209.38.190.143:8080/api/trending')
   const data = await res.json()
   return (
     <main className="flex min-h-dvh flex-col gap-y-6">

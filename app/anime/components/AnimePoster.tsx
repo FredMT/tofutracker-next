@@ -14,14 +14,14 @@ type Images = {
 }
 
 async function getAnimeImages(type: string, id: number) {
-  const url = `https://tofutracker-3pt5y.ondigitalocean.app/api/getanimeimages/${type}/${id}`
+  const url = `http://209.38.190.143:8080/api/getanimeimages/${type}/${id}`
   const data = await fetch(url)
   const result = await data.json()
   return result.data
 }
 
 async function checkAnimeInLibrary(id: number, user_id: string) {
-  const url = `https://tofutracker-3pt5y.ondigitalocean.app/api/checkanimeinlibrary/${id}/${user_id}`
+  const url = `http://209.38.190.143:8080/api/checkanimeinlibrary/${id}/${user_id}`
   const data = await fetch(url)
   const result = await data.json()
   return result.data

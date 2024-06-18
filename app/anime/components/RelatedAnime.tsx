@@ -35,7 +35,7 @@ export default function RelatedAnime({ id }: { id: number }) {
     error,
     isLoading,
   } = useSWR(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/getanimerelationsinfo/${id}`,
+    `http://209.38.190.143:8080/api/getanimerelationsinfo/${id}`,
     fetcher
   )
 

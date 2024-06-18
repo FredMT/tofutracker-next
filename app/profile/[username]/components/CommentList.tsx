@@ -60,7 +60,7 @@ export default function CommentList({
     error,
     isLoading,
   } = useSWR(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/comments/${activity_id}${
+    `http://209.38.190.143:8080/api/comments/${activity_id}${
       user ? `/${user.id}` : ''
     }`,
     fetcher,

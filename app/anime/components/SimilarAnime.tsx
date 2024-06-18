@@ -39,7 +39,7 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
   let animeType = type !== 'Movie' ? 'tv' : 'movie'
 
   const { data, error, isLoading } = useSWR(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/getsimilaranime/${animeType}/${id}`,
+    `http://209.38.190.143:8080/api/getsimilaranime/${animeType}/${id}`,
     fetcher
   )
 

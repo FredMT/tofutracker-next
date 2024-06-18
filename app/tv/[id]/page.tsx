@@ -29,9 +29,7 @@ type Props = {
 }
 
 async function getTVData(id: number) {
-  const data = await fetch(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/gettv/${id}`
-  )
+  const data = await fetch(`http://209.38.190.143:8080/api/gettv/${id}`)
   const result = await data.json()
   if (result?.data?.message === 'This is an anime.') {
     redirect(`/anime/${result.data.data.anidb_id}`)

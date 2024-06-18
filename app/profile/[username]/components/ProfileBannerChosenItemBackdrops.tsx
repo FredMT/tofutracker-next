@@ -27,7 +27,7 @@ export default function ProfileBannerChosenItemBackdrops({
 
   const [selectedBackdrop, setSelectedBackdrop] = useState<string>('')
   const { data, error, isLoading } = useSWR(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/gettoptenbackdrops/${selectedItemType}/${selectedItemID}`,
+    `http://209.38.190.143:8080/api/gettoptenbackdrops/${selectedItemType}/${selectedItemID}`,
     fetcher
   )
 

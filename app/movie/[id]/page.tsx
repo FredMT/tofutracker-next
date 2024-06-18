@@ -28,9 +28,7 @@ export const generateMetadata = ({ params }: Props): Metadata => {
 }
 
 async function getMovieData(id: number) {
-  const data = await fetch(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/getmovie/${id}`
-  )
+  const data = await fetch(`http://209.38.190.143:8080/api/getmovie/${id}`)
   const result = await data.json()
   if (result.message === 'This is an anime.') {
     redirect(`/anime/${result.data.anidb_id}`)

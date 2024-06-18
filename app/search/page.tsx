@@ -75,19 +75,17 @@ export default function Search() {
   }
 
   const { data: searchResults, error: searchResultsError } = useSWR(
-    () =>
-      query
-        ? `https://tofutracker-3pt5y.ondigitalocean.app/api/search/${query}`
-        : null,
+    () => (query ? `http://209.38.190.143:8080/api/search/${query}` : null),
     fetcher
   )
 
   if (searchResultsError) {
+    console.log(searchResultsError)
     return (
       <div className="mt-20 flex flex-col gap-6 px-4">
         <p>
-          There was
-          <SearchInputForm /> an error retrieving the search results
+          <SearchInputForm />
+          There was an error retrieving the search results
         </p>
       </div>
     )

@@ -63,7 +63,7 @@ export default function AnimeSeasonsAndEpisodes({
     error,
     isLoading,
   } = useSWR<AnimeSeasonResponse>(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/getanimechain/${id}`,
+    `http://209.38.190.143:8080/api/getanimechain/${id}`,
     fetcher
   )
 
@@ -72,7 +72,7 @@ export default function AnimeSeasonsAndEpisodes({
     error: relationsError,
     isLoading: relationsLoading,
   } = useSWR<AnimeRelationsResponse>(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/getanimerelations/${parseInt(
+    `http://209.38.190.143:8080/api/getanimerelations/${parseInt(
       selectedSeason
     )}`,
     fetcher
@@ -83,7 +83,7 @@ export default function AnimeSeasonsAndEpisodes({
     error: episodesError,
     isLoading: episodesLoading,
   } = useSWR<AnimeEpisodesResponse>(
-    `https://tofutracker-3pt5y.ondigitalocean.app/api/getanimeepisodes/${parseInt(
+    `http://209.38.190.143:8080/api/getanimeepisodes/${parseInt(
       selectedSeason
     )}/${start_date}/${end_date}`,
     fetcher
