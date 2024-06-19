@@ -51,6 +51,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <div className="flex h-5 w-full items-center justify-center bg-red-500 p-5">
+            Under maintenance, backend server currently down. You're viewing a
+            cached version of the site.
+          </div>
           <Navbar />
           <div className="flex-1">{children}</div>
           <Toaster />
