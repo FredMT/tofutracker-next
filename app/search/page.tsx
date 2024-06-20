@@ -75,7 +75,7 @@ export default function Search() {
   }
 
   const { data: searchResults, error: searchResultsError } = useSWR(
-    () => (query ? `http://209.38.190.143:8080/api/search/${query}` : null),
+    () => (query ? `http://localhost:8080/api/search/${query}` : null),
     fetcher
   )
 

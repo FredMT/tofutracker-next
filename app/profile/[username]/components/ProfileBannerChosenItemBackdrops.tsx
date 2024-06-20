@@ -27,7 +27,7 @@ export default function ProfileBannerChosenItemBackdrops({
 
   const [selectedBackdrop, setSelectedBackdrop] = useState<string>('')
   const { data, error, isLoading } = useSWR(
-    `http://209.38.190.143:8080/api/gettoptenbackdrops/${selectedItemType}/${selectedItemID}`,
+    `http://localhost:8080/api/gettoptenbackdrops/${selectedItemType}/${selectedItemID}`,
     fetcher
   )
 

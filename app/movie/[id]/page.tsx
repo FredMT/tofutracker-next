@@ -28,7 +28,7 @@ export const generateMetadata = ({ params }: Props): Metadata => {
 }
 
 async function getMovieData(id: number) {
-  const data = await fetch(`http://209.38.190.143:8080/api/getmovie/${id}`)
+  const data = await fetch(`http://localhost:8080/api/getmovie/${id}`)
   const result = await data.json()
   if (result.message === 'This is an anime.') {
     redirect(`/anime/${result.data.anidb_id}`)
@@ -127,7 +127,9 @@ export default async function Movie({ params }: { params: { id: string } }) {
             </Suspense>
           </div>
           <div className="mt-6">
-            <div className="contentpagedetailtitle">Overview</div>
+            <div className="contentpagedetailtitle" id="overview">
+              Overview
+            </div>
 
             <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
               <Overview overview={overview} />

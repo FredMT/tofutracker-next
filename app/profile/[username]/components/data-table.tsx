@@ -69,7 +69,6 @@ export function DataTable<TData, TValue>({
         className="mb-2 max-w-sm"
       />
       <div className="rounded-md border">
-        <div className="flex items-center py-4"></div>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

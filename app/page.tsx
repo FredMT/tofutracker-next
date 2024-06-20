@@ -6,7 +6,9 @@ export const metadata = {
 }
 
 export default async function Home() {
-  const res = await fetch('http://209.38.190.143:8080/api/trending')
+  const res = await fetch('http://localhost:8080/api/trending', {
+    next: { revalidate: 86400 },
+  })
   const data = await res.json()
   return (
     <main className="flex min-h-dvh flex-col gap-y-6">

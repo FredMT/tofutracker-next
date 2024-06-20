@@ -29,7 +29,7 @@ type Props = {
 
 export default async function Anime({ params }: Props) {
   const result = await fetch(
-    'http://209.38.190.143:8080/api/getanime/' + params.id.split('-')[0]
+    'http://localhost:8080/api/getanime/' + params.id.split('-')[0]
   )
   const data = await result.json()
 
@@ -88,14 +88,16 @@ export default async function Anime({ params }: Props) {
             </Suspense>
           </div>
           <div className="mt-6">
-            <div className="contentpagedetailtitle">Overview</div>
+            <div className="contentpagedetailtitle" id="overview">
+              Overview
+            </div>
 
             <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
               <Overview overview={anime.description} />
             </Suspense>
           </div>
           {anime.type !== 'Movie' && (
-            <div className="mt-6">
+            <div className="mt-6" id="seasons">
               <AnimeSeasonsAndEpisodes
                 start_date={anime.start_date}
                 end_date={anime.end_date}

@@ -43,10 +43,9 @@ export const generateMetadata = ({
 }
 
 async function getActivityData(user_id: string) {
-  const data = await fetch(
-    `http://209.38.190.143:8080/api/getposters/${user_id}`,
-    { next: { tags: ['activities'] } }
-  ).then((res) => res.json())
+  const data = await fetch(`http://localhost:8080/api/getposters/${user_id}`, {
+    next: { tags: ['activities'] },
+  }).then((res) => res.json())
   return data
 }
 
@@ -55,7 +54,7 @@ async function getActivityDataLoggedInUser(
   logged_in_user_id: string
 ) {
   const data = await fetch(
-    `http://209.38.190.143:8080/api/getposters/${viewed_user_id}/${logged_in_user_id}`,
+    `http://localhost:8080/api/getposters/${viewed_user_id}/${logged_in_user_id}`,
     { next: { tags: ['activities'] } }
   ).then((res) => res.json())
   return data

@@ -39,7 +39,7 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
   let animeType = type !== 'Movie' ? 'tv' : 'movie'
 
   const { data, error, isLoading } = useSWR(
-    `http://209.38.190.143:8080/api/getsimilaranime/${animeType}/${id}`,
+    `http://localhost:8080/api/getsimilaranime/${animeType}/${id}`,
     fetcher
   )
 
@@ -54,7 +54,7 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
   const similar = data.data
 
   return (
-    <Card className="rounded-none border-x-0 border-t-0 pb-8">
+    <Card className="rounded-none border-x-0 border-t-0 pb-8" id="similar">
       <div className="mt-6">
         <Carousel
           opts={{

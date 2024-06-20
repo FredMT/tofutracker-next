@@ -12,7 +12,7 @@ type Images = {
 }
 
 async function getAnimeImages(type: string, id: number) {
-  const url = `http://209.38.190.143:8080/api/getanimeimages/${type}/${id}`
+  const url = `http://localhost:8080/api/getanimeimages/${type}/${id}`
   const data = await fetch(url)
   const result = await data.json()
   return result.data
@@ -32,6 +32,8 @@ export default async function AnimeBackdrop({
   type !== 'Movie'
     ? (images = await getAnimeImages('tv', id))
     : (images = await getAnimeImages('movie', id))
+
+  console.log(`${images} \n "-----------"`)
 
   const backdrop_path =
     images?.backdrops && images.backdrops.length > 0

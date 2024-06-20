@@ -34,7 +34,7 @@ export default async function Details({
   type,
 }: Props) {
   return (
-    <Card className="rounded-none border-x-0 border-t-0 pb-8">
+    <Card className="rounded-none border-x-0 border-t-0 pb-8" id="details">
       <div className="mt-4 grid grid-cols-[75px_auto] gap-y-2 lg:grid-cols-[75px_1fr_75px_1fr] lg:gap-y-4">
         <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
           Type

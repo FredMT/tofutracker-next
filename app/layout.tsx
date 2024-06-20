@@ -8,6 +8,7 @@ import Navbar from '@/app/components/Navbar'
 import Footer from '@/app/components/Footer'
 import { Toaster } from '@/components/ui/toaster'
 import { Analytics } from '@vercel/analytics/react'
+import NextTopLoader from 'nextjs-toploader'
 
 export const metadata: Metadata = {
   title: {
@@ -51,10 +52,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex h-5 w-full items-center justify-center bg-red-500 p-5">
-            Under maintenance, backend server currently down. You're viewing a
-            cached version of the site.
-          </div>
+          <NextTopLoader color="#7C3AED" showSpinner={false} />
           <Navbar />
           <div className="flex-1">{children}</div>
           <Toaster />

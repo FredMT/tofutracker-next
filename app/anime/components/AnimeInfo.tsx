@@ -106,7 +106,7 @@ export default async function AnimeInfo({
   )?.name
 
   return (
-    <Card className="mt-6 w-full rounded-none border-x-0 border-y-2">
+    <Card className="mt-6 w-full rounded-none border-x-0 border-y-2" id="info">
       <CardContent className="px-5 py-[18px]">
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-4 sm:justify-start">
           {anime.rating && (

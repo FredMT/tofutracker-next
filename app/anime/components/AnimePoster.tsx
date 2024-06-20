@@ -14,14 +14,14 @@ type Images = {
 }
 
 async function getAnimeImages(type: string, id: number) {
-  const url = `http://209.38.190.143:8080/api/getanimeimages/${type}/${id}`
+  const url = `http://localhost:8080/api/getanimeimages/${type}/${id}`
   const data = await fetch(url)
   const result = await data.json()
   return result.data
 }
 
 async function checkAnimeInLibrary(id: number, user_id: string) {
-  const url = `http://209.38.190.143:8080/api/checkanimeinlibrary/${id}/${user_id}`
+  const url = `http://localhost:8080/api/checkanimeinlibrary/${id}/${user_id}`
   const data = await fetch(url)
   const result = await data.json()
   return result.data
@@ -95,7 +95,7 @@ export default async function AnimePoster({
   }
 
   return (
-    <div className="flex flex-col gap-y-6">
+    <div className="flex flex-col gap-y-6" id="poster">
       <Image
         className="h-[186px] w-[124px] rounded-sm border border-muted object-cover sm:h-[273px] sm:min-w-[182px] md:h-[336px] md:min-w-[224px]"
         src={poster_path ? poster_path : 'https://placehold.co/600x900/jpg'}

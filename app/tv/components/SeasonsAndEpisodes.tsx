@@ -31,14 +31,14 @@ export default function SeasonsAndEpisodes() {
     data: fetchedData,
     error,
     isLoading,
-  } = useSWR(`http://209.38.190.143:8080/api/gettv/${id}`, fetcher)
+  } = useSWR(`http://localhost:8080/api/gettv/${id}`, fetcher)
 
   const {
     data: seasonData,
     error: seasonDataError,
     isLoading: seasonDataLoading,
   } = useSWR(
-    `http://209.38.190.143:8080/api/gettvseason/${id}/${seasonNumber}`,
+    `http://localhost:8080/api/gettvseason/${id}/${seasonNumber}`,
     fetcher
   )
 
@@ -69,7 +69,7 @@ export default function SeasonsAndEpisodes() {
 
   if (isDataReady) {
     return (
-      <Card className="rounded-none border-x-0 border-t-0 pb-8">
+      <Card className="rounded-none border-x-0 border-t-0 pb-8" id="seasons">
         <Tabs value={selectedSeason} className="w-full">
           <ScrollArea
             className="relative mb-4 h-12 rounded-md sm:w-[60vw]"

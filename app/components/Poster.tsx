@@ -14,7 +14,7 @@ export default async function Poster({
   item_type: string
 }) {
   return (
-    <div className="flex flex-col gap-y-6">
+    <div className="flex flex-col gap-y-6" id="poster">
       <Image
         className="h-[186px] w-[124px] rounded-sm border border-muted object-cover sm:h-[273px] sm:w-[182px] md:h-[336px] md:w-[224px]"
         src={`https://image.tmdb.org/t/p/original${poster_path}`}

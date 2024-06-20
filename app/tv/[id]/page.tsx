@@ -29,7 +29,7 @@ type Props = {
 }
 
 async function getTVData(id: number) {
-  const data = await fetch(`http://209.38.190.143:8080/api/gettv/${id}`)
+  const data = await fetch(`http://localhost:8080/api/gettv/${id}`)
   const result = await data.json()
   if (result?.data?.message === 'This is an anime.') {
     redirect(`/anime/${result.data.data.anidb_id}`)
@@ -119,7 +119,9 @@ export default async function TVShow({ params }: { params: { id: string } }) {
             </Suspense>
           </div>
           <div className="mt-6">
-            <div className="contentpagedetailtitle">Overview</div>
+            <div className="contentpagedetailtitle" id="overview">
+              Overview
+            </div>
 
             <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
               <Overview overview={tv.overview} />

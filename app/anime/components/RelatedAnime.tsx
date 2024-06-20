@@ -34,10 +34,7 @@ export default function RelatedAnime({ id }: { id: number }) {
     data: related,
     error,
     isLoading,
-  } = useSWR(
-    `http://209.38.190.143:8080/api/getanimerelationsinfo/${id}`,
-    fetcher
-  )
+  } = useSWR(`http://localhost:8080/api/getanimerelationsinfo/${id}`, fetcher)
 
   if (error) {
     return <div>Error...</div>
@@ -50,7 +47,9 @@ export default function RelatedAnime({ id }: { id: number }) {
   if (related.data.length > 0) {
     return (
       <>
-        <div className="contentpagedetailtitle mt-6">Related Anime</div>
+        <div className="contentpagedetailtitle mt-6" id="related">
+          Related Anime
+        </div>
         <div className="mt-6">
           <Card className="rounded-none border-x-0 border-t-0 pb-8">
             <Carousel

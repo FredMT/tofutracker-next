@@ -63,7 +63,7 @@ export default function AnimeSeasonsAndEpisodes({
     error,
     isLoading,
   } = useSWR<AnimeSeasonResponse>(
-    `http://209.38.190.143:8080/api/getanimechain/${id}`,
+    `http://localhost:8080/api/getanimechain/${id}`,
     fetcher
   )
 
@@ -72,9 +72,7 @@ export default function AnimeSeasonsAndEpisodes({
     error: relationsError,
     isLoading: relationsLoading,
   } = useSWR<AnimeRelationsResponse>(
-    `http://209.38.190.143:8080/api/getanimerelations/${parseInt(
-      selectedSeason
-    )}`,
+    `http://localhost:8080/api/getanimerelations/${parseInt(selectedSeason)}`,
     fetcher
   )
 
@@ -83,7 +81,7 @@ export default function AnimeSeasonsAndEpisodes({
     error: episodesError,
     isLoading: episodesLoading,
   } = useSWR<AnimeEpisodesResponse>(
-    `http://209.38.190.143:8080/api/getanimeepisodes/${parseInt(
+    `http://localhost:8080/api/getanimeepisodes/${parseInt(
       selectedSeason
     )}/${start_date}/${end_date}`,
     fetcher
