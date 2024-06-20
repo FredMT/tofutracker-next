@@ -3,7 +3,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import SettingsAccordion from './components/SettingsAccordion'
-import SuccessToast from '@/components/SuccessToast'
 import { Metadata } from 'next'
 
 export const generateMetadata = ({
@@ -50,7 +49,6 @@ export default async function Settings({
     <div className="mt-20 px-6 text-2xl">
       Settings
       <SettingsAccordion />
-      <SuccessToast />
     </div>
   )
 }

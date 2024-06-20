@@ -10,11 +10,11 @@ export default async function Home() {
     next: { revalidate: 86400 },
   })
   const data = await res.json()
+
   return (
     <main className="flex min-h-dvh flex-col gap-y-6">
       <HomepageTrendingCarousel fetchedData={data} />
-
-      <div className="space-y-6 p-6">
+      <div className="space-y-6 p-6 xl:mx-40">
         <HomepageTrendingCardCarousel data={data} />
       </div>
     </main>

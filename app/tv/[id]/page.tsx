@@ -63,7 +63,7 @@ export default async function TVShow({ params }: { params: { id: string } }) {
           logo_path={logo_path}
         />
       </Suspense>
-      <div className="flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8 xl:px-10 2xl:px-[168px]">
+      <div className="flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8 xl:px-40">
         <div className="flex justify-center">
           <Suspense
             fallback={

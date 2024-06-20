@@ -6,23 +6,33 @@ import { useFormStatus } from 'react-dom'
 export default function UseFormStatusPendingButton({
   text,
   style,
+  variant = 'secondary',
+  disabled = false,
 }: {
   text: string
   style?: string
+  variant?:
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'link'
+    | 'ghost'
+  disabled?: boolean
 }) {
   const { pending } = useFormStatus()
   return pending ? (
-    <Button variant="secondary" className="w-20">
+    <Button variant={variant} className={style}>
       <div
-        className={`h-5 w-5 animate-spin rounded-full border-b-2 border-white`}
+        className={`h-5 w-5 animate-spin rounded-full border-b-2 ${variant === 'secondary' ? 'border-white' : 'border-black'}`}
       ></div>
     </Button>
   ) : (
     <Button
-      variant="secondary"
+      variant={variant}
       className={style}
       type="submit"
-      disabled={pending}
+      disabled={disabled}
     >
       {text}
     </Button>

@@ -4,22 +4,10 @@ import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import UseFormStatusPendingButton from '../../../../../components/UseFormStatusPendingButton'
 import { updateUsername } from './actions'
-import { useToast } from '@/components/ui/use-toast'
 import { useFormState } from 'react-dom'
 
 export default function UsernameChange({ user_id }: { user_id: string }) {
   const [state, formAction] = useFormState(updateUsername, null)
-  const { toast } = useToast()
-
-  useEffect(() => {
-    if (state?.error) {
-      toast({
-        title: 'Error',
-        description: `${JSON.parse(state.error)[0].message}`,
-        variant: 'destructive',
-      })
-    }
-  }, [state, toast])
 
   return (
     <form action={formAction}>

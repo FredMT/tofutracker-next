@@ -29,7 +29,7 @@ export default async function SettingsAccordion() {
     .single()
 
   if (userError) {
-    redirect('/?message=error_retrieving_user_data')
+    redirect('/')
   }
 
   let activityIsPrivate = false
