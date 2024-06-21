@@ -40,8 +40,8 @@ export default async function ForgotPassword() {
                 Forgot your password?
               </h2>
               <p className="text-bold mb-2 mt-2 text-center text-sm">
-                Enter the email address associated with your account and we'll
-                send you a link to reset your password.
+                Enter the email address associated with your account and
+                we&apos;ll send you a link to reset your password.
               </p>
             </div>
             <ForgotPasswordForm />

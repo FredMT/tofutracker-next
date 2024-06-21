@@ -13,7 +13,7 @@ export default async function Home() {
 
   return (
     <main className="flex min-h-dvh flex-col gap-y-6">
-      <HomepageTrendingCarousel fetchedData={data} />
+      <HomepageTrendingCarousel data={data} />
       <div className="space-y-6 p-6 xl:mx-40">
         <HomepageTrendingCardCarousel data={data} />
       </div>

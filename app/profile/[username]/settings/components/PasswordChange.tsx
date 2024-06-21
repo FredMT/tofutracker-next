@@ -25,7 +25,7 @@ export default function PasswordChange() {
         variant: 'success',
       })
     }
-  }, [state])
+  }, [state, toast])
 
   return (
     <form action={formAction}>

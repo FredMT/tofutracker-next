@@ -1,6 +1,5 @@
 import Image from 'next/image'
 import SignUpCard from './SignUpCard'
-import { createClient } from '@/utils/supabase/server'
 
 export default async function SignUp({
   searchParams,
@@ -27,14 +26,6 @@ export default async function SignUp({
       ])
       .flat()
       .filter(Boolean)
-  }
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (user) {
-    console.log(user)
   }
 
   return (

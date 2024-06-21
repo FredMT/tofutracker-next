@@ -1,54 +1,13 @@
 'use client'
 import TrendingCarousel from './TrendingCarousel'
 
-type Anime = {
-  id: number
-  title: string
-  rating: string
-  end_date: string | null
-  media_type: string
-  start_date: string
-  poster_path: string
-}
-
-type Movie = {
-  id: number
-  title: string
-  poster_path: string
-  backdrop_path: string
-  release_date: string
-  vote_average: number
-  genre_ids: number[]
-  logo_path: string
-  media_type: string
-}
-
-type TVShow = {
-  id: number
-  title: string
-  poster_path: string
-  backdrop_path: string
-  first_air_date: string
-  vote_average: number
-  genre_ids: number[]
-  origin_country: string[]
-  logo_path: string
-  media_type: string
-}
-
-type Item = Movie | TVShow | Anime
-
 export default function HomepageTrendingCardCarousel({
   data,
 }: {
-  data: {
-    movies: Movie[]
-    tvShows: TVShow[]
-    anime: Anime[]
-  }
+  data: TrendingData
 }) {
   if (data) {
-    const yearExtractor = (item: Item) => {
+    const yearExtractor = (item: Movie | TVShow | Anime) => {
       if ('release_date' in item) {
         return item.release_date.split('-')[0]
       } else if ('first_air_date' in item) {
@@ -59,11 +18,11 @@ export default function HomepageTrendingCardCarousel({
       return ''
     }
 
-    const ratingExtractor = (item: Item) => {
+    const ratingExtractor = (item: Movie | TVShow | Anime) => {
       if ('vote_average' in item) {
         return parseFloat(item.vote_average.toFixed(2))
       } else if ('rating' in item) {
-        return parseFloat(item.rating)
+        return parseFloat(item.rating.toFixed(2))
       }
       return 0
     }
@@ -80,12 +39,6 @@ export default function HomepageTrendingCardCarousel({
         <TrendingCarousel
           title="Trending TV Shows"
           items={data.tvShows}
-          filterFn={(item: Item) =>
-            'genre_ids' in item &&
-            !item.genre_ids.includes(16) &&
-            'origin_country' in item &&
-            item.origin_country[0] !== 'JP'
-          }
           yearExtractor={yearExtractor}
           ratingExtractor={ratingExtractor}
         />

@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge'
 import React from 'react'
 
 type Props = {
-  genre_ids: number[]
+  genres: { id: number; name: string }[]
 }
 
 const genreMap: { [key: number]: string } = {
@@ -35,13 +35,13 @@ const genreMap: { [key: number]: string } = {
   37: 'Western',
 }
 
-export default function HomepageTrendingMovieBadges({ genre_ids }: Props) {
+export default function HomepageTrendingMovieBadges({ genres }: Props) {
   return (
     <div className="absolute bottom-5 left-0 right-0 mx-auto flex justify-center">
       <div className="flex gap-x-4">
-        {genre_ids.map((id, index) => (
+        {genres.map((item, index) => (
           <Badge key={index} className="border-white bg-transparent text-white">
-            {genreMap[id]}
+            {item.name}
           </Badge>
         ))}
       </div>

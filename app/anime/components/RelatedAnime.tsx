@@ -63,12 +63,7 @@ export default function RelatedAnime({ id }: { id: number }) {
                 {related ? (
                   related?.data.map((item: RelatedAnime) => (
                     <CarouselItem key={item.related_id}>
-                      <Link
-                        href={`/anime/${item.related_id}-${item.title
-                          .replace(/ /g, '-')
-                          .replace(/:/g, '')
-                          .replace(/'/g, '')}`}
-                      >
+                      <Link href={`/anime/${item.related_id}`}>
                         <div className="flex flex-col">
                           <img
                             src={`https://tofutrackeranime2.b-cdn.net/posters/${item.poster}`}

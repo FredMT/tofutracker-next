@@ -33,7 +33,6 @@ export default async function AnimeBackdrop({
     ? (images = await getAnimeImages('tv', id))
     : (images = await getAnimeImages('movie', id))
 
-  console.log(`${images} \n "-----------"`)
 
   const backdrop_path =
     images?.backdrops && images.backdrops.length > 0

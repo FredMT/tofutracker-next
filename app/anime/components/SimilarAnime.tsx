@@ -67,12 +67,7 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
             {similar ? (
               similar?.map((item: SimilarAnime) => (
                 <CarouselItem key={item.id}>
-                  <Link
-                    href={`/anime/${item.id}-${item.title
-                      .replace(/ /g, '-')
-                      .replace(/:/g, '')
-                      .replace(/'/g, '')}`}
-                  >
+                  <Link href={`/anime/${item.id}`}>
                     <div className="flex flex-col">
                       <Image
                         src={`https://tofutrackeranime2.b-cdn.net/posters/${item.poster}`}

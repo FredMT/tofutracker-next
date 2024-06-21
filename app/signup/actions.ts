@@ -60,8 +60,6 @@ export const signUp = async (state: any, formData: FormData) => {
         error: error.message,
       }
     }
-
-    console.log('success')
   } else {
     return {
       success: false,

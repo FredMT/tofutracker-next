@@ -26,7 +26,7 @@ export default function ForgotPasswordForm() {
         variant: 'destructive',
       })
     }
-  }, [state])
+  }, [state, toast])
 
   return (
     <form className="space-y-6" action={formAction}>

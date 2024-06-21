@@ -35,12 +35,7 @@ export default function SimilarMedia({ items, basePath }: SimilarMediaProps) {
         <CarouselContent className="max-w-[120px] md:max-w-[140px] lg:max-w-[165px]">
           {items.map((item, index) => (
             <CarouselItem key={index}>
-              <Link
-                href={`/${basePath}/${item.id}-${item.title
-                  .replace(/ /g, '-')
-                  .replace(/:/g, '')
-                  .replace(/'/g, '')}`}
-              >
+              <Link href={`/${basePath}/${item.id}`}>
                 <div className="flex flex-col">
                   <Image
                     src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${item.poster_path}`}

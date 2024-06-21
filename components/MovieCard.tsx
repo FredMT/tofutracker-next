@@ -1,56 +1,53 @@
-import React from 'react'
 import { Card } from './ui/card'
 import Image from 'next/image'
 import Link from 'next/link'
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+  HoverCardPortal,
+} from '@/components/ui/hover-card'
+import MovieCardHoverCard from './MovieCardHoverCard'
 
-type Movie = {
-  id: number
-  title: string
-  poster_path: string
+type Item = {
   year: string
   rating: number
-  media_type: string
+  item: any
 }
 
-export default function MovieCard({
-  id,
-  title,
-  poster_path,
-  year,
-  rating,
-  media_type,
-}: Movie) {
+export default function MovieCard({ year, rating, item }: Item) {
   return (
     <Card className="min-h-[260px] min-w-[112px] border-0 sm:min-h-[302px] sm:min-w-[140px]">
-      <Link
-        href={`/${media_type}/${id}-${title
-          .replace(/ /g, '-')
-          .replace(/:/g, '')}`}
-      >
+      <Link href={`/${item.media_type}/${item.id}`}>
         <div>
-          <Image
-            className="w-full rounded-sm object-cover lg:h-[210px] lg:w-[140px]"
-            src={
-              media_type !== 'anime'
-                ? `https://image.tmdb.org/t/p/w440_and_h660_face${poster_path}`
-                : `https://tofutrackeranime2.b-cdn.net/posters/${poster_path}`
-            }
-            alt={title}
-            width={112}
-            height={168}
-            priority
-            sizes="100vw"
-          />
+          <HoverCard openDelay={150} closeDelay={0}>
+            <HoverCardTrigger asChild>
+              <Image
+                className="w-full rounded-sm object-cover lg:h-[210px] lg:w-[140px]"
+                src={
+                  item.media_type !== 'anime'
+                    ? `https://image.tmdb.org/t/p/w440_and_h660_face${item.poster_path}`
+                    : `https://tofutrackeranime2.b-cdn.net/posters/${item.poster}`
+                }
+                alt={item.title}
+                width={112}
+                height={168}
+                priority
+                sizes="100vw"
+              />
+            </HoverCardTrigger>
+            <HoverCardPortal container={document.body}>
+              <HoverCardContent className="h-[300px] w-[400px] border-0 bg-transparent backdrop-blur-lg">
+                <MovieCardHoverCard item={item} year={year} rating={rating} />
+              </HoverCardContent>
+            </HoverCardPortal>
+          </HoverCard>
         </div>
       </Link>
       <div className="mt-4 flex flex-col gap-y-2">
-        <Link
-          href={`/${media_type}/${id}-${title
-            .replace(/ /g, '-')
-            .replace(/:/g, '')}`}
-        >
+        <Link href={`/${item.media_type}/${item.id}`}>
           <h3 className="line-clamp-2 text-[14px] font-semibold leading-6 text-secondary-foreground">
-            {title}
+            {item.title}
           </h3>
         </Link>
 
