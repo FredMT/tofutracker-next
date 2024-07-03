@@ -56,7 +56,7 @@ export async function addOrRemoveFromWatchlist(formData: FormData) {
   } = await supabase.auth.getUser()
 
   if (!user) {
-    redirect('/login')
+    redirect(`/login?from=${item_type}/${item_id}`)
   }
 
   if (isInWatchlist === 'true') {
