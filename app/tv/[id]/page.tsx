@@ -52,9 +52,6 @@ export default async function TVShow({ params }: { params: { id: string } }) {
 
     logo_path = `https://image.tmdb.org/t/p/original${logo_path}`
   }
-
-  console.log(tv.backdrop_path)
-
   return (
     <div className="flex flex-col gap-y-6">
       <Suspense fallback={<Skeleton className="h-[288px] w-full" />}>
@@ -139,9 +136,7 @@ export default async function TVShow({ params }: { params: { id: string } }) {
                 <Overview overview={tv.overview} />
               </Suspense>
             </div>
-            <div className="mt-6">
-              <SeasonsAndEpisodes />
-            </div>
+
             <div className="mt-6">
               <Suspense
                 fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
