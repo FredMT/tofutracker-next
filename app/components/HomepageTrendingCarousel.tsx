@@ -17,22 +17,10 @@ export default function HomepageTrendingCarousel({
 }: {
   data: TrendingData
 }) {
-  function getBestLogo(logos: ImageDetail[]) {
-    const englishLogos = logos.filter(
-      (logo: ImageDetail) => logo.iso_639_1 === 'en'
-    )
-    const sortedLogos = (englishLogos.length > 0 ? englishLogos : logos).sort(
-      (a: ImageDetail, b: ImageDetail) => b.vote_average - a.vote_average
-    )
-    return sortedLogos.length > 0 ? sortedLogos[0].file_path : ''
-  }
-
-  const trendingData = data.movies
-    .flatMap((movie, index) => [
-      { ...movie, media_type: 'movie' },
-      { ...data.tvShows[index], media_type: 'tv' },
-    ])
-    .filter((item) => item !== undefined)
+  const trendingData = data.movies.flatMap((movie, index) => [
+    { ...movie },
+    { ...data.tvShows[index] },
+  ])
 
   return (
     <Carousel
@@ -45,22 +33,22 @@ export default function HomepageTrendingCarousel({
       ]}
     >
       <CarouselContent>
-        {trendingData.map((item: any, index: number) => (
-          <CarouselItem key={index} className="h-[60vh]">
+        {trendingData.map((item: Movie | TVShow) => (
+          <CarouselItem key={item.id} className="h-[60vh]">
             <div className="relative h-full w-full">
               <Image
-                src={`https://image.tmdb.org/t/p/w1280${item.backdrop_path}`}
-                alt={item.title || item.name}
+                src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
+                alt={item.title}
                 className="object-cover object-center"
                 fill
                 priority
-                sizes="100vw, 100vw"
+                sizes="100vw"
               />
               <div className="absolute bottom-20 left-0 right-0 mx-auto flex justify-center">
                 <Link href={`/${item.media_type}/${item.id}`}>
                   <div className="relative h-[100px] w-[200px] sm:h-[200px] sm:w-[400px]">
                     <Image
-                      src={`https://image.tmdb.org/t/p/w1280${getBestLogo(item.images.logos)} || https://placehold.co/600x400/jpg?text=${item.title}`}
+                      src={`https://image.tmdb.org/t/p/w300${item.logo_path}) || https://placehold.co/600x400/jpg?text=${item.title}`}
                       alt={item.title}
                       className="object-contain object-center"
                       sizes="100vw, 100vw"

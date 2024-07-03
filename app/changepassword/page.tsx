@@ -19,7 +19,7 @@ export default function ChangePassword() {
 
   if (data) {
     interspersedBackdropPaths = data.movies
-      .map((movie: any, index: number) => [
+      .map((movie: Movie, index: number) => [
         movie.backdrop_path,
         data.tvShows?.[index]?.backdrop_path,
       ])
@@ -133,9 +133,6 @@ export default function ChangePassword() {
                   style="w-full"
                   variant="default"
                   disabled={
-                    !passwordCharacterSchema.safeParse(newPassword).success ||
-                    !passwordNumberSchema.safeParse(confirmNewPassword)
-                      .success ||
                     !passwordCharacterSchema.safeParse(newPassword).success ||
                     !passwordNumberSchema.safeParse(confirmNewPassword).success
                   }

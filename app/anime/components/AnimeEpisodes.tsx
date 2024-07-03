@@ -21,9 +21,14 @@ export default function AnimeEpisodes({ episodes }: AnimeEpisodesProps) {
 
   return (
     <div className="flex flex-col gap-y-2">
-      {episodesToShow.map((episode, index) => {
-        return <AnimeEpisode key={index} episode={episode} />
-      })}
+      <div
+        className="transition-max-height overflow-hidden duration-500 ease-in-out"
+        style={{ maxHeight: showAllEpisodes ? '3000px' : '600px' }}
+      >
+        {episodesToShow.map((episode, index) => {
+          return <AnimeEpisode key={index} episode={episode} />
+        })}
+      </div>
       {episodes.length > 4 && (
         <div
           className="flex cursor-pointer justify-end text-muted-foreground underline"

@@ -18,8 +18,8 @@ export default async function ForgotPassword() {
     }).then((res) => res.json())
 
     const interspersedBackdropPaths = trending.movies
-      .map((movie: any, index: number) => [
-        movie.backdrop_path,
+      .map((item: Movie | TVShow, index: number) => [
+        item.backdrop_path,
         trending.tvShows?.[index]?.backdrop_path,
       ])
       .flat()

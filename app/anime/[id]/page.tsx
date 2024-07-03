@@ -12,12 +12,15 @@ import Overview from '@/app/movie/components/Overview'
 import AnimeSeasonsAndEpisodes from '../components/AnimeSeasonsAndEpisodes'
 import SimilarAnime from '../components/SimilarAnime'
 import RelatedAnime from '../components/RelatedAnime'
+import { createClient } from '@/utils/supabase/server'
 
-export const generateMetadata = ({ params }: Props): Metadata => {
-  const title = params.id.split('-').slice(1).join(' ').replace(/%20/g, ' ')
-  const decoded_title = decodeURIComponent(title)
+export const generateMetadata = async ({ params }: Props) => {
+  const result = await fetch(
+    'http://localhost:8080/api/getanime/' + params.id.split('-')[0]
+  )
+  const data = await result.json()
   return {
-    title: `${decoded_title}`,
+    title: `${data[0].anime[0].title}`,
   }
 }
 
@@ -29,7 +32,12 @@ type Props = {
 
 export default async function Anime({ params }: Props) {
   const result = await fetch(
-    'http://localhost:8080/api/getanime/' + params.id.split('-')[0]
+    'http://localhost:8080/api/getanime/' + params.id.split('-')[0],
+    {
+      next: {
+        revalidate: 3600,
+      },
+    }
   )
   const data = await result.json()
 
@@ -50,7 +58,7 @@ export default async function Anime({ params }: Props) {
         <div className="flex justify-center">
           <Suspense
             fallback={
-              <Skeleton className="mt-2 h-[186px] w-[124px] sm:h-[full] sm:min-w-[182px] md:min-w-[224px]" />
+              <Skeleton className="mt-2 h-[186px] w-[124px] sm:h-[273px] sm:min-w-[182px] md:h-[336px] md:min-w-[224px]" />
             }
           >
             <AnimePoster
@@ -83,7 +91,7 @@ export default async function Anime({ params }: Props) {
           </div>
           <div className="mt-6">
             <div className="contentpagedetailtitle">Details</div>
-            <Suspense fallback={<Skeleton className="mt-6 h-[253px] w-full" />}>
+            <Suspense fallback={<Skeleton className="mt-6 h-[430px] w-full" />}>
               <AnimeDetails anime={anime} creators={data[0]?.creators} />
             </Suspense>
           </div>
@@ -93,7 +101,11 @@ export default async function Anime({ params }: Props) {
             </div>
 
             <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
-              <Overview overview={anime.description} />
+              <Overview
+                overview={anime.description}
+                next_episode={data?.next_episode}
+                previous_episode={data?.previous_episode}
+              />
             </Suspense>
           </div>
           {anime.type !== 'Movie' && (

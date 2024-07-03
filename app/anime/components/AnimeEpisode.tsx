@@ -18,10 +18,6 @@ export default function AnimeEpisode({ episode }: { episode: Episode }) {
     setExpanded(!expanded)
   }
 
-  const overviewText = expanded
-    ? episode.episode_overview
-    : episode.episode_overview.split(' ').slice(0, 10).join(' ')
-
   return (
     <div className="flex gap-x-5">
       <div className="flex h-[80px] min-w-[140px]">
@@ -47,10 +43,15 @@ export default function AnimeEpisode({ episode }: { episode: Episode }) {
           </div>
         </div>
         <div className="text-[12px] font-normal leading-[20px]">
-          {overviewText && (
+          {episode.episode_overview && (
             <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
-              {overviewText}
-              {episode.episode_overview.split(' ') && (
+              <div
+                className="transition-max-height overflow-hidden duration-500 ease-in-out"
+                style={{ maxHeight: expanded ? '1000px' : '72px' }}
+              >
+                {episode.episode_overview}
+              </div>
+              {episode.episode_overview.split(' ').length > 10 && (
                 <span
                   className="cursor-pointer text-blue-500"
                   onClick={handleToggleExpand}

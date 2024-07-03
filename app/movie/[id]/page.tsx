@@ -19,53 +19,35 @@ type Props = {
   }
 }
 
-export const generateMetadata = ({ params }: Props): Metadata => {
-  const title = params.id.split('-').slice(1).join(' ').replace(/%20/g, ' ')
-  const decoded_title = decodeURIComponent(title)
+export const generateMetadata = async ({ params }: Props) => {
+  const { data: movie } = await getMovieData(
+    parseInt(params.id.split('-')[0] + '1')
+  )
   return {
-    title: `${decoded_title}`,
+    title: `${movie.details.title}`,
   }
 }
 
 async function getMovieData(id: number) {
-  const data = await fetch(`http://localhost:8080/api/getmovie/${id}`)
+  const data = await fetch(`http://localhost:8080/movietest/${id}`, {
+    cache: 'no-cache',
+  })
   const result = await data.json()
-  if (result.message === 'This is an anime.') {
+  if (result.message === 'Is an anime') {
     redirect(`/anime/${result.data.anidb_id}`)
   }
   return result
 }
 
 export default async function Movie({ params }: { params: { id: string } }) {
-  const movie = await getMovieData(parseInt(params.id.split('-')[0]))
-  const {
-    title,
-    backdrop_path,
-    poster_path,
-    tagline,
-    credits,
-    budget,
-    revenue,
-    overview,
-    similar,
-  } = movie
-  const highestVotedEnLogo = movie.images.logos.find(
-    (logo: { iso_639_1: string }) => logo.iso_639_1 === 'en'
+  const { data: movie } = await getMovieData(
+    parseInt(params.id.split('-')[0] + '1')
   )
-  const selectedLogo = highestVotedEnLogo || movie.images.logos[0]
-  const logo_path = `https://image.tmdb.org/t/p/original${selectedLogo.file_path}`
-  const certification =
-    movie.release_dates.results
-      .find((result: any) => result.iso_3166_1 === 'US')
-      .release_dates.map((release: any) => {
-        if (release.certification) {
-          return release.certification
-        }
-        return ''
-      })[0] || ''
-
-  const crew = credits.crew
-  const similarMovies = similar.results
+  const similarMoviesRes = await fetch(
+    `http://localhost:8080/api/getsimilarmovies/${parseInt(params.id.split('-')[0])}`,
+    { cache: 'no-cache' }
+  )
+  const similarMovies = await similarMoviesRes.json()
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -73,9 +55,9 @@ export default async function Movie({ params }: { params: { id: string } }) {
         fallback={<Skeleton className="h-[288px] w-full sm:h-[576px]" />}
       >
         <Backdrop
-          backdrop_path={backdrop_path}
-          title={title}
-          logo_path={logo_path}
+          backdrop_path={`https://image.tmdb.org/t/p/original${movie.details.backdrop_path}`}
+          title={movie.details.title}
+          logo_path={`https://image.tmdb.org/t/p/w300${movie.details.logo_path}`}
         />
       </Suspense>
       <div className="flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8 xl:px-40">
@@ -86,9 +68,9 @@ export default async function Movie({ params }: { params: { id: string } }) {
             }
           >
             <Poster
-              poster_path={poster_path}
-              title={title}
-              id={movie.id}
+              poster_path={movie.details.poster_path}
+              title={movie.details.title}
+              id={movie.details.id}
               item_type="movie"
             />
           </Suspense>
@@ -96,34 +78,38 @@ export default async function Movie({ params }: { params: { id: string } }) {
         <div className="flex basis-4/5 flex-col">
           <div className="flex justify-center sm:justify-start">
             <Suspense fallback={<Skeleton className="mt-6 h-6 w-[60vw]" />}>
-              <Title title={title} />
+              <Title title={movie.details.title} />
             </Suspense>
           </div>
           <div className="flex justify-center sm:justify-start">
             <Suspense fallback={<Skeleton className="mt-6 h-[24px] w-[80%]" />}>
-              <Tagline tagline={tagline} />
+              <Tagline tagline={movie.details.tagline} />
             </Suspense>
           </div>
           <div className="flex justify-center">
             <Suspense fallback={<Skeleton className="mt-6 h-[94px] w-full" />}>
               <MovieInfo
-                vote_average={movie.vote_average}
-                release_date={movie.release_date}
-                runtime={movie.runtime}
-                language={movie.original_language}
-                certification={certification}
+                vote_average={movie.details.vote_average}
+                release_date={movie.details.release_date}
+                runtime={movie.details.runtime}
+                language={movie.details.original_language}
+                certification={movie.details.certification}
               />
             </Suspense>
           </div>
           <div className="mt-6 flex justify-center sm:hidden">
             <Suspense fallback={<Skeleton className="mt-6 h-[168px] w-full" />}>
-              <MobileButtons item_id={movie.id} item_type="movie" />
+              <MobileButtons item_id={movie.details.id} item_type="movie" />
             </Suspense>
           </div>
           <div className="mt-6">
             <div className="contentpagedetailtitle">Details</div>
             <Suspense fallback={<Skeleton className="mt-6 h-[253px] w-full" />}>
-              <Details crew={crew} budget={budget} revenue={revenue} />
+              <Details
+                budget={movie.details.budget}
+                revenue={movie.details.revenue}
+                crew={movie.details.main_staff}
+              />
             </Suspense>
           </div>
           <div className="mt-6">
@@ -131,19 +117,26 @@ export default async function Movie({ params }: { params: { id: string } }) {
               Overview
             </div>
 
-            <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
-              <Overview overview={overview} />
+            <Suspense fallback={<Skeleton className="mt-6 h-[350px] w-full" />}>
+              <Overview overview={movie.details.overview} />
             </Suspense>
           </div>
           <div className="mt-6">
             <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
-              <CastAndCrew credits={credits} />
+              <CastAndCrew
+                cast={movie.credits.cast}
+                crew={movie.credits.crew}
+              />
             </Suspense>
           </div>
           <div className="mt-6">
             <div className="contentpagedetailtitle">Similar Movies</div>
             <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
-              <SimilarMovies similar={similarMovies} />
+              {!similarMovies.ok ? (
+                <p>No similar movies found</p>
+              ) : (
+                <SimilarMovies similar={similarMovies.data} />
+              )}
             </Suspense>
           </div>
         </div>

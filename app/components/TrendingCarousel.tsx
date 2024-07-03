@@ -1,3 +1,5 @@
+'use client'
+
 import MovieCard from '@/components/MovieCard'
 import {
   Carousel,
@@ -6,20 +8,15 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
+import { User } from '@supabase/supabase-js'
 
-type CarouselProps = {
+type Props = {
   title: string
   items: Movie[] | TVShow[] | Anime[]
-  yearExtractor: (item: Movie | TVShow | Anime) => string
-  ratingExtractor: (item: Movie | TVShow | Anime) => number
+  user: User | null
 }
 
-export default function TrendingCarousel({
-  title,
-  items,
-  yearExtractor,
-  ratingExtractor,
-}: CarouselProps) {
+export default function TrendingCarousel({ title, items, user }: Props) {
   return (
     <>
       <div className="text-lg font-semibold not-italic leading-7 text-primary">
@@ -34,14 +31,12 @@ export default function TrendingCarousel({
       >
         <CarouselContent>
           {items.map((item) => {
-            const year = yearExtractor(item)
-            const rating = ratingExtractor(item)
             return (
               <CarouselItem
                 key={item.id}
                 className="flex max-w-[140px] md:mr-8"
               >
-                <MovieCard item={item} year={year} rating={rating} />
+                <MovieCard item={item} user={user} />
               </CarouselItem>
             )
           })}

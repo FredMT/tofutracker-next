@@ -58,7 +58,7 @@ export default function RootLayout({
           <Toaster />
           <Footer />
         </ThemeProvider>
-        <Analytics />
+        <Analytics debug={false} mode="development" />
       </body>
     </html>
   )

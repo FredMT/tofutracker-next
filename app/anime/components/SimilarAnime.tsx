@@ -51,8 +51,6 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
     return <div>Loading...</div>
   }
 
-  const similar = data.data
-
   return (
     <Card className="rounded-none border-x-0 border-t-0 pb-8" id="similar">
       <div className="mt-6">
@@ -64,8 +62,8 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
           className="w-full"
         >
           <CarouselContent className="max-w-[120px] md:max-w-[140px] lg:max-w-[165px]">
-            {similar ? (
-              similar?.map((item: SimilarAnime) => (
+            {data.data ? (
+              data.data.map((item: SimilarAnime) => (
                 <CarouselItem key={item.id}>
                   <Link href={`/anime/${item.id}`}>
                     <div className="flex flex-col">
@@ -81,7 +79,7 @@ export default function SimilarAnime({ type, id }: SimilarProps) {
                       </div>
                       <div className="text-[12px] text-muted-foreground">
                         <span>{getSeasonYear(item.start_date)}</span> &bull;
-                        &nbsp;
+                        &bull; &nbsp;
                         <span className="tracking-wide">{item.rating}</span>
                       </div>
                     </div>

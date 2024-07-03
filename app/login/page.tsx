@@ -15,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import LoginWithGoogle from '../components/LoginWithGoogle'
+import UseFormStatusPendingButton from '@/components/UseFormStatusPendingButton'
 
 const emailSchema = z.string().email()
 
@@ -58,7 +59,7 @@ export default async function Login({
       .single()
 
     if (emailError) {
-      console.log('error', emailError)
+      return redirect('/login?message=Could not authenticate user')
     }
 
     if (data) {
@@ -82,8 +83,8 @@ export default async function Login({
   }).then((res) => res.json())
 
   const interspersedBackdropPaths = trending.movies
-    .map((movie: any, index: number) => [
-      movie.backdrop_path,
+    .map((item: Movie | TVShow, index: number) => [
+      item.backdrop_path,
       trending.tvShows?.[index]?.backdrop_path,
     ])
     .flat()
@@ -128,7 +129,7 @@ export default async function Login({
               <CardHeader>
                 <CardTitle className="text-2xl">Login</CardTitle>
                 <CardDescription className="text-bold">
-                  Enter your email below to login to your account
+                  Enter your email or username below to login to your account
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -138,11 +139,11 @@ export default async function Login({
                     className="flex w-full flex-1 flex-col justify-center gap-2 text-foreground"
                   >
                     <div className="grid gap-2">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="email">Email or Username</Label>
                       <Input
                         id="email"
-                        type="email"
-                        placeholder="m@example.com"
+                        type="text"
+                        placeholder="Email or Username"
                         required
                         name="username_or_email_input"
                       />
@@ -165,13 +166,13 @@ export default async function Login({
                         name="password"
                       />
                     </div>
-                    <Button
-                      type="submit"
-                      className="w-full"
-                      formAction={signIn}
-                    >
-                      Login
-                    </Button>
+                    <UseFormStatusPendingButton
+                      text="Login"
+                      variant="default"
+                    />
+                    {searchParams.message && (
+                      <p className="text-red-500">{searchParams.message}</p>
+                    )}
                   </form>
                   <LoginWithGoogle />
                 </div>
