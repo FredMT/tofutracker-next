@@ -8,6 +8,7 @@ export default function UseFormStatusPendingButton({
   style,
   variant = 'secondary',
   disabled = false,
+  component,
 }: {
   text: string
   style?: string
@@ -19,6 +20,7 @@ export default function UseFormStatusPendingButton({
     | 'link'
     | 'ghost'
   disabled?: boolean
+  component?: React.ReactNode
 }) {
   const { pending } = useFormStatus()
   return pending ? (
@@ -28,13 +30,18 @@ export default function UseFormStatusPendingButton({
       ></div>
     </Button>
   ) : (
-    <Button
-      variant={variant}
-      className={style}
-      type="submit"
-      disabled={disabled}
-    >
-      {text}
-    </Button>
+    <>
+      <Button
+        variant={variant}
+        className={style}
+        type="submit"
+        disabled={disabled}
+      >
+        <div className="flex flex-row justify-center">
+          {component}
+          {text}
+        </div>
+      </Button>
+    </>
   )
 }
