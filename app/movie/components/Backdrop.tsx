@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import React from 'react'
 
 export default async function Backdrop({
@@ -12,16 +11,15 @@ export default async function Backdrop({
 }) {
   return (
     <div className="relative overflow-hidden">
-      <Image
+      <img
         className="h-[288px] w-full object-cover sm:h-[576px] sm:w-full"
-        src={`https://image.tmdb.org/t/p/original${backdrop_path}`}
+        src={backdrop_path}
         alt={title}
         width={1920}
         height={1080}
-        priority
       />
-      <Image
-        src={`https://image.tmdb.org/t/p/original${logo_path}`}
+      <img
+        src={logo_path}
         alt={title}
         width={1920}
         height={1080}

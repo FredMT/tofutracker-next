@@ -39,7 +39,7 @@ export default function CommentLikeButton({ comment }: { comment: Comment }) {
     formData.append('activity_id', comment.activity_id)
 
     try {
-      likeComment({ formData })
+      await likeComment({ formData })
 
       startTransition(() => {
         setOptimisticIsLiked('TOGGLE')

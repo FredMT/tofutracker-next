@@ -22,11 +22,6 @@ export default async function MovieInfo({
   language,
   certification,
 }: MovieInfoProps) {
-  const releaseDateDisplay = format(new Date(release_date), 'PPP')
-  const humanRuntime = humanDuration(runtime * 60)
-    .replace(' hours', 'h')
-    .replace(' minutes', 'm')
-
   const newlanguage = new Intl.DisplayNames(['en'], { type: 'language' }).of(
     language
   )
@@ -36,13 +31,13 @@ export default async function MovieInfo({
       <CardContent className="px-5 py-[18px]">
         <div className="flex flex-wrap justify-center gap-x-6 gap-y-4 sm:justify-start">
           <Badge className="dark:bg-transparent dark:text-white dark:ring-1 dark:ring-white">
-            {vote_average}
+            {vote_average.toFixed(2)}
           </Badge>
           <div className="text-[12px] font-medium not-italic leading-[20px]">
-            {releaseDateDisplay}
+            {release_date}
           </div>
           <div className="text-[12px] font-medium not-italic leading-[20px]">
-            {humanRuntime}
+            {runtime}
           </div>
           <div className="text-[12px] font-medium not-italic leading-[20px]">
             {newlanguage}

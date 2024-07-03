@@ -43,7 +43,7 @@ export default async function AuthButton() {
 
   return user ? (
     <>
-      <div className="hidden sm:flex">
+      <div className="hidden cursor-pointer sm:flex">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar>

@@ -74,7 +74,7 @@ export default function CastAndCrew({
   const transformedCast = transformCast(cast)
   const transformedCrew = transformCrew(crew)
   return (
-    <Tabs defaultValue="credits">
+    <Tabs defaultValue="cast">
       <TabsList className="gap-1 border bg-transparent">
         <TabsTrigger value="cast" className="data-[state=active]:bg-accent">
           Cast
