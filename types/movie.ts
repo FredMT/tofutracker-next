@@ -3,10 +3,11 @@ type Movie = {
   adult: boolean
   title: string
   name: never
+  logo_path: string
   media_type: 'movie'
   video: boolean
   budget: number
-  genres: Genre[]
+  genres: string[]
   images: Images
   status: string
   videos: Videos

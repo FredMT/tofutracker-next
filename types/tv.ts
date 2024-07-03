@@ -3,10 +3,11 @@ type TVShow = {
   name: string
   title: never
   media_type: 'tv'
+  logo_path: string
 
   type: string
   adult: boolean
-  genres: Genre[]
+  genres: string[]
   images: {
     logos: Image[]
     posters: Image[]
