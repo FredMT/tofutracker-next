@@ -55,7 +55,7 @@ export default function CastAndCrew({
         >
           <CarouselContent className="max-w-[120px] md:max-w-[140px] lg:max-w-[165px]">
             {cast.map(({ name, profile_path, character, id }) => (
-              <CarouselItem key={id} className="">
+              <CarouselItem key={id + Math.random()} className="">
                 <div className="flex flex-col">
                   <Image
                     src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${profile_path}`}
@@ -89,7 +89,7 @@ export default function CastAndCrew({
         >
           <CarouselContent className="max-w-[120px] md:max-w-[140px] lg:max-w-[165px]">
             {crew.slice(0, 50).map(({ name, profile_path, job, id }) => (
-              <CarouselItem key={id} className="">
+              <CarouselItem key={id + Math.random()} className="">
                 <div className="flex flex-col">
                   <Image
                     src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${profile_path}`}

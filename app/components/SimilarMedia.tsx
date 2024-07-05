@@ -25,7 +25,7 @@ type SimilarMediaProps = {
 
 export default function SimilarMedia({ items, basePath }: SimilarMediaProps) {
   return (
-    <div className="my-6" id="similar">
+    <div className="mt-6" id="similar">
       <Carousel
         opts={{
           align: 'start',

@@ -1,3 +1,4 @@
+'use client'
 import { Card } from './ui/card'
 import Link from 'next/link'
 import { HoverCard, HoverCardTrigger } from '@/components/ui/hover-card'

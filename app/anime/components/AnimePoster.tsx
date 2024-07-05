@@ -96,16 +96,18 @@ export default async function AnimePoster({
 
   return (
     <div className="flex flex-col gap-y-6" id="poster">
-      <Image
-        className="h-[186px] w-[124px] rounded-sm border border-muted object-cover sm:h-[273px] sm:min-w-[182px] md:h-[336px] md:min-w-[224px]"
-        src={poster_path ? poster_path : 'https://placehold.co/600x900/jpg'}
-        alt={title}
-        width={600}
-        height={900}
-        priority
-      />
-      <div className="hidden gap-y-4 sm:flex sm:flex-col">
-        <MobileButtons item_id={id} item_type="anime" />
+      <div className="sticky top-6">
+        <Image
+          className="mb-6 h-[186px] w-[124px] rounded-sm border border-muted object-cover sm:h-[273px] sm:min-w-[182px] md:h-[336px] md:min-w-[224px]"
+          src={poster_path ? poster_path : 'https://placehold.co/600x900/jpg'}
+          alt={title}
+          width={600}
+          height={900}
+          priority
+        />
+        <div className="hidden gap-y-4 sm:flex sm:flex-col">
+          <MobileButtons item_id={id} item_type="anime" />
+        </div>
       </div>
     </div>
   )

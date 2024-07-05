@@ -52,27 +52,28 @@ export default async function Details({
           Creators
         </div>
         <div className="flex flex-col">
-          {creators.map((creator, index) => (
-            <p
-              key={index}
-              className="ml-6 text-[14px] font-medium leading-[24px]"
-            >
-              {creator.name}
-            </p>
-          ))}
+          {creators &&
+            creators.map((creator, index) => (
+              <p
+                key={index}
+                className="ml-6 text-[14px] font-medium leading-[24px]"
+              >
+                {creator.name}
+              </p>
+            ))}
         </div>
         <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
           Production Companies
         </div>
         <div className="flex flex-col">
-          {production_companies.map((company, index) => (
-            <p
-              key={index}
-              className="ml-6 text-[14px] font-medium leading-[24px]"
-            >
-              {company.name}
-            </p>
-          ))}
+          <p className="ml-6 text-[14px] font-medium leading-[24px]">
+            {production_companies.slice(0, 3).map((company, index) => (
+              <span key={index}>
+                {company.name}
+                {index < 3 - 1 ? ', ' : ''}
+              </span>
+            ))}
+          </p>
         </div>
         <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
           Seasons

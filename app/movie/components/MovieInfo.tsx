@@ -3,16 +3,13 @@ import { Card, CardContent } from '@/components/ui/card'
 import React from 'react'
 import { format, formatDuration, intervalToDuration } from 'date-fns'
 
-function humanDuration(time: number) {
-  return formatDuration(intervalToDuration({ start: 0, end: time * 1000 }))
-}
-
 type MovieInfoProps = {
   vote_average: number
   release_date: string
-  runtime: number
+  runtime?: number
   language: string
   certification: string
+  networks?: Network[]
 }
 
 export default async function MovieInfo({
@@ -21,6 +18,7 @@ export default async function MovieInfo({
   runtime,
   language,
   certification,
+  networks,
 }: MovieInfoProps) {
   const newlanguage = new Intl.DisplayNames(['en'], { type: 'language' }).of(
     language
@@ -45,6 +43,18 @@ export default async function MovieInfo({
           <div className="text-[12px] font-medium not-italic leading-[20px]">
             {certification}
           </div>
+          {networks && (
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
+              {networks.map((network) => (
+                <img
+                  key={network.id}
+                  className="h-4"
+                  src={`https://image.tmdb.org/t/p/original${network.logo_path}`}
+                  alt={network.name}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
