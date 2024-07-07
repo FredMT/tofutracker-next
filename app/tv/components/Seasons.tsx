@@ -29,7 +29,11 @@ export default function Seasons({ seasons }: { seasons: Seasons[] }) {
             >
               <img
                 className="h-[210px] w-[140px] rounded-sm object-cover"
-                src={`https://image.tmdb.org/t/p/w440_and_h660_face${show.poster_path}`}
+                src={
+                  show.poster_path
+                    ? `https://image.tmdb.org/t/p/w440_and_h660_face${show.poster_path}`
+                    : `https://placehold.co/440x660?text=${show.name.replaceAll(' ', '+')}`
+                }
                 alt={show.name}
                 width={112}
                 height={168}

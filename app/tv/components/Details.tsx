@@ -21,8 +21,9 @@ type Props = {
   status: string
   creators: Creator[]
   production_companies: ProductionCompany[]
-  seasons: number
-  episodes: number
+  seasons?: number
+  episodes?: number
+  data?: any
 }
 
 export default async function Details({
@@ -32,6 +33,7 @@ export default async function Details({
   seasons,
   episodes,
   type,
+  data,
 }: Props) {
   return (
     <Card className="rounded-none border-x-0 border-t-0 pb-8" id="details">
@@ -67,26 +69,55 @@ export default async function Details({
         </div>
         <div className="flex flex-col">
           <p className="ml-6 text-[14px] font-medium leading-[24px]">
-            {production_companies.slice(0, 3).map((company, index) => (
-              <span key={index}>
-                {company.name}
-                {index < 3 - 1 ? ', ' : ''}
-              </span>
+            {production_companies.slice(0, 3).map((company, index, array) => (
+              <React.Fragment key={company.id}>
+                <span>{company.name}</span>
+                {index < array.length - 1 && <span>, </span>}
+              </React.Fragment>
             ))}
           </p>
         </div>
-        <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
-          Seasons
-        </div>
-        <div className="ml-6 text-[14px] font-medium leading-[24px]">
-          {seasons}
-        </div>
-        <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
-          Episodes
-        </div>
-        <div className="ml-6 text-[14px] font-medium leading-[24px]">
-          {episodes}
-        </div>
+
+        {seasons && (
+          <>
+            <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
+              Seasons
+            </div>
+            <div className="ml-6 text-[14px] font-medium leading-[24px]">
+              {seasons}
+            </div>
+          </>
+        )}
+        {episodes && (
+          <>
+            <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
+              Episodes
+            </div>
+            <div className="ml-6 text-[14px] font-medium leading-[24px]">
+              {episodes}
+            </div>
+          </>
+        )}
+        {Boolean(data?.episodes?.length) && (
+          <>
+            <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
+              No. of episodes
+            </div>
+            <div className="ml-6 text-[14px] font-medium leading-[24px]">
+              {data.episodes.length}
+            </div>
+          </>
+        )}
+        {data?.total_season_runtime && (
+          <>
+            <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
+              Total runtime
+            </div>
+            <div className="ml-6 text-[14px] font-medium leading-[24px]">
+              {data.total_season_runtime}
+            </div>
+          </>
+        )}
       </div>
     </Card>
   )

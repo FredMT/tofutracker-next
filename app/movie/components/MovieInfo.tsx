@@ -10,6 +10,7 @@ type MovieInfoProps = {
   language: string
   certification: string
   networks?: Network[]
+  country?: string
 }
 
 export default async function MovieInfo({
@@ -19,6 +20,7 @@ export default async function MovieInfo({
   language,
   certification,
   networks,
+  country,
 }: MovieInfoProps) {
   const newlanguage = new Intl.DisplayNames(['en'], { type: 'language' }).of(
     language
@@ -37,12 +39,17 @@ export default async function MovieInfo({
           <div className="text-[12px] font-medium not-italic leading-[20px]">
             {runtime}
           </div>
-          <div className="text-[12px] font-medium not-italic leading-[20px]">
+          <div className="text-[12px] font-medium capitalize not-italic leading-[20px]">
             {newlanguage}
           </div>
           <div className="text-[12px] font-medium not-italic leading-[20px]">
             {certification}
           </div>
+          {country && (
+            <div className="text-[12px] font-medium not-italic leading-[20px]">
+              {country}
+            </div>
+          )}
           {networks && (
             <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
               {networks.map((network) => (

@@ -58,7 +58,11 @@ export default function CastAndCrew({
               <CarouselItem key={id + Math.random()} className="">
                 <div className="flex flex-col">
                   <Image
-                    src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${profile_path}`}
+                    src={
+                      profile_path
+                        ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${profile_path}`
+                        : `https://placehold.co/300x450?text=${name.replaceAll(' ', '+')}`
+                    }
                     alt={`${name}`}
                     className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px] lg:h-[211px] lg:w-[140px]"
                     width={172}
@@ -92,7 +96,11 @@ export default function CastAndCrew({
               <CarouselItem key={id + Math.random()} className="">
                 <div className="flex flex-col">
                   <Image
-                    src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${profile_path}`}
+                    src={
+                      profile_path
+                        ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${profile_path}`
+                        : `https://placehold.co/300x450?text=${name.replaceAll(' ', '+')}`
+                    }
                     alt={`${name}`}
                     className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px] lg:h-[211px] lg:w-[140px]"
                     width={172}

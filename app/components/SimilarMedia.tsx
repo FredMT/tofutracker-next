@@ -38,7 +38,11 @@ export default function SimilarMedia({ items, basePath }: SimilarMediaProps) {
               <Link href={`/${basePath}/${item.id}`}>
                 <div className="flex flex-col">
                   <Image
-                    src={`https://image.tmdb.org/t/p/w300_and_h450_bestv2/${item.poster_path}`}
+                    src={
+                      item.poster_path
+                        ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${item.poster_path}`
+                        : `https://placehold.co/300x450?text=${item.title.replaceAll(' ', '+')}`
+                    }
                     alt={`${item.title} Poster`}
                     className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px] lg:h-[211px] lg:w-[140px]"
                     width={300}
