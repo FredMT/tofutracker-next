@@ -15,12 +15,13 @@ import {
 } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-import { CalendarDaysIcon, CalendarIcon } from 'lucide-react'
+import { CalendarIcon } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { format, startOfDay } from 'date-fns'
 import { cn } from '@/lib/utils'
+import DeleteItemListEditorDialog from './DeleteItemListEditorDialog'
 
 export default function ListEditorDialogContent() {
   const [startDate, setStartDate] = useState<Date | undefined>(new Date())
@@ -199,7 +200,10 @@ export default function ListEditorDialogContent() {
         />
       </div>
 
-      <Button className="mt-4 w-full max-sm:w-[50vw]">Save</Button>
+      <div className="flex justify-between">
+        <Button className="mt-4 w-fit max-sm:w-[50vw]">Save</Button>
+        <DeleteItemListEditorDialog />
+      </div>
     </div>
   )
 }

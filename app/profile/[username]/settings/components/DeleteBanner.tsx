@@ -17,7 +17,7 @@ export default function DeleteBanner({
 
   async function handleDelete(userId: string) {
     setIsPending(true)
-    const response = await fetch(`/api/deleteBanner/`, {
+    const response = await fetch(`/api/delete-banner/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
