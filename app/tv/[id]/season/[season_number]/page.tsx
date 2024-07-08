@@ -80,7 +80,7 @@ export default async function TVSeason({ params }: Props) {
               <Suspense
                 fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
               >
-                <MobileButtons item_id={data.season_id} item_type="tv" />
+                <MobileButtons item_id={data.season_id} />
               </Suspense>
             </div>
             <div className="mt-6">

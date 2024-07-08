@@ -99,7 +99,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
           </div>
           <div className="mt-6 flex justify-center sm:hidden">
             <Suspense fallback={<Skeleton className="mt-6 h-[168px] w-full" />}>
-              <MobileButtons item_id={movie.details.id} item_type="movie" />
+              <MobileButtons item_id={movie.details.id} />
             </Suspense>
           </div>
           <div className="mt-6">

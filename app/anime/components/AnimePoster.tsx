@@ -106,7 +106,7 @@ export default async function AnimePoster({
           priority
         />
         <div className="hidden gap-y-4 sm:flex sm:flex-col">
-          <MobileButtons item_id={id} item_type="anime" />
+          <MobileButtons item_id={id} />
         </div>
       </div>
     </div>
