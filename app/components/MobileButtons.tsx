@@ -1,52 +1,44 @@
 import { createClient } from '@/utils/supabase/server'
-import AddToLibraryAndRate from '../movie/components/AddToLibraryAndRate'
+import { Dialog, DialogContent, DialogOverlay } from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { ChevronDown } from 'lucide-react'
+import ListEditorDialogContent from './ListEditorDialogContent'
+import { Button } from '@/components/ui/button'
+import AddToLibraryButton from './AddToLibraryButton'
+import AddToLibraryDropdownMenu from './AddToLibraryDropdownMenu'
 
-export default async function MobileButtons({
-  item_id,
-  item_type,
-}: {
-  item_id: number
-  item_type: string
-}) {
+export default async function MobileButtons({ item_id }: { item_id: number }) {
   const supabase = createClient()
   const {
     data: { user },
   } = await supabase.auth.getUser()
 
-  let isInLibrary = false
-  let currentRating = -1
-  let isInWatchlist = false
-
-  if (user) {
-    const { data, error } = await supabase
-      .from('item_lists')
-      .select('*')
-      .eq('item_id', item_id)
-      .eq('user_id', user.id)
-    if (error) {
-      console.error('Failed to fetch library:', error.message)
-    } else {
-      data.forEach((item) => {
-        if (item.list_type === 'Library') {
-          isInLibrary = true
-          currentRating = item.rating || -1
-        } else if (item.list_type === 'Watchlist') {
-          isInWatchlist = true
-        }
-      })
-    }
-  }
-
   return (
-    <div className="flex w-full flex-col gap-y-4">
-      <AddToLibraryAndRate
-        userId={user?.id!}
-        itemId={item_id}
-        itemType={item_type}
-        isInLibrary={isInLibrary}
-        currentRating={currentRating}
-        isInWatchlist={isInWatchlist}
-      />
+    <div className="flex w-full">
+      <AddToLibraryButton user={user} />
+      <Dialog>
+        <DropdownMenu modal={false}>
+          <DropdownMenuTrigger>
+            <Button
+              className="w-full sm:max-md:px-1"
+              variant="secondary"
+              asChild
+            >
+              <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+          <AddToLibraryDropdownMenu user={user} />
+
+          <DialogOverlay>
+            <DialogContent>
+              <ListEditorDialogContent />
+            </DialogContent>
+          </DialogOverlay>
+        </DropdownMenu>
+      </Dialog>
     </div>
   )
 }

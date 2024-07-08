@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import UseFormStatusPendingButton from '../../../../../components/UseFormStatusPendingButton'
+import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
 import { changePassword } from './actions'
 import { useToast } from '@/components/ui/use-toast'
 import { useFormState } from 'react-dom'

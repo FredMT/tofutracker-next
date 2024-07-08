@@ -1,5 +1,5 @@
 'use client'
-import UseFormStatusPendingButton from '@/components/UseFormStatusPendingButton'
+import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import Image from 'next/image'

@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
-import HomepageTrendingCarousel from './components/HomepageTrendingCarousel'
-import TrendingCarousel from './components/TrendingCarousel'
+import HomepageTrendingCarousel from '@/app/components/HomepageTrendingCarousel'
+import TrendingCarousel from '@/app/components/TrendingCarousel'
 
 export const metadata = {
   title: 'Homepage - TofuTracker',

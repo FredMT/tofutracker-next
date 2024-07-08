@@ -6,12 +6,12 @@ import Poster from '@/app/components/Poster'
 import Tagline from '@/app/movie/components/Tagline'
 import MovieInfo from '@/app/movie/components/MovieInfo'
 import MobileButtons from '@/app/components/MobileButtons'
-import Details from '../components/Details'
+import Details from '@/app/tv/components/Details'
 import Overview from '@/app/movie/components/Overview'
 import CastAndCrew from '@/app/movie/components/CastAndCrew'
-import SimilarTVShows from '../components/SimilarTVShows'
+import SimilarTVShows from '@/app/tv/components/SimilarTVShows'
 import { redirect } from 'next/navigation'
-import Seasons from '../components/Seasons'
+import Seasons from '@/app/tv/components/Seasons'
 import Videos from '@/app/components/Videos'
 
 export const generateMetadata = async ({ params }: Props) => {
@@ -108,7 +108,7 @@ export default async function TVShow({ params }: { params: { id: string } }) {
               <Suspense
                 fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
               >
-                <MobileButtons item_id={tv2.details.id} item_type="tv" />
+                <MobileButtons item_id={tv2.details.id} />
               </Suspense>
             </div>
             <div className="mt-6">

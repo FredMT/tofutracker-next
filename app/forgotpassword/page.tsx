@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
-import ForgotPasswordForm from './components/ForgotPasswordForm'
+import ForgotPasswordForm from '@/app/forgotpassword/components/ForgotPasswordForm'
 
 export default async function ForgotPassword() {
   const supabase = createClient()

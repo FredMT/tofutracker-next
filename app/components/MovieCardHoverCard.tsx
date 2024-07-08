@@ -1,17 +1,16 @@
 'use client'
-import { Badge } from './ui/badge'
+import { Badge } from '@/components/ui/badge'
 import { format } from 'date-fns'
-import { Button } from './ui/button'
+import { Button } from '@/components/ui/button'
 import { BookmarkPlus, Library } from 'lucide-react'
-import { HoverCardContent, HoverCardPortal } from './ui/hover-card'
-import UseFormStatusPendingButton from './UseFormStatusPendingButton'
+import { HoverCardContent, HoverCardPortal } from '@/components/ui/hover-card'
+import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
 import { startTransition, useMemo, useOptimistic } from 'react'
 import {
   addOrRemoveFromLibrary,
   addOrRemoveFromWatchlist,
 } from '@/app/movie/components/actions'
 import { User } from '@supabase/supabase-js'
-import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
 function getSeasonYear(startDate: string) {

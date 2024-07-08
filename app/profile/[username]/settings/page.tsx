@@ -2,7 +2,7 @@
 
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import SettingsAccordion from './components/SettingsAccordion'
+import SettingsAccordion from '@/app/profile/[username]/settings/components/SettingsAccordion'
 import { Metadata } from 'next'
 
 export const generateMetadata = ({

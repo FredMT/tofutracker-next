@@ -1,7 +1,8 @@
 import { Input } from '@/components/ui/input'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
-import UseFormStatusPendingButton from '../../../../../components/UseFormStatusPendingButton'
+import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
+
 import { z } from 'zod'
 import DeleteBanner from './DeleteBanner'
 

@@ -4,7 +4,6 @@ import Image from 'next/image'
 import { Metadata } from 'next'
 import { z } from 'zod'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -14,8 +13,8 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import LoginWithGoogle from '../components/LoginWithGoogle'
-import UseFormStatusPendingButton from '@/components/UseFormStatusPendingButton'
+import LoginWithGoogle from '@/app/components/LoginWithGoogle'
+import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
 
 const emailSchema = z.string().email()
 

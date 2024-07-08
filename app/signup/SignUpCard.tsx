@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { FaGoogle } from 'react-icons/fa'
-import UseFormStatusPendingButton from '@/components/UseFormStatusPendingButton'
+import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
 import { useFormState } from 'react-dom'
 import { useToast } from '@/components/ui/use-toast'
 import { useEffect, useState } from 'react'

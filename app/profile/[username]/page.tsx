@@ -3,14 +3,14 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { createClient } from '@/utils/supabase/server'
 import Image from 'next/image'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-import ActivityDialog from './components/ActivityDialog'
+import ActivityDialog from '@/app/profile/[username]/components/ActivityDialog'
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-import ProfileBanner from './components/ProfileBanner'
+import ProfileBanner from '@/app/profile/[username]/components/ProfileBanner'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { LayoutGrid, TableProperties } from 'lucide-react'
-import { DataTable } from './components/data-table'
-import { columns } from './components/columns'
+import { DataTable } from '@/app/profile/[username]/components/data-table'
+import { columns } from '@/app/profile/[username]/components/columns'
 
 type Item = {
   item_id: number

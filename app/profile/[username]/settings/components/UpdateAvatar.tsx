@@ -2,7 +2,7 @@ import { Input } from '@/components/ui/input'
 import { createClient } from '@/utils/supabase/server'
 import { revalidatePath } from 'next/cache'
 import Image from 'next/image'
-import UseFormStatusPendingButton from '../../../../../components/UseFormStatusPendingButton'
+import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
 
 export const uploadAvatar = async (formData: FormData) => {
   'use server'

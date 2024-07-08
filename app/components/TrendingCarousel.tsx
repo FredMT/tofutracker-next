@@ -1,6 +1,6 @@
 'use client'
 
-import MovieCard from '@/components/MovieCard'
+import MovieCard from '@/app/components/MovieCard'
 import {
   Carousel,
   CarouselContent,

@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import OverviewText from './OverviewText'
 
 const PreviousNextEpisode = dynamic(
-  () => import('@/components/PreviousNextEpisode'),
+  () => import('@/app/components/PreviousNextEpisode'),
   {
     ssr: false,
   }

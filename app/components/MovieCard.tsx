@@ -1,5 +1,5 @@
 'use client'
-import { Card } from './ui/card'
+import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { HoverCard, HoverCardTrigger } from '@/components/ui/hover-card'
 import dynamic from 'next/dynamic'

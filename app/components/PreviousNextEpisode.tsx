@@ -4,7 +4,7 @@ import {
   intervalToDuration,
   intlFormatDistance,
 } from 'date-fns'
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Timer } from 'lucide-react'
 import { useEffect, useState } from 'react'
 

@@ -1,7 +1,7 @@
 'use client'
 import { Input } from '@/components/ui/input'
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/hooks/useRouter'
 
 export default function SearchInputForm() {
   const router = useRouter()

@@ -37,7 +37,7 @@ export default function UseFormStatusPendingButton({
         type="submit"
         disabled={disabled}
       >
-        <div className="flex flex-row justify-center">
+        <div className="flex w-full flex-row justify-center">
           {component}
           {text}
         </div>

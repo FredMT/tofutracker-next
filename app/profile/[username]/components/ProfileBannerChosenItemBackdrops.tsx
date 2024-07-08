@@ -10,8 +10,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { useEffect, useState } from 'react'
-import UseFormStatusPendingButton from '@/components/UseFormStatusPendingButton'
+import { useState } from 'react'
+import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
 import { useFormState } from 'react-dom'
 
 export default function ProfileBannerChosenItemBackdrops({

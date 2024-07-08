@@ -1,8 +1,7 @@
 'use client'
-import React, { useEffect } from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import UseFormStatusPendingButton from '../../../../../components/UseFormStatusPendingButton'
+import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
 import { updateUsername } from './actions'
 import { useFormState } from 'react-dom'
 
