@@ -1,3 +1,7 @@
+import { User } from '@supabase/supabase-js'
+
+export type UserOrNull = User | null
+
 type Genre = {
   id: number
   name: string
@@ -80,7 +84,7 @@ type Language = {
   english_name: string
 }
 
-type TrendingData = {
+export type TrendingData = {
   movies: Movie[]
   tvShows: TVShow[]
   anime: Anime[]

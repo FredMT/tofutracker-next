@@ -11,6 +11,7 @@ import Image from 'next/image'
 import HomepageTrendingMovieBadges from './HomepageTrendingMovieBadges'
 import Autoplay from 'embla-carousel-autoplay'
 import Link from 'next/link'
+import { TrendingData } from '@/types/commonTypes'
 
 export default function HomepageTrendingCarousel({
   data,

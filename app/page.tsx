@@ -1,16 +1,14 @@
 import { createClient } from '@/utils/supabase/server'
 import HomepageTrendingCarousel from '@/app/components/HomepageTrendingCarousel'
 import TrendingCarousel from '@/app/components/TrendingCarousel'
+import getUser from '@/hooks/useUser'
 
 export const metadata = {
   title: 'Homepage - TofuTracker',
 }
 
 export default async function Home() {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getUser()
 
   const res = await fetch(
     user

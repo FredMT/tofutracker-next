@@ -17,11 +17,18 @@ type Props = {
   }
 }
 
-export default async function TVSeason({ params }: Props) {
-  const res = await fetch(
-    `http://localhost:8080/tvshowseason/${params.id}/${params.season_number}`
+async function getTVSeasonData(id: number, season_number: number) {
+  const data = await fetch(
+    `http://localhost:3030/api/tv/${id}/season/${season_number}`,
+    { cache: 'no-store' }
   )
-  const data = await res.json()
+  const result = await data.json()
+  return result
+}
+
+export default async function TVSeason({ params }: Props) {
+  const data = await getTVSeasonData(params.id, params.season_number)
+
   return (
     <div className="flex flex-col gap-y-6">
       <Suspense fallback={<Skeleton className="h-[288px] w-full" />}>
@@ -35,14 +42,14 @@ export default async function TVSeason({ params }: Props) {
           <div className="flex justify-center">
             <Suspense
               fallback={
-                <Skeleton className="mt-2 h-[186px] w-[124px] sm:h-[full] sm:w-full" />
+                <Skeleton className="mb-6 h-[186px] w-[124px] rounded-sm border border-muted object-cover sm:h-[273px] sm:w-[182px] md:h-[336px] md:min-w-[224px]" />
               }
             >
               <Poster
                 poster_path={data.season_poster_path}
                 title={data.show_title}
                 id={data.season_id}
-                item_type="tv"
+                itemId={data.season_id}
               />
             </Suspense>
           </div>
@@ -80,7 +87,7 @@ export default async function TVSeason({ params }: Props) {
               <Suspense
                 fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
               >
-                <MobileButtons item_id={data.season_id} />
+                <MobileButtons itemId={data.season_id} />
               </Suspense>
             </div>
             <div className="mt-6">

@@ -1,7 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import React from 'react'
-import { format, formatDuration, intervalToDuration } from 'date-fns'
 
 type MovieInfoProps = {
   vote_average: number
@@ -22,10 +21,6 @@ export default async function MovieInfo({
   networks,
   country,
 }: MovieInfoProps) {
-  const newlanguage = new Intl.DisplayNames(['en'], { type: 'language' }).of(
-    language
-  )
-
   return (
     <Card className="mt-6 w-full rounded-none border-x-0 border-y-2" id="info">
       <CardContent className="px-5 py-[18px]">
@@ -40,7 +35,7 @@ export default async function MovieInfo({
             {runtime}
           </div>
           <div className="text-[12px] font-medium capitalize not-italic leading-[20px]">
-            {newlanguage}
+            {language}
           </div>
           <div className="text-[12px] font-medium not-italic leading-[20px]">
             {certification}

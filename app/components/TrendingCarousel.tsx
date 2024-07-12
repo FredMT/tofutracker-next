@@ -8,12 +8,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-import { User } from '@supabase/supabase-js'
+import { UserOrNull } from '@/types/commonTypes'
 
 type Props = {
   title: string
   items: Movie[] | TVShow[] | Anime[]
-  user: User | null
+  user: UserOrNull
 }
 
 export default function TrendingCarousel({ title, items, user }: Props) {

@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import LoginWithGoogle from '@/app/components/LoginWithGoogle'
 import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
+import getUser from '@/hooks/useUser'
 
 const emailSchema = z.string().email()
 
@@ -75,8 +76,7 @@ export default async function Login({
     }
   }
 
-  const supabase = createClient()
-
+  const user = await getUser()
   const trending = await fetch('http://localhost:8080/api/trending', {
     next: { revalidate: 86400 },
   }).then((res) => res.json())
@@ -88,10 +88,6 @@ export default async function Login({
     ])
     .flat()
     .filter(Boolean)
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
 
   if (user) {
     return redirect('/')

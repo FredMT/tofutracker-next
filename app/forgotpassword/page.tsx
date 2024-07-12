@@ -1,14 +1,11 @@
 import Link from 'next/link'
-import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import ForgotPasswordForm from '@/app/forgotpassword/components/ForgotPasswordForm'
+import getUser from '@/hooks/useUser'
 
 export default async function ForgotPassword() {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getUser()
 
   if (user) {
     redirect(`profile/${user.user_metadata.username}/settings`)

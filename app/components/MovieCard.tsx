@@ -3,7 +3,7 @@ import { Card } from '@/components/ui/card'
 import Link from 'next/link'
 import { HoverCard, HoverCardTrigger } from '@/components/ui/hover-card'
 import dynamic from 'next/dynamic'
-import { User } from '@supabase/supabase-js'
+import { UserOrNull } from '@/types/commonTypes'
 
 const MovieCardHoverCard = dynamic(() => import('./MovieCardHoverCard'), {
   ssr: false,
@@ -11,7 +11,7 @@ const MovieCardHoverCard = dynamic(() => import('./MovieCardHoverCard'), {
 
 type Props = {
   item: any
-  user: User | null
+  user: UserOrNull
 }
 
 export default function MovieCard({ item, user }: Props) {

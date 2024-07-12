@@ -1,44 +1,58 @@
-import { createClient } from '@/utils/supabase/server'
-import { Dialog, DialogContent, DialogOverlay } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogOverlay,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { ChevronDown } from 'lucide-react'
-import ListEditorDialogContent from './ListEditorDialogContent'
+import { Edit } from 'lucide-react'
+import ListEditorDialogContent from './ListEditorDialogContent/ListEditorDialogContent'
 import { Button } from '@/components/ui/button'
 import AddToLibraryButton from './AddToLibraryButton'
-import AddToLibraryDropdownMenu from './AddToLibraryDropdownMenu'
+import getUser from '@/hooks/useUser'
+import AddToLibraryButtonV2 from './AddToLibraryButtonV2'
 
-export default async function MobileButtons({ item_id }: { item_id: number }) {
-  const supabase = createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+async function getLibraryItem(user_id: string, itemId: string) {
+  const res = await fetch(`http://localhost:3030/api/user-shows/${user_id}/${itemId}`, {method: 'GET'})
+  const data = await res.json()
+  return data
+}
+
+export default async function MobileButtons({ itemId }: { itemId: string }) {
+  const user = await getUser()
+  let data;
+   user ? data = await getLibraryItem(user.id, itemId) : data = []
 
   return (
     <div className="flex w-full">
-      <AddToLibraryButton user={user} />
+      {/* <AddToLibraryButton user={user} isInLibrary={data} />
+    
       <Dialog>
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger>
-            <Button
-              className="w-full sm:max-md:px-1"
-              variant="secondary"
-              asChild
-            >
-              <ChevronDown />
-            </Button>
+            <DialogTrigger asChild>
+              <Button
+                className="w-full sm:max-md:px-1"
+                variant="secondary"
+                asChild
+              >
+                <Edit />
+              </Button>
+            </DialogTrigger>
           </DropdownMenuTrigger>
-          <AddToLibraryDropdownMenu user={user} />
 
           <DialogOverlay>
             <DialogContent>
-              <ListEditorDialogContent />
+              <ListEditorDialogContent data={data} />
             </DialogContent>
           </DialogOverlay>
         </DropdownMenu>
-      </Dialog>
+      </Dialog> */}
+
+      <AddToLibraryButtonV2 />
     </div>
   )
 }

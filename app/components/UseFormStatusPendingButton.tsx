@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useFormStatus } from 'react-dom'
 
 export default function UseFormStatusPendingButton({
@@ -23,6 +23,7 @@ export default function UseFormStatusPendingButton({
   component?: React.ReactNode
 }) {
   const { pending } = useFormStatus()
+
   return pending ? (
     <Button variant={variant} className={style}>
       <div
@@ -37,7 +38,7 @@ export default function UseFormStatusPendingButton({
         type="submit"
         disabled={disabled}
       >
-        <div className="flex w-full flex-row justify-center">
+        <div className="flex flex-row items-center justify-center">
           {component}
           {text}
         </div>

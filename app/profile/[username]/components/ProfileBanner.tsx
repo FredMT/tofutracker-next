@@ -1,5 +1,3 @@
-import { Button } from '@/components/ui/button'
-import { createClient } from '@/utils/supabase/server'
 import {
   Dialog,
   DialogContent,
@@ -10,6 +8,7 @@ import {
 } from '@/components/ui/dialog'
 import ProfileBannerChosenItemDialog from './ProfileBannerChosenItemDialog'
 import { updateBannerFromLibraryItems } from '../settings/components/actions'
+import getUser from '@/hooks/useUser'
 
 type Props = {
   viewedUserUsername: string
@@ -34,11 +33,7 @@ export default async function ProfileBanner({
   viewedUserBannerPicture,
   activityData,
 }: Props) {
-  const supabase = createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getUser()
 
   if (user && user.user_metadata.username === viewedUserUsername) {
     if (!user.user_metadata.profile_banner_picture) {

@@ -12,6 +12,8 @@ import Overview from '@/app/movie/components/Overview'
 import CastAndCrew from '@/app/movie/components/CastAndCrew'
 import SimilarMovies from '@/app/movie/components/SimilarMovies'
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
+import { createClient } from '@/utils/supabase/server'
 
 type Props = {
   params: {
@@ -20,16 +22,14 @@ type Props = {
 }
 
 export const generateMetadata = async ({ params }: Props) => {
-  const { data: movie } = await getMovieData(
-    parseInt(params.id.split('-')[0] + '1')
-  )
+  const { data: movie } = await getMovieData(parseInt(params.id.split('-')[0]))
   return {
     title: `${movie.details.title}`,
   }
 }
 
 async function getMovieData(id: number) {
-  const data = await fetch(`http://localhost:8080/movietest/${id}`, {
+  const data = await fetch(`http://localhost:3030/api/movie/${id}`, {
     cache: 'no-cache',
   })
   const result = await data.json()
@@ -39,15 +39,17 @@ async function getMovieData(id: number) {
   return result
 }
 
+async function getsimilarmovies(id: number) {
+  const data = await fetch(`http://localhost:8080/api/getsimilarmovies/${id}`)
+  const result = await data.json()
+  return result
+}
+
 export default async function Movie({ params }: { params: { id: string } }) {
-  const { data: movie } = await getMovieData(
-    parseInt(params.id.split('-')[0] + '1')
+  const { data: movie } = await getMovieData(parseInt(params.id.split('-')[0]))
+  const similarMovies = await getsimilarmovies(
+    parseInt(params.id.split('-')[0])
   )
-  const similarMoviesRes = await fetch(
-    `http://localhost:8080/api/getsimilarmovies/${parseInt(params.id.split('-')[0])}`,
-    { cache: 'no-cache' }
-  )
-  const similarMovies = await similarMoviesRes.json()
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -70,8 +72,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
             <Poster
               poster_path={movie.details.poster_path}
               title={movie.details.title}
-              id={movie.details.id}
-              item_type="movie"
+              itemId={movie.details.id}
             />
           </Suspense>
         </div>
@@ -99,7 +100,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
           </div>
           <div className="mt-6 flex justify-center sm:hidden">
             <Suspense fallback={<Skeleton className="mt-6 h-[168px] w-full" />}>
-              <MobileButtons item_id={movie.details.id} />
+              <MobileButtons itemId={movie.details.id} />
             </Suspense>
           </div>
           <div className="mt-6">

@@ -2,12 +2,11 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { DialogContent } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import Image from 'next/image'
-import { createClient } from '@/utils/supabase/server'
 import CommentList from './CommentList'
 import { formatDistanceToNowStrict } from 'date-fns'
-import { likeActivity, likeComment, createComment } from './actions'
 import ActivityLike from './ActivityLike'
 import MobileActivityLike from './MobileActivityLike'
+import getUser from '@/hooks/useUser'
 
 type Item = {
   item_id: number
@@ -28,11 +27,7 @@ export default async function ActivityDialog({
   username: string
   hasLiked: boolean
 }) {
-  const supabase = createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getUser()
 
   return (
     <DialogContent className="flex max-h-screen min-h-full overflow-y-scroll p-6 sm:min-h-[500px] md:max-w-[85vw]">

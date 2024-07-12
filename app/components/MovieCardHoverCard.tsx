@@ -10,8 +10,8 @@ import {
   addOrRemoveFromLibrary,
   addOrRemoveFromWatchlist,
 } from '@/app/movie/components/actions'
-import { User } from '@supabase/supabase-js'
 import Link from 'next/link'
+import { UserOrNull } from '@/types/commonTypes'
 
 function getSeasonYear(startDate: string) {
   const [year, month] = startDate.split('-').map(Number)
@@ -25,7 +25,7 @@ export default function MovieCardHoverCard({
   user,
 }: {
   item: any
-  user: User | null
+  user: UserOrNull
 }) {
   const [isInLibraryOptimistic, setIsInLibraryOptimistic] = useOptimistic(
     item.isInLibrary,

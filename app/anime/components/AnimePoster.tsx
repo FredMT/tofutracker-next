@@ -2,6 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import { createClient } from '@/utils/supabase/server'
 import MobileButtons from '@/app/components/MobileButtons'
+import getUser from '@/hooks/useUser'
 
 type Images = {
   aspect_ratio: number
@@ -81,11 +82,7 @@ export default async function AnimePoster({
       highestRatedPoster.file_path
   }
 
-  const supabase = createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  const user = await getUser()
   let isInLibrary = false
   let currentRating: number = -1
 
@@ -106,7 +103,7 @@ export default async function AnimePoster({
           priority
         />
         <div className="hidden gap-y-4 sm:flex sm:flex-col">
-          <MobileButtons item_id={id} />
+          <MobileButtons itemId={id.toString()} />
         </div>
       </div>
     </div>
