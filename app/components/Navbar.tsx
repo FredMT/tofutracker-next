@@ -1,8 +1,5 @@
 import React from 'react'
-import { Button } from '@/components/ui/button'
-import ThemeButton from './ThemeButton'
-import AuthButton from '@/app/components/AuthButton'
-import { Menu, Search } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,8 +7,15 @@ import {
 } from '@/components/ui/dropdown-menu'
 import Link from 'next/link'
 import SearchButton from './SearchButton'
+import { ThemeButton } from './ThemeButton'
+import { getCurrentUser } from '@/lib/session'
+import SignIn from './SignIn'
+import Signout from './Signout'
 
-export default function Navbar() {
+export default async function Navbar() {
+  const user = await getCurrentUser()
+  console.log(user)
+
   return (
     <div className="absolute top-0 z-50 w-full">
       <div className="mx-auto flex w-[80%] justify-between">
@@ -23,7 +27,7 @@ export default function Navbar() {
         <div className="hidden gap-x-4 p-4 sm:flex">
           <SearchButton />
           <ThemeButton />
-          <AuthButton />
+          {user ? <Signout /> : <SignIn />}
         </div>
         <div className="flex gap-4 py-4 sm:hidden">
           <SearchButton />
@@ -33,9 +37,9 @@ export default function Navbar() {
                 <Menu />
               </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-40 p-4">
+            <DropdownMenuContent className="w-40 p-4" align="end">
               <div className="flex flex-col gap-y-2">
-                <AuthButton />
+                {user ? <Signout /> : <SignIn />}
                 <ThemeButton />
               </div>
             </DropdownMenuContent>

@@ -12,10 +12,10 @@ export default async function Home() {
 
   const res = await fetch(
     user
-      ? `http://localhost:8080/api/trending/${user?.id}`
+      ? `http://localhost:8080/api/trending/${user.id}`
       : `http://localhost:8080/api/trending`,
     {
-      cache: 'no-store',
+      next: { revalidate: 60 * 60 * 24 },
     }
   )
   const data = await res.json()
