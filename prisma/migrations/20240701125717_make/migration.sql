@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "seasons" ALTER COLUMN "poster_path" DROP NOT NULL,
+ALTER COLUMN "rating" DROP NOT NULL,
+ALTER COLUMN "episode_count" DROP NOT NULL,
+ALTER COLUMN "air_date" DROP NOT NULL;

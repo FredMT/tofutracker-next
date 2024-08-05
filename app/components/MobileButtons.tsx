@@ -16,20 +16,23 @@ import getUser from '@/hooks/useUser'
 import AddToLibraryButtonV2 from './AddToLibraryButtonV2'
 
 async function getLibraryItem(user_id: string, itemId: string) {
-  const res = await fetch(`http://localhost:3030/api/user-shows/${user_id}/${itemId}`, {method: 'GET'})
+  const res = await fetch(
+    `http://localhost:3030/api/user-shows/${user_id}/${itemId}`,
+    { method: 'GET' }
+  )
   const data = await res.json()
   return data
 }
 
 export default async function MobileButtons({ itemId }: { itemId: string }) {
   const user = await getUser()
-  let data;
-   user ? data = await getLibraryItem(user.id, itemId) : data = []
+  let data
+  user ? (data = await getLibraryItem(user.id, itemId)) : (data = [])
 
   return (
     <div className="flex w-full">
-      {/* <AddToLibraryButton user={user} isInLibrary={data} />
-    
+      <AddToLibraryButton user={user} isInLibrary={data} />
+
       <Dialog>
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger>
@@ -50,9 +53,9 @@ export default async function MobileButtons({ itemId }: { itemId: string }) {
             </DialogContent>
           </DialogOverlay>
         </DropdownMenu>
-      </Dialog> */}
+      </Dialog>
 
-      <AddToLibraryButtonV2 />
+      {/* <AddToLibraryButtonV2 /> */}
     </div>
   )
 }
