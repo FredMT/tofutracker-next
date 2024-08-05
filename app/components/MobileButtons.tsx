@@ -17,7 +17,7 @@ import AddToLibraryButtonV2 from './AddToLibraryButtonV2'
 async function getLibraryItem(user_id: string, itemId: string) {
   const res = await fetch(
     `http://localhost:3030/api/user-shows/${user_id}/${itemId}`,
-    { method: 'GET' }
+    { method: 'GET', credentials: 'include' }
   )
   const data = await res.json()
   return data

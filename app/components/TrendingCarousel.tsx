@@ -34,7 +34,7 @@ export default function TrendingCarousel({ title, items, user }: Props) {
             return (
               <CarouselItem
                 key={item.media_id}
-                className="flex max-w-[140px] md:mr-8"
+                className="flex max-w-[140px] sm:mr-8"
               >
                 <MovieCard item={item} user={user} />
               </CarouselItem>

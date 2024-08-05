@@ -20,7 +20,7 @@ type Props = {
 async function getTVSeasonData(id: number, season_number: number) {
   const data = await fetch(
     `http://localhost:3030/api/tv/${id}/season/${season_number}`,
-    { cache: 'no-store' }
+    { cache: 'no-store', credentials: 'include' }
   )
   const result = await data.json()
   return result

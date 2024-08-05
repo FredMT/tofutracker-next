@@ -101,11 +101,11 @@ export async function addMovieToLibrary(
     `http://localhost:3030/api/user-shows/${user.id}/${mediaId}`,
     {
       method: 'POST',
-      body: JSON.stringify({
-      }),
+      body: JSON.stringify({}),
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
     }
   )
   const result = await data.json()

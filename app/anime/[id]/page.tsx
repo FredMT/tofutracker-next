@@ -27,6 +27,7 @@ import SimilarMovies from '@/app/movie/components/SimilarMovies'
 async function getTVData(id: number) {
   const data = await fetch(`http://localhost:3030/api/tv/${id}`, {
     cache: 'no-store',
+    credentials: 'include',
   })
   const result = await data.json()
   return result
@@ -35,6 +36,7 @@ async function getTVData(id: number) {
 async function getAnimeSeasons(id: number) {
   const data = await fetch(`http://localhost:3030/api/anime/seasons/${id}`, {
     cache: 'no-store',
+    credentials: 'include',
   })
   const result = await data.json()
   return result
@@ -43,6 +45,7 @@ async function getAnimeSeasons(id: number) {
 async function getMovieData(id: number) {
   const data = await fetch(`http://localhost:3030/api/movie/${id}`, {
     cache: 'no-cache',
+    credentials: 'include',
   })
   const result = await data.json()
   if (result.message === 'Is an anime') {
@@ -56,6 +59,7 @@ async function getRecommendedMovies(id: number) {
     `http://localhost:3030/api/anime/recommendations/${id}?type=movie`,
     {
       cache: 'no-store',
+      credentials: 'include',
     }
   )
   const result = await data.json()
@@ -67,6 +71,7 @@ async function getRecommendedTV(id: number) {
     `http://localhost:3030/api/anime/recommendations/${id}?type=tv`,
     {
       cache: 'no-store',
+      credentials: 'include',
     }
   )
   const result = await data.json()
@@ -74,7 +79,9 @@ async function getRecommendedTV(id: number) {
 }
 
 async function getAnimeType(id: number) {
-  const data = await fetch(`http://localhost:3030/api/anime/type/${id}`)
+  const data = await fetch(`http://localhost:3030/api/anime/type/${id}`, {
+    credentials: 'include',
+  })
   const result = await data.json()
   return result.type
 }

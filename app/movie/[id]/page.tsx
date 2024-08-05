@@ -31,6 +31,7 @@ export const generateMetadata = async ({ params }: Props) => {
 async function getMovieData(id: number) {
   const data = await fetch(`http://localhost:3030/api/movie/${id}`, {
     cache: 'no-cache',
+    credentials: 'include',
   })
   const result = await data.json()
   if (result.message === 'Is an anime') {

@@ -15,6 +15,7 @@ async function getTrendingData(user: User | undefined) {
     headers: body ? { 'Content-Type': 'application/json' } : undefined,
     next: { tags: ['trending'] },
     cache: 'no-store',
+    credentials: 'include',
   })
   return await res.json()
 }

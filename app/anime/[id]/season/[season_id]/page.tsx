@@ -34,6 +34,7 @@ async function getAnimeEpisodes(showId: number, seasonId: number) {
     `http://localhost:3030/api/anime/episodes/${parseInt(showId + '2')}/${seasonId}`,
     {
       cache: 'no-store',
+      credentials: 'include',
     }
   )
   const result = await data.json()

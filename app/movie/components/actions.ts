@@ -36,6 +36,7 @@ export async function addOrRemoveFromLibrary(
           media_id: parseInt(media_id + '1'),
           watch_status: 'COMPLETED',
         }),
+        credentials: 'include',
       })
     } else {
       // Remove from library
@@ -50,6 +51,7 @@ export async function addOrRemoveFromLibrary(
             user_id: parseInt(user_id),
             media_id: parseInt(media_id + '1'),
           }),
+          credentials: 'include',
         }
       )
     }
