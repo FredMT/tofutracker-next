@@ -1,90 +1,75 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { db } from '@/db'
 
-export async function addOrRemoveFromLibrary(formData: FormData) {
-  const user_id = formData.get('user_id')
-  const item_id = formData.get('item_id')
-  const list_type = formData.get('list_type')
-  const item_type = formData.get('item_type')
-  const isInLibrary = formData.get('isInLibrary')
+export async function addOrRemoveFromLibrary(
+  prevState: any,
+  formData: FormData
+) {
+  const user_id = formData.get('user_id') as string
+  const media_id = formData.get('media_id') as string
 
-  const supabase = createClient()
+  // Check if userMedia row exists
+  const existingUserMedia = await db.userMedia.findUnique({
+    where: {
+      user_id_media_id: {
+        user_id: parseInt(user_id),
+        media_id: parseInt(media_id + '1'),
+      },
+    },
+  })
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (user && isInLibrary === 'true') {
-    const { error } = await supabase
-      .from('item_lists')
-      .delete()
-      .eq('user_id', user_id)
-      .eq('item_id', item_id)
-      .eq('list_type', 'Library')
-
-    if (error) {
-      console.error('Failed to remove from library:', error.message)
-    }
-    revalidatePath(`/${item_type}/${item_id}`)
-  } else if (user && isInLibrary === 'false') {
-    const { error } = await supabase
-      .from('item_lists')
-      .insert([{ user_id, item_id, list_type, item_type }])
-
-    if (error) {
-      console.error('Failed to add to library:', error.message)
-    }
-    revalidatePath(`/${item_type}/${item_id}`)
-  } else {
-    redirect(`/login?from=${item_type}/${item_id}`)
-  }
-}
-
-export async function addOrRemoveFromWatchlist(formData: FormData) {
-  const user_id = formData.get('user_id')
-  const item_id = formData.get('item_id')
-  const item_type = formData.get('item_type')
-  const isInWatchlist = formData.get('isInWatchlist')
-
-  const supabase = createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect(`/login?from=${item_type}/${item_id}`)
-  }
-
-  if (isInWatchlist === 'true') {
-    const { error } = await supabase
-      .from('item_lists')
-      .delete()
-      .eq('user_id', user_id)
-      .eq('item_id', item_id)
-      .eq('item_type', item_type)
-      .eq('list_type', 'Watchlist')
-
-    if (error) {
-      console.error('Failed to remove from watchlist:', error.message)
+  let response
+  try {
+    if (!existingUserMedia) {
+      // Add to library
+      response = await fetch('http://localhost:3030/api/user-media/add-movie', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: parseInt(user_id),
+          media_id: parseInt(media_id + '1'),
+          watch_status: 'COMPLETED',
+        }),
+      })
+    } else {
+      // Remove from library
+      response = await fetch(
+        'http://localhost:3030/api/user-media/delete-movie',
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: parseInt(user_id),
+            media_id: parseInt(media_id + '1'),
+          }),
+        }
+      )
     }
 
-    revalidatePath(`/${item_type}/${item_id}`)
-    return
-  }
+    const result = await response.json()
 
-  const { error } = await supabase
-    .from('item_lists')
-    .insert([{ user_id, item_id, list_type: 'Watchlist', item_type }])
+    revalidateTag('trending')
 
-  if (error) {
-    console.error('Failed to add to watchlist:', error.message)
+    return {
+      success: result.success,
+      message:
+        result.message ||
+        (result.success ? 'Operation successful' : 'Operation failed'),
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: 'An error occurred',
+    }
   }
-  revalidatePath(`/${item_type}/${item_id}`)
-  return
 }
 
 export async function setRating(

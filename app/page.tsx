@@ -1,45 +1,48 @@
-import { createClient } from '@/utils/supabase/server'
 import HomepageTrendingCarousel from '@/app/components/HomepageTrendingCarousel'
 import TrendingCarousel from '@/app/components/TrendingCarousel'
-import getUser from '@/hooks/useUser'
+import { User } from 'lucia'
+import { getCurrentUser } from '@/lib/session'
 
 export const metadata = {
   title: 'Homepage - TofuTracker',
 }
 
-export default async function Home() {
-  const user = await getUser()
+async function getTrendingData(user: User | undefined) {
+  const body = user ? JSON.stringify({ user_id: user.id }) : null
+  const res = await fetch('http://localhost:3030/api/trending/items', {
+    method: 'POST',
+    body: body,
+    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    next: { tags: ['trending'] },
+    cache: 'no-store',
+  })
+  return await res.json()
+}
 
-  const res = await fetch(
-    user
-      ? `http://localhost:8080/api/trending/${user.id}`
-      : `http://localhost:8080/api/trending`,
-    {
-      next: { revalidate: 60 * 60 * 24 },
-    }
-  )
-  const data = await res.json()
+export default async function Home() {
+  const luciaUser = await getCurrentUser()
+  const trendingData = await getTrendingData(luciaUser)
 
   return (
     <main className="flex min-h-dvh flex-col gap-y-6">
-      <HomepageTrendingCarousel data={data} />
+      <HomepageTrendingCarousel data={trendingData} />
       <div className="space-y-6 p-6 xl:mx-40">
         <TrendingCarousel
           title="Trending Movies"
-          items={data.movies}
-          user={user}
+          items={trendingData.movies}
+          user={luciaUser}
         />
 
         <TrendingCarousel
           title="Trending TV Shows"
-          items={data.tvShows}
-          user={user}
+          items={trendingData.tv}
+          user={luciaUser}
         />
 
         <TrendingCarousel
           title="Trending Anime"
-          items={data.anime}
-          user={user}
+          items={trendingData.anime}
+          user={luciaUser}
         />
       </div>
     </main>

@@ -89,3 +89,16 @@ export type TrendingData = {
   tvShows: TVShow[]
   anime: Anime[]
 }
+
+export interface SeasonsAnime {
+  relatedIds: number[]
+  chains: Array<Special[]>
+  specials: Special[]
+}
+
+export interface Special {
+  id: number
+  poster: string
+  season: string
+  rating: number
+}

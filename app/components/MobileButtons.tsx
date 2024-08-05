@@ -9,7 +9,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Edit } from 'lucide-react'
-import ListEditorDialogContent from './ListEditorDialogContent/ListEditorDialogContent'
 import { Button } from '@/components/ui/button'
 import AddToLibraryButton from './AddToLibraryButton'
 import getUser from '@/hooks/useUser'
@@ -31,31 +30,7 @@ export default async function MobileButtons({ itemId }: { itemId: string }) {
 
   return (
     <div className="flex w-full">
-      <AddToLibraryButton user={user} isInLibrary={data} />
-
-      <Dialog>
-        <DropdownMenu modal={false}>
-          <DropdownMenuTrigger>
-            <DialogTrigger asChild>
-              <Button
-                className="w-full sm:max-md:px-1"
-                variant="secondary"
-                asChild
-              >
-                <Edit />
-              </Button>
-            </DialogTrigger>
-          </DropdownMenuTrigger>
-
-          <DialogOverlay>
-            <DialogContent>
-              <ListEditorDialogContent data={data} />
-            </DialogContent>
-          </DialogOverlay>
-        </DropdownMenu>
-      </Dialog>
-
-      {/* <AddToLibraryButtonV2 /> */}
+      <AddToLibraryButtonV2 />
     </div>
   )
 }

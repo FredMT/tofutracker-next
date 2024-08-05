@@ -32,7 +32,7 @@ export default function AddToLibraryButton({
 
   if (!user) {
     return (
-      <Button className="w-5/6" asChild>
+      <Button className="w-full" asChild>
         <Link
           href={`/login?from=${pathname.split('/')[1]}/${pathname.split('/')[2]}`}
         >

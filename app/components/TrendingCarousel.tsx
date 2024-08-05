@@ -8,12 +8,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-import { UserOrNull } from '@/types/commonTypes'
+import { User } from 'lucia'
 
 type Props = {
   title: string
-  items: Movie[] | TVShow[] | Anime[]
-  user: UserOrNull
+  items: any
+  user: User | undefined
 }
 
 export default function TrendingCarousel({ title, items, user }: Props) {
@@ -30,10 +30,10 @@ export default function TrendingCarousel({ title, items, user }: Props) {
         }}
       >
         <CarouselContent>
-          {items.map((item) => {
+          {items.map((item: any) => {
             return (
               <CarouselItem
-                key={item.id}
+                key={item.media_id}
                 className="flex max-w-[140px] md:mr-8"
               >
                 <MovieCard item={item} user={user} />

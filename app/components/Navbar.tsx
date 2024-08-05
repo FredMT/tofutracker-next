@@ -14,7 +14,6 @@ import Signout from './Signout'
 
 export default async function Navbar() {
   const user = await getCurrentUser()
-  console.log(user)
 
   return (
     <div className="absolute top-0 z-50 w-full">

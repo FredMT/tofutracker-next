@@ -1,134 +1,320 @@
-import { Skeleton } from '@/components/ui/skeleton'
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 import React, { Suspense } from 'react'
 import Title from '@/app/movie/components/Title'
-import AnimeInfo from '@/app/anime/components/AnimeInfo'
+import { Skeleton } from '@/components/ui/skeleton'
+import Backdrop from '@/app/movie/components/Backdrop'
+import Poster from '@/app/components/Poster'
+import Tagline from '@/app/movie/components/Tagline'
+import MovieInfo from '@/app/movie/components/MovieInfo'
 import MobileButtons from '@/app/components/MobileButtons'
-import AnimeDetails from '@/app/anime/components/AnimeDetails'
-import AnimeBackdrop from '@/app/anime/components/AnimeBackdrop'
-import AnimePoster from '@/app/anime/components/AnimePoster'
+import Details from '@/app/tv/components/Details'
 import Overview from '@/app/movie/components/Overview'
-import AnimeSeasonsAndEpisodes from '@/app/anime/components/AnimeSeasonsAndEpisodes'
-import SimilarAnime from '@/app/anime/components/SimilarAnime'
-import RelatedAnime from '@/app/anime/components/RelatedAnime'
-import { createClient } from '@/utils/supabase/server'
+import CastAndCrew from '@/app/movie/components/CastAndCrew'
+import SimilarTVShows from '@/app/tv/components/SimilarTVShows'
+import { redirect } from 'next/navigation'
+import Seasons from '@/app/tv/components/Seasons'
+import Videos from '@/app/components/Videos'
+import AnimeSeasons from '@/app/components/AnimeSeasons'
+import MovieDetails from '@/app/movie/components/MovieDetails'
+import SimilarMovies from '@/app/movie/components/SimilarMovies'
 
-export const generateMetadata = async ({ params }: Props) => {
-  const result = await fetch(
-    'http://localhost:8080/api/getanime/' + params.id.split('-')[0]
-  )
-  const data = await result.json()
-  return {
-    title: `${data[0].anime[0].title}`,
-  }
+// export const generateMetadata = async ({ params }: Props) => {
+//   const result = await getTVData(parseInt(params.id.split('-')[0]))
+//   return {
+//     title: `${result.name}`,
+//   }
+// }
+
+async function getTVData(id: number) {
+  const data = await fetch(`http://localhost:3030/api/tv/${id}`, {
+    cache: 'no-store',
+  })
+  const result = await data.json()
+  return result
 }
 
-type Props = {
-  params: {
-    id: string
-  }
+async function getAnimeSeasons(id: number) {
+  const data = await fetch(`http://localhost:3030/api/anime/seasons/${id}`, {
+    cache: 'no-store',
+  })
+  const result = await data.json()
+  return result
 }
 
-export default async function Anime({ params }: Props) {
-  const result = await fetch(
-    'http://localhost:8080/api/getanime/' + params.id.split('-')[0],
+async function getMovieData(id: number) {
+  const data = await fetch(`http://localhost:3030/api/movie/${id}`, {
+    cache: 'no-cache',
+  })
+  const result = await data.json()
+  if (result.message === 'Is an anime') {
+    redirect(`/anime/${result.data.anidb_id}`)
+  }
+  return result
+}
+
+async function getRecommendedMovies(id: number) {
+  const data = await fetch(
+    `http://localhost:3030/api/anime/recommendations/${id}?type=movie`,
     {
-      next: {
-        revalidate: 3600,
-      },
+      cache: 'no-store',
     }
   )
-  const data = await result.json()
+  const result = await data.json()
+  return result
+}
 
-  if (data.message === 'Anime not found.') {
-    return notFound()
-  }
+async function getRecommendedTV(id: number) {
+  const data = await fetch(
+    `http://localhost:3030/api/anime/recommendations/${id}?type=tv`,
+    {
+      cache: 'no-store',
+    }
+  )
+  const result = await data.json()
+  return result
+}
 
-  const anime = data[0].anime[0]
+async function getAnimeType(id: number) {
+  const data = await fetch(`http://localhost:3030/api/anime/type/${id}`)
+  const result = await data.json()
+  return result.type
+}
 
-  return (
-    <div className="flex flex-col gap-y-6">
-      <Suspense
-        fallback={<Skeleton className="h-[288px] w-full sm:h-[576px]" />}
-      >
-        <AnimeBackdrop title={anime.title} type={anime.type} id={anime.id} />
-      </Suspense>
-      <div className="flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8 xl:px-40">
-        <div className="flex justify-center">
-          <Suspense
-            fallback={
-              <Skeleton className="mt-2 h-[186px] w-[124px] sm:h-[273px] sm:min-w-[182px] md:h-[336px] md:min-w-[224px]" />
-            }
-          >
-            <AnimePoster
-              title={anime.title}
-              type={anime.type}
-              id={anime.id}
-              poster={anime.poster}
-            />
-          </Suspense>
-        </div>
-        <div className="flex basis-4/5 flex-col">
-          <div className="flex justify-center sm:justify-start">
-            <Suspense fallback={<Skeleton className="mt-6 h-6 w-[60vw]" />}>
-              <Title title={anime.title} />
-            </Suspense>
-          </div>
+export default async function Anime({ params }: { params: { id: string } }) {
+  const type = await getAnimeType(parseInt(params.id))
+
+  if (type === 'movie') {
+    const { data: movie } = await getMovieData(parseInt(params.id))
+    const recommendedMovies = await getRecommendedMovies(parseInt(params.id))
+
+    return (
+      <div className="flex flex-col gap-y-6">
+        <Suspense
+          fallback={<Skeleton className="h-[288px] w-full sm:h-[576px]" />}
+        >
+          <Backdrop
+            backdrop_path={`https://image.tmdb.org/t/p/original${movie.details.backdrop_path}`}
+            title={movie.details.title}
+            logo_path={`https://image.tmdb.org/t/p/w300${movie.details.logo_path}`}
+          />
+        </Suspense>
+        <div className="flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8 xl:px-40">
           <div className="flex justify-center">
-            <Suspense fallback={<Skeleton className="mt-6 h-[94px] w-full" />}>
-              <AnimeInfo
-                externalLinks={data[0]?.external_links[0]}
-                anime={anime}
-                creators={data[0]?.creators}
+            <Suspense
+              fallback={
+                <Skeleton className="mt-2 h-[186px] w-[124px] sm:h-[273px] sm:w-[182px] md:h-[336px] md:w-[224px]" />
+              }
+            >
+              <Poster
+                poster_path={movie.details.poster_path}
+                title={movie.details.title}
+                itemId={movie.details.id}
               />
             </Suspense>
           </div>
-          <div className="mt-6 flex justify-center sm:hidden">
-            <Suspense fallback={<Skeleton className="mt-6 h-[168px] w-full" />}>
-              <MobileButtons itemId={anime.id} />
-            </Suspense>
-          </div>
-          <div className="mt-6">
-            <div className="contentpagedetailtitle">Details</div>
-            <Suspense fallback={<Skeleton className="mt-6 h-[430px] w-full" />}>
-              <AnimeDetails anime={anime} creators={data[0]?.creators} />
-            </Suspense>
-          </div>
-          <div className="mt-6">
-            <div className="contentpagedetailtitle" id="overview">
-              Overview
+          <div className="flex basis-4/5 flex-col">
+            <div className="flex justify-center sm:justify-start">
+              <Suspense fallback={<Skeleton className="mt-6 h-6 w-[60vw]" />}>
+                <Title title={movie.details.title} />
+              </Suspense>
             </div>
+            <div className="flex justify-center sm:justify-start">
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[24px] w-[80%]" />}
+              >
+                <Tagline tagline={movie.details.tagline} />
+              </Suspense>
+            </div>
+            <div className="flex justify-center">
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[94px] w-full" />}
+              >
+                <MovieInfo
+                  vote_average={movie.details.vote_average}
+                  release_date={movie.details.release_date}
+                  runtime={movie.details.runtime}
+                  language={movie.details.original_language}
+                  certification={movie.details.certification}
+                />
+              </Suspense>
+            </div>
+            <div className="mt-6 flex justify-center sm:hidden">
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
+              >
+                <MobileButtons itemId={movie.details.id} />
+              </Suspense>
+            </div>
+            <div className="mt-6">
+              <div className="contentpagedetailtitle">Details</div>
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[253px] w-full" />}
+              >
+                <MovieDetails
+                  budget={movie.details.budget}
+                  revenue={movie.details.revenue}
+                  crew={movie.details.main_staff}
+                />
+              </Suspense>
+            </div>
+            <div className="mt-6">
+              <div className="contentpagedetailtitle" id="overview">
+                Overview
+              </div>
 
-            <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
-              <Overview
-                overview={anime.description}
-                next_episode={data?.next_episode}
-                previous_episode={data?.previous_episode}
-              />
-            </Suspense>
-          </div>
-          {anime.type !== 'Movie' && (
-            <div className="mt-6" id="seasons">
-              <AnimeSeasonsAndEpisodes
-                start_date={anime.start_date}
-                end_date={anime.end_date}
-              />
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[350px] w-full" />}
+              >
+                <Overview overview={movie.details.overview} />
+              </Suspense>
             </div>
-          )}
-          <div>
-            <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
-              <RelatedAnime id={anime.id} />
-            </Suspense>
-          </div>
-          <div className="mt-6 pb-6 sm:pb-20">
-            <div className="contentpagedetailtitle">Similar Anime</div>
-            <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
-              <SimilarAnime type={anime.type} id={anime.id} />
-            </Suspense>
+            <div className="mt-6">
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
+              >
+                <CastAndCrew
+                  cast={movie.credits.cast}
+                  crew={movie.credits.crew}
+                />
+              </Suspense>
+            </div>
+            <div className="mt-6">
+              <div className="contentpagedetailtitle">Recommended Anime</div>
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
+              >
+                {!recommendedMovies ? (
+                  <p>No recommendations found</p>
+                ) : (
+                  <SimilarMovies similar={recommendedMovies} type="anime" />
+                )}
+              </Suspense>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  )
+    )
+  } else {
+    const tv = await getTVData(parseInt(params.id))
+    const recommendedTV = await getRecommendedTV(parseInt(params.id))
+    const seasons = await getAnimeSeasons(parseInt(params.id + '2'))
+
+    return (
+      <div className="flex flex-col gap-y-6">
+        <Suspense fallback={<Skeleton className="h-[288px] w-full" />}>
+          <Backdrop
+            backdrop_path={`https://image.tmdb.org/t/p/original${tv.details.backdrop_path}`}
+            title={tv.details.title}
+            logo_path={`https://image.tmdb.org/t/p/w300${tv.details.logo_path}`}
+          />
+        </Suspense>
+        <div className="flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8 xl:px-40">
+          <div className="flex justify-center">
+            <Suspense
+              fallback={
+                <Skeleton className="mb-6 h-[186px] w-[124px] rounded-sm border border-muted object-cover sm:h-[273px] sm:w-[182px] md:h-[336px] md:min-w-[224px]" />
+              }
+            >
+              <Poster
+                poster_path={tv.details.poster_path}
+                title={tv.details.title}
+                itemId={params.id}
+              />
+            </Suspense>
+          </div>
+          <div className="flex basis-4/5 flex-col">
+            <div className="flex justify-center sm:justify-between">
+              <Suspense fallback={<Skeleton className="mt-6 h-6" />}>
+                <Title title={tv.details.title} />
+              </Suspense>
+            </div>
+            <div className="flex justify-center sm:justify-start">
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[24px] w-[80%]" />}
+              >
+                <Tagline tagline={tv.details.tagline} />
+              </Suspense>
+            </div>
+            <div className="flex justify-center">
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[94px] w-full" />}
+              >
+                <MovieInfo
+                  vote_average={tv.details.vote_average}
+                  release_date={tv.details.first_air_date.split('-')[0]}
+                  language={tv.details.original_language}
+                  certification={tv.details.content_rating}
+                  networks={tv.details.networks.slice(0, 3)}
+                />
+              </Suspense>
+            </div>
+            <div className="mt-6 flex justify-center sm:hidden">
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
+              >
+                <MobileButtons itemId={params.id} />
+              </Suspense>
+            </div>
+            <div className="mt-6">
+              <div className="contentpagedetailtitle">Details</div>
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[253px] w-full" />}
+              >
+                <Details
+                  type={tv.details.type}
+                  status={tv.details.status}
+                  creators={tv.details.created_by}
+                  production_companies={tv.details.production_companies}
+                  seasons={tv.details.number_of_seasons}
+                  episodes={tv.details.number_of_episodes}
+                />
+              </Suspense>
+            </div>
+            <div className="mt-6">
+              <div className="contentpagedetailtitle" id="overview">
+                Overview
+              </div>
+
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
+              >
+                <Overview overview={tv.details.overview} />
+              </Suspense>
+            </div>
+
+            <div className="mt-6">
+              <div className="contentpagedetailtitle" id="seasons">
+                Seasons
+              </div>
+
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
+              >
+                <AnimeSeasons data={seasons} showId={params.id} />
+              </Suspense>
+            </div>
+
+            <div className="mt-6">
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
+              >
+                <CastAndCrew cast={tv.credits.cast} crew={tv.credits.crew} />
+              </Suspense>
+            </div>
+            <div className="mt-6">
+              <div className="contentpagedetailtitle">Recommended Anime</div>
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
+              >
+                {!recommendedTV ? (
+                  <p>No recommendations found</p>
+                ) : (
+                  <SimilarMovies similar={recommendedTV} type="anime" />
+                )}
+              </Suspense>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
