@@ -29,7 +29,13 @@ async function getSeasonYear(startDate: string) {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
-export default function RelatedAnime({ id }: { id: number }) {
+export default function RelatedAnime({
+  id,
+  showId,
+}: {
+  id: number
+  showId: number
+}) {
   const {
     data: related,
     error,
@@ -51,7 +57,7 @@ export default function RelatedAnime({ id }: { id: number }) {
           Related Anime
         </div>
         <div className="mt-6">
-          <Card className="rounded-none border-x-0 border-t-0 pb-8">
+          <Card className="rounded-none border-0 pb-8">
             <Carousel
               className="w-full"
               opts={{
@@ -64,7 +70,7 @@ export default function RelatedAnime({ id }: { id: number }) {
                 {related ? (
                   related?.data.map((item: RelatedAnime) => (
                     <CarouselItem key={item.related_id}>
-                      <Link href={`/anime/${item.related_id}`}>
+                      <Link href={`/anime/${showId}/season/${item.related_id}`}>
                         <div className="flex flex-col">
                           <img
                             src={`https://tofutrackeranime2.b-cdn.net/posters/${item.poster}`}

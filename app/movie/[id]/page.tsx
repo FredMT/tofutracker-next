@@ -7,7 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import Tagline from '@/app/movie/components/Tagline'
 import MovieInfo from '@/app/movie/components/MovieInfo'
 import MobileButtons from '@/app/components/MobileButtons'
-import Details from '@/app/movie/components/Details'
+import MovieDetails from '@/app/movie/components/MovieDetails'
 import Overview from '@/app/movie/components/Overview'
 import CastAndCrew from '@/app/movie/components/CastAndCrew'
 import SimilarMovies from '@/app/movie/components/SimilarMovies'
@@ -106,7 +106,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
           <div className="mt-6">
             <div className="contentpagedetailtitle">Details</div>
             <Suspense fallback={<Skeleton className="mt-6 h-[253px] w-full" />}>
-              <Details
+              <MovieDetails
                 budget={movie.details.budget}
                 revenue={movie.details.revenue}
                 crew={movie.details.main_staff}

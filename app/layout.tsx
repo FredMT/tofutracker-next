@@ -9,7 +9,6 @@ import Footer from '@/app/components/Footer'
 import { Toaster } from '@/components/ui/toaster'
 import { Analytics } from '@vercel/analytics/react'
 import NextTopLoader from 'nextjs-toploader'
-import ReactQueryProvider from '@/providers/ReactQueryProvider'
 
 export const metadata: Metadata = {
   title: {
@@ -55,9 +54,7 @@ export default function RootLayout({
         >
           <NextTopLoader color="#7C3AED" showSpinner={false} />
           <Navbar />
-          <ReactQueryProvider>
-            <div className="flex-1">{children}</div>
-          </ReactQueryProvider>
+          <div className="flex-1">{children}</div>
           <Toaster />
           <Footer />
         </ThemeProvider>

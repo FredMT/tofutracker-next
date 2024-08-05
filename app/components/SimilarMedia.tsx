@@ -21,11 +21,16 @@ type MediaItem = {
 type SimilarMediaProps = {
   items: MediaItem[]
   basePath: string
+  type?: string
 }
 
-export default function SimilarMedia({ items, basePath }: SimilarMediaProps) {
+export default function SimilarMedia({
+  items,
+  basePath,
+  type,
+}: SimilarMediaProps) {
   return (
-    <div className="mt-6" id="similar">
+    <div className="my-6" id="similar">
       <Carousel
         opts={{
           align: 'start',
@@ -35,7 +40,9 @@ export default function SimilarMedia({ items, basePath }: SimilarMediaProps) {
         <CarouselContent className="max-w-[120px] md:max-w-[140px] lg:max-w-[165px]">
           {items.map((item, index) => (
             <CarouselItem key={index}>
-              <Link href={`/${basePath}/${item.id}`}>
+              <Link
+                href={`/${type === 'anime' ? 'anime' : basePath}/${item.id}`}
+              >
                 <div className="flex flex-col">
                   <Image
                     src={
@@ -54,7 +61,7 @@ export default function SimilarMedia({ items, basePath }: SimilarMediaProps) {
                   <div className="text-[12px] text-muted-foreground">
                     <span>{item.release_date.slice(0, 4)}</span> &bull; &nbsp;
                     <span className="tracking-wide">
-                      {item.vote_average.toFixed(1)}/10
+                      {item.vote_average}/10
                     </span>
                   </div>
                 </div>

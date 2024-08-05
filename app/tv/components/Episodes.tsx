@@ -1,6 +1,7 @@
 import { ClockIcon } from 'lucide-react'
 import React from 'react'
 import EpisodeOverview from './EpisodeOverview'
+import { format } from 'date-fns'
 
 export default function Episodes({
   episodes,
@@ -29,7 +30,7 @@ export default function Episodes({
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <ClockIcon className="h-4 w-4" />
-              <span>{episode.air_date}</span>
+              <span>{format(episode.air_date, 'do MMMM, yyyy')}</span>
               {episode.runtime !== '0m' && (
                 <>
                   <span>•</span>

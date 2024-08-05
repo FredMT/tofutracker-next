@@ -13,14 +13,10 @@ import Autoplay from 'embla-carousel-autoplay'
 import Link from 'next/link'
 import { TrendingData } from '@/types/commonTypes'
 
-export default function HomepageTrendingCarousel({
-  data,
-}: {
-  data: TrendingData
-}) {
-  const trendingData = data.movies.flatMap((movie, index) => [
+export default function HomepageTrendingCarousel({ data }: { data: any }) {
+  const trendingData = data.movies.flatMap((movie: any, index: number) => [
     { ...movie },
-    { ...data.tvShows[index] },
+    { ...data.tv[index] },
   ])
 
   return (
@@ -34,8 +30,8 @@ export default function HomepageTrendingCarousel({
       ]}
     >
       <CarouselContent>
-        {trendingData.map((item: Movie | TVShow) => (
-          <CarouselItem key={item.id} className="h-[60vh]">
+        {trendingData.map((item: any) => (
+          <CarouselItem key={item.media_id} className="h-[60vh]">
             <div className="relative h-full w-full">
               <Image
                 src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}
@@ -45,25 +41,29 @@ export default function HomepageTrendingCarousel({
                 priority
                 sizes="100vw"
               />
-              <div className="absolute bottom-20 left-0 right-0 mx-auto flex justify-center">
-                <Link href={`/${item.media_type}/${item.id}`}>
-                  <div className="relative h-[100px] w-[200px] sm:h-[200px] sm:w-[400px]">
-                    <Image
-                      src={`https://image.tmdb.org/t/p/w300${item.logo_path}) || https://placehold.co/600x400/jpg?text=${item.title}`}
-                      alt={item.title}
-                      className="object-contain object-center"
-                      sizes="100vw, 100vw"
-                      priority
-                      fill
-                    />
-                  </div>
-                </Link>
-              </div>
+              {item.logo_path && (
+                <div className="absolute bottom-20 left-0 right-0 mx-auto flex justify-center">
+                  <Link href={`/${item.media_type}/${item.media_id}`}>
+                    <div className="relative h-[100px] w-[200px] sm:h-[200px] sm:w-[400px]">
+                      <Image
+                        src={`https://image.tmdb.org/t/p/w300${item.logo_path})`}
+                        alt={item.title}
+                        className="object-contain object-center drop-shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+                        sizes="100vw, 100vw"
+                        priority
+                        fill
+                      />
+                    </div>
+                  </Link>
+                </div>
+              )}
 
               <HomepageTrendingMovieBadges genres={item.genres} />
 
               <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-gradient-to-t from-black to-transparent p-12 opacity-35" />
               <div className="absolute left-0 right-0 top-0 flex justify-center bg-gradient-to-b from-black to-transparent p-12 opacity-50" />
+              <div className="absolute bottom-0 left-0 top-0 flex justify-center bg-gradient-to-r from-black to-transparent p-12 opacity-50" />
+              <div className="absolute bottom-0 right-0 top-0 flex justify-center bg-gradient-to-l from-black to-transparent p-12 opacity-50" />
             </div>
           </CarouselItem>
         ))}

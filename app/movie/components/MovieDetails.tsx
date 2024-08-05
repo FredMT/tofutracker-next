@@ -7,7 +7,7 @@ type CrewMember = {
   person_id: number
 }[]
 
-export default async function Details({
+export default async function MovieDetails({
   budget,
   revenue,
   crew,
