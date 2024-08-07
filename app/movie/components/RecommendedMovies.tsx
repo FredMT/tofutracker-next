@@ -1,6 +1,6 @@
 'use client'
+import RecommendedMedia from '@/app/components/RecommendedMedia'
 import React from 'react'
-import SimilarMedia from '@/app/components/SimilarMedia'
 
 type Movie = {
   adult?: boolean
@@ -19,14 +19,14 @@ type Movie = {
   vote_count?: number
 }
 
-export default function SimilarMovies({
-  similar,
+export default function RecommendedMovies({
+  recommended,
   type,
 }: {
-  similar: Movie[]
+  recommended: Movie[]
   type?: string
 }) {
-  const similarMovies = similar.map((content) => ({
+  const recommendedMovies = recommended.map((content) => ({
     id: content.id,
     title: content.title,
     poster_path: content.poster_path,
@@ -35,5 +35,7 @@ export default function SimilarMovies({
     vote_average: content.vote_average,
   }))
 
-  return <SimilarMedia items={similarMovies} basePath="movie" type={type} />
+  return (
+    <RecommendedMedia items={recommendedMovies} basePath="movie" type={type} />
+  )
 }

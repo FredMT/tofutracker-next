@@ -1,5 +1,5 @@
 'use client'
-import SimilarMedia from '@/app/components/SimilarMedia'
+import RecommendedMedia from '@/app/components/RecommendedMedia'
 import React from 'react'
 
 type TVShow = {
@@ -20,8 +20,12 @@ type TVShow = {
   origin_country: string
 }
 
-export default function SimilarTVShows({ similar }: { similar: TVShow[] }) {
-  const similarTVShows = similar.map((tvShow) => ({
+export default function RecommendedTVShows({
+  recommended,
+}: {
+  recommended: TVShow[]
+}) {
+  const recommendedTVShows = recommended.map((tvShow) => ({
     id: tvShow.id,
     title: tvShow.name,
     poster_path: tvShow.poster_path,
@@ -30,5 +34,5 @@ export default function SimilarTVShows({ similar }: { similar: TVShow[] }) {
     vote_average: tvShow.vote_average,
   }))
 
-  return <SimilarMedia items={similarTVShows} basePath="tv" />
+  return <RecommendedMedia items={recommendedTVShows} basePath="tv" />
 }

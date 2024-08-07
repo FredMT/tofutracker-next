@@ -27,29 +27,13 @@ async function getSeasonYear(startDate: string) {
   return `${seasons[seasonIndex]} ${year}`
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json())
-
 export default function RelatedAnime({
-  id,
   showId,
+  related,
 }: {
-  id: number
   showId: number
+  related: any
 }) {
-  const {
-    data: related,
-    error,
-    isLoading,
-  } = useSWR(`http://localhost:8080/api/getanimerelationsinfo/${id}`, fetcher)
-
-  if (error) {
-    return <div>Error...</div>
-  }
-
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
-
   if (related.data.length > 0) {
     return (
       <>

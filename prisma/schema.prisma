@@ -9,62 +9,54 @@ datasource db {
   schemas  = ["public", "users"]
 }
 
-model TrendingItem {
-  id             Int       @id @default(autoincrement())
-  tmdb_id        Int
-  media_type     String
-  title          String
-  tagline        String?
-  rating         Float?
-  release_date   DateTime?
-  runtime        Int?
-  language       String?
-  content_rating String?
-  overview       String?
-  fetch_date     DateTime
-  media_id       Int
-  backdrop_path  String?
-  logo_path      String?
-  poster_path    String?
-  genres         String?
-  media          media     @relation(fields: [media_id], references: [id], onDelete: Cascade)
-
-  @@unique([tmdb_id, media_type, fetch_date])
-  @@index([fetch_date])
-  @@schema("public")
-}
-
 model anidb_anime {
-  id                                                      Int                   @id @unique
-  english_title                                           String?
-  japanese_title                                          String?
-  chinese_title                                           String?
-  korean_title                                            String?
-  title                                                   String
-  url                                                     String?
-  description                                             String?
-  poster                                                  String?
-  episode_count                                           Int?
-  type                                                    String?
-  start_date                                              String?
-  end_date                                                String?
-  rating                                                  Float?
-  anidb_characters                                        anidb_characters[]
-  anidb_creators                                          anidb_creators[]
-  anidb_external_links                                    anidb_external_links?
-  anidb_mapping                                           anidb_mapping?
-  anidb_relations_anidb_relations_anime_idToanidb_anime   anidb_relations[]     @relation("anidb_relations_anime_idToanidb_anime")
-  anidb_relations_anidb_relations_related_idToanidb_anime anidb_relations[]     @relation("anidb_relations_related_idToanidb_anime")
-  anidb_similar_anidb_similar_anime_idToanidb_anime       anidb_similar[]       @relation("anidb_similar_anime_idToanidb_anime")
-  anidb_similar_anidb_similar_similar_idToanidb_anime     anidb_similar[]       @relation("anidb_similar_similar_idToanidb_anime")
+  id                Int                    @id @unique
+  english_title     String?
+  japanese_title    String?
+  chinese_title     String?
+  korean_title      String?
+  title             String
+  url               String?
+  description       String?
+  poster            String?
+  episode_count     Int?
+  type              String?
+  start_date        String?
+  end_date          String?
+  rating            Float?
+  mapping           anidb_mapping?
+  characters        anidb_characters[]
+  creators          anidb_creators[]
+  external_links    anidb_external_links[]
+  relations_anime   anidb_relations[]      @relation("AnimeToRelation")
+  relations_related anidb_relations[]      @relation("RelationToAnime")
+  similar_anime     anidb_similar[]        @relation("AnimeToSimilar")
+  similar_related   anidb_similar[]        @relation("SimilarToAnime")
 
   @@index([id])
   @@schema("public")
 }
 
+model anidb_mapping {
+  anidb_id     Int         @id @unique
+  tvdb_id      Int?
+  tmdb_id      Int?
+  notifymoe_id String?
+  mal_id       Int?
+  imdb_id      String?
+  anilist_id   Int?
+  livechart_id Int?
+  anidb_anime  anidb_anime @relation(fields: [anidb_id], references: [id])
+
+  @@index([anidb_id])
+  @@index([tmdb_id])
+  @@index([tvdb_id])
+  @@schema("public")
+}
+
 model anidb_characters {
   id                  String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  character_id        BigInt
+  character_id        Int
   anime_id            Int
   name                String
   picture             String?
@@ -109,41 +101,24 @@ model anidb_external_links {
   @@schema("public")
 }
 
-model anidb_mapping {
-  anidb_id     Int         @id @unique
-  tvdb_id      Int?
-  tmdb_id      Int?
-  notifymoe_id String?
-  mal_id       Int?
-  imdb_id      String?
-  anilist_id   Int?
-  livechart_id Int?
-  anidb_anime  anidb_anime @relation(fields: [anidb_id], references: [id])
-
-  @@index([anidb_id])
-  @@index([tmdb_id])
-  @@index([tvdb_id])
-  @@schema("public")
-}
-
 model anidb_relations {
-  id                                                  String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  anime_id                                            Int
-  related_id                                          Int
-  type                                                String?
-  anidb_anime_anidb_relations_anime_idToanidb_anime   anidb_anime @relation("anidb_relations_anime_idToanidb_anime", fields: [anime_id], references: [id])
-  anidb_anime_anidb_relations_related_idToanidb_anime anidb_anime @relation("anidb_relations_related_idToanidb_anime", fields: [related_id], references: [id])
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  anime_id    Int
+  related_id  Int
+  type        String?
+  anidb_anime anidb_anime @relation("AnimeToRelation", fields: [anime_id], references: [id])
+  related     anidb_anime @relation("RelationToAnime", fields: [related_id], references: [id])
 
   @@schema("public")
 }
 
 model anidb_similar {
-  id                                                String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  anime_id                                          Int?
-  similar_id                                        Int?
-  created_at                                        DateTime?    @default(now()) @db.Timestamptz(6)
-  anidb_anime_anidb_similar_anime_idToanidb_anime   anidb_anime? @relation("anidb_similar_anime_idToanidb_anime", fields: [anime_id], references: [id])
-  anidb_anime_anidb_similar_similar_idToanidb_anime anidb_anime? @relation("anidb_similar_similar_idToanidb_anime", fields: [similar_id], references: [id])
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  anime_id    Int?
+  similar_id  Int?
+  created_at  DateTime?    @default(now()) @db.Timestamptz
+  anidb_anime anidb_anime? @relation("AnimeToSimilar", fields: [anime_id], references: [id])
+  similar     anidb_anime? @relation("SimilarToAnime", fields: [similar_id], references: [id])
 
   @@schema("public")
 }
@@ -204,9 +179,9 @@ model episodes {
   vote_count     Int?
   media          media          @relation(fields: [media_id], references: [id], onDelete: Cascade)
   seasons        seasons        @relation(fields: [season_id], references: [id], onDelete: Cascade)
-  UserEpisode    UserEpisode[]
   UserMedia      UserMedia[]
   UserSeason     UserSeason[]
+  UserEpisode    UserEpisode[]
   WatchHistory   WatchHistory[]
 
   @@index([media_id])
@@ -399,7 +374,6 @@ model media {
   video                     Boolean?
   vote_average              Float?
   vote_count                Int?
-  TrendingItem              TrendingItem[]
   cast                      cast[]
   content_ratings           content_ratings[]
   crew                      crew[]
@@ -418,8 +392,6 @@ model media {
   seasons                   seasons[]
   translations              translations[]
   videos                    videos[]
-  CheckIn                   CheckIn[]
-  UserMedia                 UserMedia[]
 
   @@index([id])
   @@index([media_type])
@@ -579,22 +551,6 @@ model Account {
   @@schema("users")
 }
 
-model CheckIn {
-  id                    Int       @id @default(autoincrement())
-  end_time              DateTime
-  media_id              Int
-  previous_watch_status String?
-  start_time            DateTime  @default(now())
-  user_id               Int
-  media_type            MediaType
-  media                 media     @relation(fields: [media_id], references: [id])
-  user                  user      @relation(fields: [user_id], references: [id])
-
-  @@unique([user_id, media_id])
-  @@index([end_time])
-  @@schema("users")
-}
-
 model MagicLink {
   id               Int      @id @default(autoincrement())
   email            String   @unique
@@ -637,53 +593,21 @@ model Session {
   @@schema("users")
 }
 
-model UserEpisode {
-  id            Int       @id @default(autoincrement())
-  user_media_id Int
-  episode_id    Int
-  rating        Float?    @db.Real
-  episodes      episodes  @relation(fields: [episode_id], references: [id])
-  UserMedia     UserMedia @relation(fields: [user_media_id], references: [id])
+model user {
+  id               Int               @id @default(autoincrement())
+  email            String            @unique
+  email_verified   DateTime?
+  Account          Account?
+  Profile          Profile?
+  ResetToken       ResetToken?
+  Session          Session[]
+  VerifyEmailToken VerifyEmailToken?
+  user_media       UserMedia[]
+  CheckIn          CheckIn[]
 
-  @@unique([user_media_id, episode_id])
-  @@schema("users")
-}
-
-model UserMedia {
-  id                      Int            @id @default(autoincrement())
-  user_id                 Int
-  media_id                Int
-  last_watched_episode_id Int?
-  watch_status            WatchStatus
-  start_date              DateTime?
-  end_date                DateTime?
-  rating                  Float?         @db.Real
-  previous_watch_status   WatchStatus?
-  UserEpisode             UserEpisode[]
-  episodes                episodes?      @relation(fields: [last_watched_episode_id], references: [id])
-  media                   media          @relation(fields: [media_id], references: [id])
-  user                    user           @relation(fields: [user_id], references: [id])
-  UserSeason              UserSeason[]
-  WatchHistory            WatchHistory[]
-
-  @@unique([user_id, media_id])
-  @@schema("users")
-}
-
-model UserSeason {
-  id                      Int         @id @default(autoincrement())
-  user_media_id           Int
-  season_id               Int
-  last_watched_episode_id Int?
-  watch_status            WatchStatus
-  start_date              DateTime?   @default(now()) @db.Timestamptz(3)
-  end_date                DateTime?
-  rating                  Float?      @db.Real
-  episodes                episodes?   @relation(fields: [last_watched_episode_id], references: [id])
-  seasons                 seasons     @relation(fields: [season_id], references: [id])
-  UserMedia               UserMedia   @relation(fields: [user_media_id], references: [id])
-
-  @@unique([user_media_id, season_id])
+  @@index([email])
+  @@index([id])
+  @@map("user")
   @@schema("users")
 }
 
@@ -692,43 +616,8 @@ model VerifyEmailToken {
   user_id          Int      @unique
   token            String?
   token_expires_at DateTime
-  user             user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  User             user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-  @@schema("users")
-}
-
-model WatchHistory {
-  id            Int            @id @default(autoincrement())
-  user_media_id Int
-  episode_id    Int?
-  season_id     Int?
-  watched_at    DateTime       @default(now()) @db.Timestamptz(3)
-  media_type    WatchMediaType
-  episodes      episodes?      @relation(fields: [episode_id], references: [id])
-  seasons       seasons?       @relation(fields: [season_id], references: [id])
-  UserMedia     UserMedia      @relation(fields: [user_media_id], references: [id])
-
-  @@index([episode_id])
-  @@index([season_id])
-  @@index([user_media_id])
-  @@index([watched_at])
-  @@schema("users")
-}
-
-model user {
-  id               Int               @id @default(autoincrement())
-  email            String            @unique
-  email_verified   DateTime?
-  Account          Account?
-  CheckIn          CheckIn[]
-  Profile          Profile?
-  ResetToken       ResetToken?
-  Session          Session[]
-  UserMedia        UserMedia[]
-  VerifyEmailToken VerifyEmailToken?
-
-  @@index([email])
-  @@index([id])
   @@schema("users")
 }
 
@@ -756,6 +645,114 @@ enum AccountType {
   @@schema("users")
 }
 
+model UserMedia {
+  id                      Int            @id @default(autoincrement())
+  user_id                 Int
+  media_id                Int
+  last_watched_episode_id Int?
+  watch_status            WatchStatus
+  previous_watch_status   WatchStatus?
+  start_date              DateTime?
+  end_date                DateTime?
+  rating                  Float?         @db.Real
+  user                    user           @relation(fields: [user_id], references: [id])
+  last_watched_episode    episodes?      @relation(fields: [last_watched_episode_id], references: [id])
+  user_seasons            UserSeason[]
+  user_episodes           UserEpisode[]
+  watch_history           WatchHistory[]
+  CheckIn                 CheckIn[]
+
+  @@unique([user_id, media_id])
+  @@index([user_id])
+  @@index([media_id])
+  @@schema("users")
+}
+
+model UserSeason {
+  id                      Int         @id @default(autoincrement())
+  user_media_id           Int
+  season_id               Int
+  last_watched_episode_id Int?
+  watch_status            WatchStatus
+  start_date              DateTime?   @default(now()) @db.Timestamptz(3)
+  end_date                DateTime?
+  rating                  Float?      @db.Real
+  user_media              UserMedia   @relation(fields: [user_media_id], references: [id])
+  season                  seasons     @relation(fields: [season_id], references: [id])
+  last_watched_episode    episodes?   @relation(fields: [last_watched_episode_id], references: [id])
+
+  @@unique([user_media_id, season_id])
+  @@schema("users")
+}
+
+model UserEpisode {
+  id            Int       @id @default(autoincrement())
+  user_media_id Int
+  episode_id    Int
+  rating        Float?    @db.Real
+  user_media    UserMedia @relation(fields: [user_media_id], references: [id])
+  episode       episodes  @relation(fields: [episode_id], references: [id])
+
+  @@unique([user_media_id, episode_id])
+  @@schema("users")
+}
+
+model WatchHistory {
+  id            Int            @id @default(autoincrement())
+  user_media_id Int
+  episode_id    Int?
+  season_id     Int?
+  media_type    WatchMediaType
+  watched_at    DateTime       @default(now()) @db.Timestamptz(3)
+  user_media    UserMedia      @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+  episode       episodes?      @relation(fields: [episode_id], references: [id])
+  season        seasons?       @relation(fields: [season_id], references: [id])
+
+  @@index([user_media_id])
+  @@index([episode_id])
+  @@index([season_id])
+  @@index([watched_at])
+  @@schema("users")
+}
+
+enum WatchStatus {
+  COMPLETED
+  PLANNING
+  REWATCHING
+  WATCHING
+  ONHOLD
+  DROPPED
+
+  @@schema("users")
+}
+
+model CheckIn {
+  id                    Int       @id @default(autoincrement())
+  user_id               Int
+  media_type            MediaType
+  media_id              Int
+  start_time            DateTime  @default(now())
+  end_time              DateTime
+  previous_watch_status String?
+  user_media_id         Int
+  user_media            UserMedia @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+  user                  user      @relation(fields: [user_id], references: [id])
+
+  @@unique([user_id, media_id])
+  @@index([end_time])
+  @@index([media_id])
+  @@schema("users")
+}
+
+model TrendingItem {
+  id         Int    @id @default(autoincrement())
+  media_id   Int
+  media_type String
+
+  @@index([media_id])
+  @@schema("public")
+}
+
 enum WatchMediaType {
   movie
   show
@@ -765,13 +762,19 @@ enum WatchMediaType {
   @@schema("users")
 }
 
-enum WatchStatus {
-  PLANNING
-  WATCHING
-  COMPLETED
-  DROPPED
-  REWATCHING
-  ONHOLD
+model anidb_tvdb_mapping {
+  id            Int     @id @default(autoincrement())
+  anime_id      Int
+  anidb_season  Int?
+  anidb_episode Int?
+  tvdb_id       String?
+  tmdb_id       Int?
+  imdb_id       String?
+  tvdb_season   String?
+  tvdb_episode  Int?
+  is_special    Boolean
 
-  @@schema("users")
+  @@index([anime_id])
+  @@index([tvdb_id])
+  @@schema("public")
 }

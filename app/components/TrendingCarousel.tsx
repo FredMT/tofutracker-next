@@ -30,16 +30,23 @@ export default function TrendingCarousel({ title, items, user }: Props) {
         }}
       >
         <CarouselContent>
-          {items.map((item: any) => {
-            return (
-              <CarouselItem
-                key={item.media_id}
-                className="flex max-w-[140px] sm:mr-8"
-              >
-                <MovieCard item={item} user={user} />
-              </CarouselItem>
+          {items
+            .filter(
+              (item: any) =>
+                ![46260, 12971, 60572, 12609, 30983, 31910].includes(
+                  item.media_id
+                )
             )
-          })}
+            .map((item: any) => {
+              return (
+                <CarouselItem
+                  key={item.media_id}
+                  className="flex max-w-[140px] sm:mr-8"
+                >
+                  <MovieCard item={item} user={user} />
+                </CarouselItem>
+              )
+            })}
         </CarouselContent>
         <div className="absolute -top-9 right-16">
           <CarouselPrevious className="ml-5 rounded-md border-muted-foreground" />

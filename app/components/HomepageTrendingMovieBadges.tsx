@@ -6,6 +6,7 @@ export default function HomepageTrendingMovieBadges({
 }: {
   genres: any
 }) {
+  if (!genres) return null
   return (
     <div className="absolute bottom-5 left-0 right-0 mx-auto flex justify-center">
       <div className="flex gap-x-4">

@@ -17,7 +17,7 @@ type Props = {
 export default function MovieCard({ item, user }: Props) {
   return (
     <Card className="min-h-[260px] min-w-[112px] border-0 sm:min-h-[302px] sm:min-w-[140px]">
-      <HoverCard openDelay={150} closeDelay={0}>
+      <HoverCard openDelay={300} closeDelay={0}>
         <HoverCardTrigger asChild>
           <Link href={`/${item.media_type}/${item.media_id}`}>
             <img

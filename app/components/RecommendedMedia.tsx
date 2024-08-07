@@ -18,19 +18,19 @@ type MediaItem = {
   vote_average: number
 }
 
-type SimilarMediaProps = {
+type RecommendedMediaProps = {
   items: MediaItem[]
   basePath: string
   type?: string
 }
 
-export default function SimilarMedia({
+export default function RecommendedMedia({
   items,
   basePath,
   type,
-}: SimilarMediaProps) {
+}: RecommendedMediaProps) {
   return (
-    <div className="my-6" id="similar">
+    <div className="my-6" id="recommended">
       <Carousel
         opts={{
           align: 'start',
@@ -61,7 +61,7 @@ export default function SimilarMedia({
                   <div className="text-[12px] text-muted-foreground">
                     <span>{item.release_date.slice(0, 4)}</span> &bull; &nbsp;
                     <span className="tracking-wide">
-                      {item.vote_average}/10
+                      {item.vote_average.toFixed(2)}/10
                     </span>
                   </div>
                 </div>

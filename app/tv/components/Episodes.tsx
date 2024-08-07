@@ -4,8 +4,8 @@ import EpisodeOverview from './EpisodeOverview'
 import { format } from 'date-fns'
 
 export default function Episodes({
-  episodes,
   backdrop_path,
+  episodes,
 }: {
   episodes: any[]
   backdrop_path: string
@@ -16,25 +16,27 @@ export default function Episodes({
         <div key={episode.id} className="flex flex-col gap-4">
           <img
             src={
-              episode.still_path
-                ? `https://image.tmdb.org/t/p/w500${episode.still_path}`
+              episode.image
+                ? `https://artworks.thetvdb.com${episode.image}`
                 : `https://image.tmdb.org/t/p/original${backdrop_path}`
             }
-            alt={`Episode ${episode.episode_number}: ${episode.name}`}
+            alt={`Episode ${episode.number}: ${episode.name}`}
             className="aspect-video w-full rounded-lg object-cover"
           />
           <div className="grid gap-1">
-            <div className="font-medium">{`Episode ${episode.episode_number}: ${episode.name}`}</div>
-            <div className="text-muted-foreground">
-              <EpisodeOverview overview={episode.overview} />
-            </div>
+            <div className="font-medium">{`Episode ${episode.number}${episode.name ? `: ${episode.name}` : ''}`}</div>
+            {episode.overview && (
+              <div className="text-muted-foreground">
+                <EpisodeOverview overview={episode.overview} />
+              </div>
+            )}
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <ClockIcon className="h-4 w-4" />
-              <span>{format(episode.air_date, 'do MMMM, yyyy')}</span>
-              {episode.runtime !== '0m' && (
+              <span>{format(episode.aired, 'do MMMM, yyyy')}</span>
+              {episode.runtime && (
                 <>
                   <span>•</span>
-                  <span>{episode.runtime}</span>
+                  <span>{episode.runtime} min</span>
                 </>
               )}
             </div>

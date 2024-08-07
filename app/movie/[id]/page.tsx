@@ -10,10 +10,10 @@ import MobileButtons from '@/app/components/MobileButtons'
 import MovieDetails from '@/app/movie/components/MovieDetails'
 import Overview from '@/app/movie/components/Overview'
 import CastAndCrew from '@/app/movie/components/CastAndCrew'
-import SimilarMovies from '@/app/movie/components/SimilarMovies'
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
+import RecommendedMovies from '../components/RecommendedMovies'
 
 type Props = {
   params: {
@@ -40,17 +40,24 @@ async function getMovieData(id: number) {
   return result
 }
 
-async function getsimilarmovies(id: number) {
-  const data = await fetch(`http://localhost:8080/api/getsimilarmovies/${id}`)
+async function getRecommendedMovies(id: number) {
+  const data = await fetch(
+    `http://localhost:3030/api/movie/${id}/recommendations`,
+    {
+      cache: 'no-cache',
+      credentials: 'include',
+    }
+  )
   const result = await data.json()
+  if (result.message === 'Is an anime') {
+    redirect(`/anime/${result.data.anidb_id}`)
+  }
   return result
 }
 
 export default async function Movie({ params }: { params: { id: string } }) {
-  const { data: movie } = await getMovieData(parseInt(params.id.split('-')[0]))
-  const similarMovies = await getsimilarmovies(
-    parseInt(params.id.split('-')[0])
-  )
+  const { data: movie } = await getMovieData(parseInt(params.id))
+  const recommendedMovies = await getRecommendedMovies(parseInt(params.id))
 
   return (
     <div className="flex flex-col gap-y-6">
@@ -132,12 +139,12 @@ export default async function Movie({ params }: { params: { id: string } }) {
             </Suspense>
           </div>
           <div className="mt-6">
-            <div className="contentpagedetailtitle">Similar Movies</div>
+            <div className="contentpagedetailtitle">Recommended Movies</div>
             <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
-              {!similarMovies.ok ? (
-                <p>No similar movies found</p>
+              {!recommendedMovies.success ? (
+                <p>No recommended movies found</p>
               ) : (
-                <SimilarMovies similar={similarMovies.data} />
+                <RecommendedMovies recommended={recommendedMovies.data} />
               )}
             </Suspense>
           </div>

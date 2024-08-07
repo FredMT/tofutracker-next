@@ -17,6 +17,7 @@ async function getTrendingData(user: User | undefined) {
     cache: 'no-store',
     credentials: 'include',
   })
+
   return await res.json()
 }
 

@@ -14,11 +14,11 @@ import Episodes from '@/app/tv/components/Episodes'
 
 export const generateMetadata = async ({ params }: Props) => {
   const result = await fetch(
-    'http://localhost:8080/api/getanime/' + params.season_id.split('-')[0]
+    'http://localhost:3030/api/anime/details/' + params.season_id.split('-')[0]
   )
   const data = await result.json()
   return {
-    title: `${data[0].anime[0].title}`,
+    title: `${data.anime[0].title}`,
   }
 }
 
@@ -29,30 +29,46 @@ type Props = {
   }
 }
 
-async function getAnimeEpisodes(showId: number, seasonId: number) {
-  const data = await fetch(
-    `http://localhost:3030/api/anime/episodes/${parseInt(showId + '2')}/${seasonId}`,
-    {
-      cache: 'no-store',
-      credentials: 'include',
-    }
-  )
+async function getAnimeRelations(id: number) {
+  const data = await fetch(`http://localhost:3030/api/anime/relations/${id}`, {
+    cache: 'no-store',
+    credentials: 'include',
+  })
+  const result = await data.json()
+  return result
+}
+
+async function getAnimeDetails(id: number) {
+  const data = await fetch(`http://localhost:3030/api/anime/details/${id}`, {
+    cache: 'no-store',
+    credentials: 'include',
+  })
+  const result = await data.json()
+  return result
+}
+
+async function getAnimeEpisodes(id: number) {
+  const data = await fetch(`http://localhost:3030/api/anime/episodes/${id}`, {
+    cache: 'no-store',
+    credentials: 'include',
+  })
+  const result = await data.json()
+  return result
+}
+
+async function getAnimeImages(id: number) {
+  const url = `http://localhost:3030/api/anime/images/${id}`
+  const data = await fetch(url)
   const result = await data.json()
   return result
 }
 
 export default async function Anime({ params }: Props) {
-  const result = await fetch(
-    'http://localhost:8080/api/getanime/' + params.season_id,
-    {
-      next: {
-        revalidate: 3600,
-      },
-    }
-  )
-  const data = await result.json()
-  const anime = data[0].anime[0]
-  const episodes = await getAnimeEpisodes(+params.id, +params.season_id)
+  const data = await getAnimeDetails(+params.season_id)
+  const anime = data.anime[0]
+  const episodes = await getAnimeEpisodes(+params.season_id)
+  const related = await getAnimeRelations(+params.season_id)
+  const images = await getAnimeImages(+params.season_id)
 
   if (data.message === 'Anime not found.') {
     return notFound()
@@ -63,7 +79,7 @@ export default async function Anime({ params }: Props) {
       <Suspense
         fallback={<Skeleton className="h-[288px] w-full sm:h-[576px]" />}
       >
-        <AnimeBackdrop title={anime.title} type={anime.type} id={anime.id} />
+        <AnimeBackdrop title={anime.title} id={anime.id} />
       </Suspense>
       <div className="flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8 xl:px-40">
         <div className="flex justify-center">
@@ -74,7 +90,6 @@ export default async function Anime({ params }: Props) {
           >
             <AnimePoster
               title={anime.title}
-              type={anime.type}
               id={anime.id}
               poster={anime.poster}
             />
@@ -89,9 +104,9 @@ export default async function Anime({ params }: Props) {
           <div className="flex justify-center">
             <Suspense fallback={<Skeleton className="mt-6 h-[94px] w-full" />}>
               <AnimeInfo
-                externalLinks={data[0]?.external_links[0]}
+                externalLinks={data?.external_links[0]}
                 anime={anime}
-                creators={data[0]?.creators}
+                creators={data?.creators}
               />
             </Suspense>
           </div>
@@ -103,7 +118,7 @@ export default async function Anime({ params }: Props) {
           <div className="mt-6">
             <div className="contentpagedetailtitle">Details</div>
             <Suspense fallback={<Skeleton className="mt-6 h-[430px] w-full" />}>
-              <AnimeDetails anime={anime} creators={data[0]?.creators} />
+              <AnimeDetails anime={anime} creators={data?.creators} />
             </Suspense>
           </div>
           <div className="mt-6">
@@ -120,18 +135,35 @@ export default async function Anime({ params }: Props) {
             </Suspense>
           </div>
 
-          {Boolean(episodes.length) && (
-            <div className="mt-6 pb-[200px]">
+          {Boolean(episodes.main.length) && (
+            <div className="mt-6">
               <div className="contentpagedetailtitle" id="overview">
-                Episodes
+                Main Episodes
               </div>
 
               <Suspense
                 fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
               >
                 <Episodes
-                  episodes={episodes}
-                  backdrop_path={data.backdrop_path}
+                  episodes={episodes.main}
+                  backdrop_path={images.data.backdrop}
+                />
+              </Suspense>
+            </div>
+          )}
+
+          {Boolean(episodes.specials.length) && (
+            <div className="mt-6">
+              <div className="contentpagedetailtitle" id="overview">
+                Special Episodes
+              </div>
+
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
+              >
+                <Episodes
+                  episodes={episodes.specials}
+                  backdrop_path={images.data.backdrop}
                 />
               </Suspense>
             </div>
@@ -139,7 +171,7 @@ export default async function Anime({ params }: Props) {
 
           <div>
             <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
-              <RelatedAnime id={anime.id} showId={+params.id} />
+              <RelatedAnime showId={+params.id} related={related} />
             </Suspense>
           </div>
         </div>

@@ -11,52 +11,29 @@ type Images = {
   width: number
 }
 
-async function getAnimeImages(type: string, id: number) {
-  const url = `http://localhost:8080/api/getanimeimages/${type}/${id}`
+async function getAnimeImages(id: number) {
+  const url = `http://localhost:3030/api/anime/images/${id}`
   const data = await fetch(url)
   const result = await data.json()
-  return result.data
+  return result
 }
 
 export default async function AnimeBackdrop({
   title,
-  type,
   id,
 }: {
   title: string
-  type: string
   id: number
 }) {
-  let images
-
-  type !== 'Movie'
-    ? (images = await getAnimeImages('tv', id))
-    : (images = await getAnimeImages('movie', id))
-
-
-  const backdrop_path =
-    images?.backdrops && images.backdrops.length > 0
-      ? 'https://image.tmdb.org/t/p/w1280' +
-        images.backdrops.reduce((prev: Images, current: Images) =>
-          prev.vote_average > current.vote_average ? prev : current
-        ).file_path
-      : undefined
-
-  const logo_path =
-    'https://image.tmdb.org/t/p/w300' + images?.logos &&
-    images?.logos?.length > 0
-      ? images.logos.reduce((prev: Images, current: Images) =>
-          prev.vote_average > current.vote_average ? prev : current
-        ).file_path
-      : undefined
+  const images = await getAnimeImages(id)
 
   return (
     <div className="relative overflow-hidden">
       <Image
         className="h-[288px] w-full object-cover sm:h-[576px] sm:w-full"
         src={
-          backdrop_path
-            ? `https://image.tmdb.org/t/p/w1280${backdrop_path}`
+          images.data
+            ? `https://image.tmdb.org/t/p/w1280${images.data.backdrop}`
             : 'https://placehold.co/1280x720/000000/FFFFFF.png?text=Banner+Image+Not+Found'
         }
         alt={title}
@@ -64,9 +41,9 @@ export default async function AnimeBackdrop({
         height={1080}
         priority
       />
-      {logo_path && (
+      {images.logo && (
         <Image
-          src={`https://image.tmdb.org/t/p/w300${logo_path}`}
+          src={`https://image.tmdb.org/t/p/w300${images.data.logo}`}
           alt={title}
           width={1920}
           height={1080}

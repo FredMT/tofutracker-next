@@ -9,13 +9,12 @@ import MobileButtons from '@/app/components/MobileButtons'
 import Details from '@/app/tv/components/Details'
 import Overview from '@/app/movie/components/Overview'
 import CastAndCrew from '@/app/movie/components/CastAndCrew'
-import SimilarTVShows from '@/app/tv/components/SimilarTVShows'
 import { redirect } from 'next/navigation'
 import Seasons from '@/app/tv/components/Seasons'
 import Videos from '@/app/components/Videos'
 import AnimeSeasons from '@/app/components/AnimeSeasons'
 import MovieDetails from '@/app/movie/components/MovieDetails'
-import SimilarMovies from '@/app/movie/components/SimilarMovies'
+import RecommendedMovies from '@/app/movie/components/RecommendedMovies'
 
 // export const generateMetadata = async ({ params }: Props) => {
 //   const result = await getTVData(parseInt(params.id.split('-')[0]))
@@ -192,7 +191,10 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 {!recommendedMovies ? (
                   <p>No recommendations found</p>
                 ) : (
-                  <SimilarMovies similar={recommendedMovies} type="anime" />
+                  <RecommendedMovies
+                    recommended={recommendedMovies}
+                    type="anime"
+                  />
                 )}
               </Suspense>
             </div>
@@ -315,7 +317,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 {!recommendedTV ? (
                   <p>No recommendations found</p>
                 ) : (
-                  <SimilarMovies similar={recommendedTV} type="anime" />
+                  <RecommendedMovies recommended={recommendedTV} type="anime" />
                 )}
               </Suspense>
             </div>
