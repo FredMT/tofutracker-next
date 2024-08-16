@@ -147,7 +147,10 @@ export default async function Anime({ params }: { params: { id: string } }) {
               <Suspense
                 fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
               >
-                <MobileButtons itemId={movie.details.id} />
+                <MobileButtons
+                  itemId={movie.details.id}
+                  title={movie.details.title}
+                />
               </Suspense>
             </div>
             <div className="mt-6">
@@ -260,7 +263,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
               <Suspense
                 fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
               >
-                <MobileButtons itemId={params.id} />
+                <MobileButtons itemId={params.id} title={tv.details.title} />
               </Suspense>
             </div>
             <div className="mt-6">

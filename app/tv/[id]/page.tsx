@@ -48,7 +48,6 @@ async function getRecommendedTvShows(id: number) {
   return result
 }
 
-
 export default async function TVShow({ params }: { params: { id: string } }) {
   const tv = await getTVData(parseInt(params.id))
   const recommended = await getRecommendedTvShows(parseInt(params.id))
@@ -100,7 +99,7 @@ export default async function TVShow({ params }: { params: { id: string } }) {
           </div>
           <div className="mt-6 flex justify-center sm:hidden">
             <Suspense fallback={<Skeleton className="mt-6 h-[168px] w-full" />}>
-              <MobileButtons itemId={params.id} />
+              <MobileButtons itemId={params.id} title={tv.details.title} />
             </Suspense>
           </div>
           <div className="mt-6">

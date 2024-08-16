@@ -55,7 +55,7 @@ const Rating = ({
   }
 
   return (
-    <div className="text-left">
+    <div className="text-center">
       <div
         className={`relative inline-flex text-left ${
           readOnly ? '' : 'cursor-pointer'
@@ -90,7 +90,7 @@ const Rating = ({
                   width: showRatingWithPrecision
                     ? `${(activeState % 1) * 100}%`
                     : '0%',
-                  color: readOnly ? 'inherit' : 'yellow',
+                  color: readOnly ? 'inherit' : 'purple',
                 }}
               >
                 <FaStar />
@@ -102,7 +102,7 @@ const Rating = ({
                     ? 'gray'
                     : readOnly
                       ? 'inherit'
-                      : 'yellow',
+                      : 'purple',
                 }}
               >
                 {showEmptyIcon ? <FaRegStar /> : <FaStar />}

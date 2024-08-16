@@ -25,7 +25,7 @@ export default async function Poster({
           priority
         />
         <div className="hidden gap-y-4 sm:flex sm:flex-col">
-          <MobileButtons itemId={itemId} />
+          <MobileButtons itemId={itemId} title={title} />
         </div>
       </div>
     </div>

@@ -32,7 +32,9 @@ export default function Episodes({
             )}
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <ClockIcon className="h-4 w-4" />
-              <span>{format(episode.aired, 'do MMMM, yyyy')}</span>
+              {episode.aired && (
+                <span>{format(episode.aired, 'do MMMM, yyyy')}</span>
+              )}
               {episode.runtime && (
                 <>
                   <span>•</span>
