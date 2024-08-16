@@ -9,533 +9,180 @@ datasource db {
   schemas  = ["public", "users"]
 }
 
-model anidb_anime {
-  id                Int                    @id @unique
-  english_title     String?
-  japanese_title    String?
-  chinese_title     String?
-  korean_title      String?
-  title             String
-  url               String?
-  description       String?
-  poster            String?
-  episode_count     Int?
-  type              String?
-  start_date        String?
-  end_date          String?
-  rating            Float?
-  mapping           anidb_mapping?
-  characters        anidb_characters[]
-  creators          anidb_creators[]
-  external_links    anidb_external_links[]
-  relations_anime   anidb_relations[]      @relation("AnimeToRelation")
-  relations_related anidb_relations[]      @relation("RelationToAnime")
-  similar_anime     anidb_similar[]        @relation("AnimeToSimilar")
-  similar_related   anidb_similar[]        @relation("SimilarToAnime")
-
-  @@index([id])
-  @@schema("public")
-}
-
-model anidb_mapping {
-  anidb_id     Int         @id @unique
-  tvdb_id      Int?
-  tmdb_id      Int?
-  notifymoe_id String?
-  mal_id       Int?
-  imdb_id      String?
-  anilist_id   Int?
-  livechart_id Int?
-  anidb_anime  anidb_anime @relation(fields: [anidb_id], references: [id])
-
-  @@index([anidb_id])
-  @@index([tmdb_id])
-  @@index([tvdb_id])
-  @@schema("public")
-}
-
-model anidb_characters {
-  id                  String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  character_id        Int
-  anime_id            Int
-  name                String
-  picture             String?
-  voice_actor_name    String?
-  voice_actor_picture String?
-  anidb_anime         anidb_anime @relation(fields: [anime_id], references: [id])
-
-  @@schema("public")
-}
-
-model anidb_creators {
-  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  anime_id    Int
-  name        String?
-  type        String?
-  anidb_anime anidb_anime @relation(fields: [anime_id], references: [id])
-
-  @@schema("public")
-}
-
-model anidb_external_links {
-  id            Int         @id
-  myanimelist   String?
-  wikipedia_en  String?
-  wikipedia_ja  String?
-  twitter       String?
-  ann           String?
-  funimation    String?
-  crunchyroll   String?
-  amazon_dp     String?
-  primevideo    String?
-  netflix       String?
-  imdb          String?
-  tmdb          Int?
-  youtube       String?
-  baidu         String?
-  tencent_video String?
-  douban        String?
-  hidive        String?
-  anidb_anime   anidb_anime @relation(fields: [id], references: [id])
-
-  @@schema("public")
-}
-
-model anidb_relations {
-  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  anime_id    Int
-  related_id  Int
-  type        String?
-  anidb_anime anidb_anime @relation("AnimeToRelation", fields: [anime_id], references: [id])
-  related     anidb_anime @relation("RelationToAnime", fields: [related_id], references: [id])
-
-  @@schema("public")
-}
-
-model anidb_similar {
-  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  anime_id    Int?
-  similar_id  Int?
-  created_at  DateTime?    @default(now()) @db.Timestamptz
-  anidb_anime anidb_anime? @relation("AnimeToSimilar", fields: [anime_id], references: [id])
-  similar     anidb_anime? @relation("SimilarToAnime", fields: [similar_id], references: [id])
-
-  @@schema("public")
-}
-
-model cast {
-  id        Int     @id @unique @default(autoincrement())
-  media_id  Int
-  person_id Int
-  character String
-  credit_id String
-  order     Int
-  media     media   @relation(fields: [media_id], references: [id], onDelete: Cascade)
-  persons   persons @relation(fields: [person_id], references: [id])
-
-  @@index([media_id])
-  @@index([person_id])
-  @@index([credit_id], map: "credit_id_idx")
-  @@schema("public")
-}
-
-model content_ratings {
-  id             Int    @id @unique @default(autoincrement())
-  media_id       Int
-  iso_3166_1     String
-  content_rating String
-  media          media  @relation(fields: [media_id], references: [id], onDelete: Cascade)
-
-  @@index([media_id])
-  @@schema("public")
-}
-
-model crew {
-  id         Int     @id @unique @default(autoincrement())
-  media_id   Int
-  person_id  Int
-  credit_id  String
-  department String
-  job        String
-  media      media   @relation(fields: [media_id], references: [id], onDelete: Cascade)
-  persons    persons @relation(fields: [person_id], references: [id])
-
-  @@index([media_id])
-  @@index([person_id])
-  @@schema("public")
-}
-
-model episodes {
-  id             Int            @id @unique
-  media_id       Int
-  season_id      Int
-  air_date       DateTime?
-  episode_number Int?
-  name           String?
-  overview       String?
-  runtime        Int?
-  still_path     String?
-  rating         Float?
-  vote_count     Int?
-  media          media          @relation(fields: [media_id], references: [id], onDelete: Cascade)
-  seasons        seasons        @relation(fields: [season_id], references: [id], onDelete: Cascade)
-  UserMedia      UserMedia[]
-  UserSeason     UserSeason[]
-  UserEpisode    UserEpisode[]
-  WatchHistory   WatchHistory[]
-
-  @@index([media_id])
-  @@index([season_id])
-  @@schema("public")
-}
-
-model external_ids {
-  id           Int     @id @unique @default(autoincrement())
-  media_id     Int     @unique
-  imdb_id      String?
-  freebase_id  String?
-  freebase_mid String?
-  tvdb_id      Int?
-  tvrage_id    Int?
-  wikidata_id  String?
-  facebook_id  String?
-  instagram_id String?
-  twitter_id   String?
-  media        media   @relation(fields: [media_id], references: [id], onDelete: Cascade)
-
-  @@index([media_id])
-  @@schema("public")
-}
-
-model genres {
-  id          Int           @id @unique
-  name        String
-  item_genres item_genres[]
-
-  @@index([id])
-  @@schema("public")
-}
-
-model images {
-  id           Int       @id @unique @default(autoincrement())
-  media_id     Int
-  type         ImageType
-  file_path    String
-  aspect_ratio Float?
-  height       Int
-  width        Int
-  iso_639_1    String?
-  vote_average Float?
-  vote_count   Int?
-  media        media     @relation(fields: [media_id], references: [id], onDelete: Cascade)
-
-  @@index([media_id])
-  @@index([type])
-  @@schema("public")
-}
-
-model item_created_by {
-  id        Int     @id @unique @default(autoincrement())
-  media_id  Int
-  person_id Int
-  credit_id String
-  media     media   @relation(fields: [media_id], references: [id], onDelete: Cascade)
-  persons   persons @relation(fields: [person_id], references: [id])
-
-  @@index([media_id])
-  @@index([person_id])
-  @@schema("public")
-}
-
-model item_genres {
-  id       Int    @id @unique @default(autoincrement())
-  media_id Int
-  genre_id Int
-  genres   genres @relation(fields: [genre_id], references: [id])
-  media    media  @relation(fields: [media_id], references: [id], onDelete: Cascade)
-
-  @@index([genre_id])
-  @@index([media_id])
-  @@schema("public")
-}
-
-model item_keywords {
-  id         Int      @id @unique @default(autoincrement())
-  media_id   Int
-  keyword_id Int
-  keywords   keywords @relation(fields: [keyword_id], references: [id])
-  media      media    @relation(fields: [media_id], references: [id], onDelete: Cascade)
-
-  @@index([keyword_id])
-  @@index([media_id])
-  @@schema("public")
-}
-
-model item_networks {
-  id         Int      @id @unique @default(autoincrement())
-  media_id   Int
-  network_id Int
-  media      media    @relation(fields: [media_id], references: [id], onDelete: Cascade)
-  networks   networks @relation(fields: [network_id], references: [id])
-
-  @@index([media_id])
-  @@index([network_id])
-  @@schema("public")
-}
-
-model item_production_companies {
-  id                    Int                  @id @unique @default(autoincrement())
-  media_id              Int
-  production_company_id Int
-  media                 media                @relation(fields: [media_id], references: [id], onDelete: Cascade)
-  production_companies  production_companies @relation(fields: [production_company_id], references: [id])
-
-  @@index([media_id])
-  @@index([production_company_id])
-  @@schema("public")
-}
-
-model item_production_countries {
-  id                     Int                  @id @unique @default(autoincrement())
-  media_id               Int
-  production_country_iso String
-  media                  media                @relation(fields: [media_id], references: [id], onDelete: Cascade)
-  production_countries   production_countries @relation(fields: [production_country_iso], references: [iso_3166_1])
-
-  @@index([media_id])
-  @@index([production_country_iso])
-  @@schema("public")
-}
-
-model item_spoken_languages {
-  id                  Int              @id @unique @default(autoincrement())
-  media_id            Int
-  spoken_language_iso String
-  media               media            @relation(fields: [media_id], references: [id], onDelete: Cascade)
-  spoken_languages    spoken_languages @relation(fields: [spoken_language_iso], references: [iso_639_1])
-
-  @@index([media_id])
-  @@index([spoken_language_iso])
-  @@schema("public")
-}
-
-model item_watch_providers {
-  id                Int             @id @unique @default(autoincrement())
-  media_id          Int
-  watch_provider_id Int
-  country_code      String
-  link              String
-  service_type      String
-  media             media           @relation(fields: [media_id], references: [id], onDelete: Cascade)
-  watch_providers   watch_providers @relation(fields: [watch_provider_id], references: [id])
-
-  @@index([country_code])
-  @@index([media_id])
-  @@index([service_type])
-  @@index([watch_provider_id])
-  @@schema("public")
-}
-
-model keywords {
-  id            Int             @id @unique
-  name          String
-  item_keywords item_keywords[]
-
-  @@index([id])
-  @@schema("public")
-}
-
-model media {
-  id                        Int                         @id @unique
-  media_type                MediaType
-  created_at                DateTime                    @default(now())
-  adult                     Boolean?
-  backdrop_path             String?
-  budget                    BigInt?
-  first_air_date            DateTime?
-  homepage                  String?
-  imdb_id                   String?
-  in_production             Boolean?
-  last_air_date             DateTime?
-  number_of_episodes        Int?
-  number_of_seasons         Int?
-  original_language         String?
-  original_title            String?
-  overview                  String?
-  popularity                Float?
-  poster_path               String?
-  release_date              DateTime?
-  revenue                   BigInt?
-  runtime                   Int?
-  status                    String?
-  tagline                   String?
-  title                     String
-  type                      String?
-  video                     Boolean?
-  vote_average              Float?
-  vote_count                Int?
-  cast                      cast[]
-  content_ratings           content_ratings[]
-  crew                      crew[]
-  episodes                  episodes[]
-  external_ids              external_ids?
-  images                    images[]
-  item_created_by           item_created_by[]
-  item_genres               item_genres[]
-  item_keywords             item_keywords[]
-  item_networks             item_networks[]
-  item_production_companies item_production_companies[]
-  item_production_countries item_production_countries[]
-  item_spoken_languages     item_spoken_languages[]
-  item_watch_providers      item_watch_providers[]
-  origin_country            origin_country[]
-  seasons                   seasons[]
-  translations              translations[]
-  videos                    videos[]
-
-  @@index([id])
-  @@index([media_type])
-  @@schema("public")
-}
-
-model networks {
-  id             Int             @id @unique
-  name           String
-  logo_path      String?
-  origin_country String?
-  item_networks  item_networks[]
-
-  @@index([id])
-  @@schema("public")
-}
-
-model origin_country {
-  id       Int    @id @unique @default(autoincrement())
-  name     String
-  media_id Int
-  media    media  @relation(fields: [media_id], references: [id], onDelete: Cascade)
-
-  @@index([media_id])
-  @@schema("public")
-}
-
-model persons {
-  id                   Int               @id @unique
-  name                 String
-  adult                Boolean?
-  gender               Int?
-  known_for_department String?
-  original_name        String?
-  popularity           Float?
-  profile_path         String?
-  created_at           DateTime          @default(now())
-  cast                 cast[]
-  crew                 crew[]
-  item_created_by      item_created_by[]
-
-  @@index([id])
-  @@schema("public")
-}
-
-model production_companies {
-  id                        Int                         @id @unique
-  name                      String
-  logo_path                 String?
-  origin_country            String?
-  item_production_companies item_production_companies[]
-
-  @@index([id])
-  @@schema("public")
-}
-
-model production_countries {
-  iso_3166_1                String                      @id @unique
-  name                      String
-  item_production_countries item_production_countries[]
-
-  @@index([iso_3166_1])
-  @@schema("public")
-}
-
-model seasons {
-  id            Int            @id @unique
-  media_id      Int
-  name          String
-  overview      String
-  poster_path   String?
-  season_number Int
-  rating        Float?
-  episode_count Int?
-  air_date      DateTime?
-  episodes      episodes[]
-  media         media          @relation(fields: [media_id], references: [id], onDelete: Cascade)
-  UserSeason    UserSeason[]
-  WatchHistory  WatchHistory[]
-
-  @@index([media_id])
-  @@schema("public")
-}
-
-model spoken_languages {
-  english_name          String
-  iso_639_1             String                  @id @unique
-  name                  String
-  item_spoken_languages item_spoken_languages[]
-
-  @@index([iso_639_1])
-  @@schema("public")
-}
-
-model temp_ids {
-  id Int @id @unique
-
-  @@index([id])
-  @@schema("public")
-}
-
-model translations {
-  id           Int     @id @unique @default(autoincrement())
-  media_id     Int
-  iso_3166_1   String?
-  iso_639_1    String?
-  name         String?
-  english_name String?
-  data         Json?
-  media        media   @relation(fields: [media_id], references: [id], onDelete: Cascade)
-
-  @@index([iso_3166_1])
-  @@index([media_id])
-  @@schema("public")
-}
-
-model videos {
-  id           Int       @id @unique @default(autoincrement())
-  media_id     Int
-  iso_3166_1   String?
-  iso_639_1    String?
-  name         String?
-  key          String
-  site         String
-  size         Int?
-  type         String?
-  official     Boolean?
-  published_at DateTime?
-  video_id     String
-  media        media     @relation(fields: [media_id], references: [id], onDelete: Cascade)
-
-  @@index([media_id])
-  @@schema("public")
-}
-
-model watch_providers {
-  id                   Int                    @id @unique
-  name                 String
-  logo_path            String?
-  item_watch_providers item_watch_providers[]
-
-  @@index([id])
-  @@schema("public")
-}
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_anime {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_mapping {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_characters {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_creators {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_external_links {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_relations {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_similar {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model cast {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model content_ratings {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model crew {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model episodes {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model external_ids {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model genres {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model images {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model item_created_by {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model item_genres {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model item_keywords {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model item_networks {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model item_production_companies {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model item_production_countries {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model item_spoken_languages {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model item_watch_providers {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model keywords {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model media {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model networks {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model origin_country {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model persons {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model production_companies {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model production_countries {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model seasons {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model spoken_languages {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model temp_ids {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model translations {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model videos {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model watch_providers {
+// @@schema("public")
+// }
 
 model Account {
   id           Int         @id @default(autoincrement())
@@ -598,12 +245,12 @@ model user {
   email            String            @unique
   email_verified   DateTime?
   Account          Account?
+  CheckIn          CheckIn[]
   Profile          Profile?
   ResetToken       ResetToken?
   Session          Session[]
-  VerifyEmailToken VerifyEmailToken?
   user_media       UserMedia[]
-  CheckIn          CheckIn[]
+  VerifyEmailToken VerifyEmailToken?
 
   @@index([email])
   @@index([id])
@@ -620,6 +267,104 @@ model VerifyEmailToken {
 
   @@schema("users")
 }
+
+model UserMedia {
+  id                      Int            @id @default(autoincrement())
+  user_id                 Int
+  media_id                Int
+  last_watched_episode_id Int?
+  watch_status            WatchStatus
+  start_date              DateTime?
+  end_date                DateTime?
+  rating                  Float?         @db.Real
+  previous_watch_status   WatchStatus?
+  CheckIn                 CheckIn[]
+  user_episodes           UserEpisode[]
+  user                    user           @relation(fields: [user_id], references: [id])
+  user_seasons            UserSeason[]
+  watch_history           WatchHistory[]
+
+  @@unique([user_id, media_id])
+  @@index([user_id])
+  @@index([media_id])
+  @@schema("users")
+}
+
+model UserSeason {
+  id                      Int         @id @default(autoincrement())
+  user_media_id           Int
+  season_id               Int
+  last_watched_episode_id Int?
+  watch_status            WatchStatus
+  start_date              DateTime?   @default(now()) @db.Timestamptz(3)
+  end_date                DateTime?
+  rating                  Float?      @db.Real
+  user_media              UserMedia   @relation(fields: [user_media_id], references: [id])
+
+  @@unique([user_media_id, season_id])
+  @@schema("users")
+}
+
+model UserEpisode {
+  id            Int       @id @default(autoincrement())
+  user_media_id Int
+  episode_id    Int
+  rating        Float?    @db.Real
+  user_media    UserMedia @relation(fields: [user_media_id], references: [id])
+
+  @@unique([user_media_id, episode_id])
+  @@schema("users")
+}
+
+model WatchHistory {
+  id            Int            @id @default(autoincrement())
+  user_media_id Int
+  episode_id    Int?
+  season_id     Int?
+  watched_at    DateTime       @default(now()) @db.Timestamptz(3)
+  media_type    WatchMediaType
+  user_media    UserMedia      @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+
+  @@index([user_media_id])
+  @@index([episode_id])
+  @@index([season_id])
+  @@index([watched_at])
+  @@schema("users")
+}
+
+model CheckIn {
+  id                    Int       @id @default(autoincrement())
+  end_time              DateTime
+  media_id              Int
+  previous_watch_status String?
+  start_time            DateTime  @default(now())
+  user_id               Int
+  media_type            MediaType
+  user_media_id         Int
+  user                  user      @relation(fields: [user_id], references: [id])
+  user_media            UserMedia @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, media_id])
+  @@index([end_time])
+  @@index([media_id])
+  @@schema("users")
+}
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model TrendingItem {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_tvdb_mapping {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model public__prisma_migrations {
+// @@map("_prisma_migrations")
+// @@schema("public")
+// }
 
 enum ImageType {
   BACKDROP
@@ -645,112 +390,15 @@ enum AccountType {
   @@schema("users")
 }
 
-model UserMedia {
-  id                      Int            @id @default(autoincrement())
-  user_id                 Int
-  media_id                Int
-  last_watched_episode_id Int?
-  watch_status            WatchStatus
-  previous_watch_status   WatchStatus?
-  start_date              DateTime?
-  end_date                DateTime?
-  rating                  Float?         @db.Real
-  user                    user           @relation(fields: [user_id], references: [id])
-  last_watched_episode    episodes?      @relation(fields: [last_watched_episode_id], references: [id])
-  user_seasons            UserSeason[]
-  user_episodes           UserEpisode[]
-  watch_history           WatchHistory[]
-  CheckIn                 CheckIn[]
-
-  @@unique([user_id, media_id])
-  @@index([user_id])
-  @@index([media_id])
-  @@schema("users")
-}
-
-model UserSeason {
-  id                      Int         @id @default(autoincrement())
-  user_media_id           Int
-  season_id               Int
-  last_watched_episode_id Int?
-  watch_status            WatchStatus
-  start_date              DateTime?   @default(now()) @db.Timestamptz(3)
-  end_date                DateTime?
-  rating                  Float?      @db.Real
-  user_media              UserMedia   @relation(fields: [user_media_id], references: [id])
-  season                  seasons     @relation(fields: [season_id], references: [id])
-  last_watched_episode    episodes?   @relation(fields: [last_watched_episode_id], references: [id])
-
-  @@unique([user_media_id, season_id])
-  @@schema("users")
-}
-
-model UserEpisode {
-  id            Int       @id @default(autoincrement())
-  user_media_id Int
-  episode_id    Int
-  rating        Float?    @db.Real
-  user_media    UserMedia @relation(fields: [user_media_id], references: [id])
-  episode       episodes  @relation(fields: [episode_id], references: [id])
-
-  @@unique([user_media_id, episode_id])
-  @@schema("users")
-}
-
-model WatchHistory {
-  id            Int            @id @default(autoincrement())
-  user_media_id Int
-  episode_id    Int?
-  season_id     Int?
-  media_type    WatchMediaType
-  watched_at    DateTime       @default(now()) @db.Timestamptz(3)
-  user_media    UserMedia      @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
-  episode       episodes?      @relation(fields: [episode_id], references: [id])
-  season        seasons?       @relation(fields: [season_id], references: [id])
-
-  @@index([user_media_id])
-  @@index([episode_id])
-  @@index([season_id])
-  @@index([watched_at])
-  @@schema("users")
-}
-
 enum WatchStatus {
-  COMPLETED
   PLANNING
-  REWATCHING
   WATCHING
-  ONHOLD
+  COMPLETED
   DROPPED
+  REWATCHING
+  ONHOLD
 
   @@schema("users")
-}
-
-model CheckIn {
-  id                    Int       @id @default(autoincrement())
-  user_id               Int
-  media_type            MediaType
-  media_id              Int
-  start_time            DateTime  @default(now())
-  end_time              DateTime
-  previous_watch_status String?
-  user_media_id         Int
-  user_media            UserMedia @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
-  user                  user      @relation(fields: [user_id], references: [id])
-
-  @@unique([user_id, media_id])
-  @@index([end_time])
-  @@index([media_id])
-  @@schema("users")
-}
-
-model TrendingItem {
-  id         Int    @id @default(autoincrement())
-  media_id   Int
-  media_type String
-
-  @@index([media_id])
-  @@schema("public")
 }
 
 enum WatchMediaType {
@@ -760,21 +408,4 @@ enum WatchMediaType {
   episode
 
   @@schema("users")
-}
-
-model anidb_tvdb_mapping {
-  id            Int     @id @default(autoincrement())
-  anime_id      Int
-  anidb_season  Int?
-  anidb_episode Int?
-  tvdb_id       String?
-  tmdb_id       Int?
-  imdb_id       String?
-  tvdb_season   String?
-  tvdb_episode  Int?
-  is_special    Boolean
-
-  @@index([anime_id])
-  @@index([tvdb_id])
-  @@schema("public")
 }
