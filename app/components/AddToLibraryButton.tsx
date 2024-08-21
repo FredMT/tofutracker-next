@@ -1,31 +1,39 @@
 'use client'
-import { useToast } from '@/components/ui/use-toast'
 import { User } from 'lucia'
-import { useFormState } from 'react-dom'
-import { addToLibrary } from './actions'
+import { addToLibrary, addToLibraryTv, addToLibraryTvSeason } from './actions'
 import UseFormStatusPendingButton from './UseFormStatusPendingButton'
 
 export default function AddToLibraryButton({
   itemId,
   user,
+  type,
+  seasonId,
 }: {
   itemId: string
   user: User
+  type: string
+  seasonId?: number
 }) {
-  const [state, formAction] = useFormState(addToLibrary, null)
-  const { toast } = useToast()
-
-  if (user.id && itemId) {
-    return (
-      <form action={formAction}>
-        <input type="hidden" name="userId" value={user.id} />
-        <input type="hidden" name="mediaId" value={itemId} />
-        <UseFormStatusPendingButton
-          style="w-full"
-          text="Add to Library"
-          variant="default"
-        />
-      </form>
-    )
-  }
+  return (
+    <form
+      action={
+        type === 'movie'
+          ? addToLibrary
+          : type === 'season'
+            ? addToLibraryTvSeason
+            : addToLibraryTv
+      }
+    >
+      <input type="hidden" name="userId" value={user.id} />
+      <input type="hidden" name="mediaId" value={itemId} />
+      {type === 'season' && seasonId && (
+        <input type="hidden" name="seasonId" value={seasonId} />
+      )}
+      <UseFormStatusPendingButton
+        style="w-full"
+        text="Add to Library"
+        variant="default"
+      />
+    </form>
+  )
 }

@@ -1,6 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useFormStatus } from 'react-dom'
 
 export default function UseFormStatusPendingButton({
@@ -25,7 +25,7 @@ export default function UseFormStatusPendingButton({
   const { pending } = useFormStatus()
 
   return pending ? (
-    <Button variant={variant} className={style}>
+    <Button variant={variant} className={style} disabled>
       <div
         className={`h-5 w-5 animate-spin rounded-full border-b-2 ${variant === 'secondary' ? 'border-white' : 'border-black'}`}
       ></div>

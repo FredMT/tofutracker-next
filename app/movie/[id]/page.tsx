@@ -81,6 +81,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
               poster_path={movie.details.poster_path}
               title={movie.details.title}
               itemId={movie.details.id}
+              type="movie"
             />
           </Suspense>
         </div>
@@ -111,6 +112,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
               <MobileButtons
                 itemId={movie.details.id}
                 title={movie.details.title}
+                type="movie"
               />
             </Suspense>
           </div>

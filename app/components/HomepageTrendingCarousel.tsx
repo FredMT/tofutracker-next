@@ -7,11 +7,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
-import Image from 'next/image'
-import HomepageTrendingMovieBadges from './HomepageTrendingMovieBadges'
 import Autoplay from 'embla-carousel-autoplay'
+import Image from 'next/image'
 import Link from 'next/link'
-import { TrendingData } from '@/types/commonTypes'
+import HomepageTrendingMovieBadges from './HomepageTrendingMovieBadges'
 
 export default function HomepageTrendingCarousel({ data }: { data: any }) {
   const trendingData = data.movies.flatMap((movie: any, index: number) => [

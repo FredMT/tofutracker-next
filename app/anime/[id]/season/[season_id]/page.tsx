@@ -110,11 +110,11 @@ export default async function Anime({ params }: Props) {
               />
             </Suspense>
           </div>
-          <div className="mt-6 flex justify-center sm:hidden">
+          {/* <div className="mt-6 flex justify-center sm:hidden">
             <Suspense fallback={<Skeleton className="mt-6 h-[168px] w-full" />}>
               <MobileButtons itemId={anime.id} title={anime.title} />
             </Suspense>
-          </div>
+          </div> */}
           <div className="mt-6">
             <div className="contentpagedetailtitle">Details</div>
             <Suspense fallback={<Skeleton className="mt-6 h-[430px] w-full" />}>

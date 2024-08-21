@@ -8,7 +8,7 @@ type MovieInfoProps = {
   runtime?: number
   language: string
   certification: string
-  networks?: Network[]
+  networks?: any
   country?: string
 }
 
@@ -28,9 +28,11 @@ export default async function MovieInfo({
           <Badge className="dark:bg-transparent dark:text-white dark:ring-1 dark:ring-white">
             {vote_average.toFixed(2)}
           </Badge>
-          <div className="text-[12px] font-medium not-italic leading-[20px]">
-            {release_date}
-          </div>
+          {release_date && (
+            <div className="text-[12px] font-medium not-italic leading-[20px]">
+              {release_date}
+            </div>
+          )}
           <div className="text-[12px] font-medium not-italic leading-[20px]">
             {runtime}
           </div>
@@ -47,7 +49,7 @@ export default async function MovieInfo({
           )}
           {networks && (
             <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
-              {networks.map((network) => (
+              {networks.map((network: any) => (
                 <img
                   key={network.id}
                   className="h-4"

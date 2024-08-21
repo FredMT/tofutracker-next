@@ -29,6 +29,10 @@ async function getTVSeasonData(id: number, season_number: number) {
 export default async function TVSeason({ params }: Props) {
   const data = await getTVSeasonData(params.id, params.season_number)
 
+  console.log(
+    `http://localhost:3030/api/tv/${params.id}/season/${params.season_number}`
+  )
+
   return (
     <div className="flex flex-col gap-y-6">
       <Suspense fallback={<Skeleton className="h-[288px] w-full" />}>
@@ -37,7 +41,7 @@ export default async function TVSeason({ params }: Props) {
           title={data.show_title}
         />
       </Suspense>
-      <div className="mx-auto max-w-[1400px]">
+      <div className="mx-auto">
         <div className="flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8">
           <div className="flex justify-center">
             <Suspense
@@ -48,8 +52,9 @@ export default async function TVSeason({ params }: Props) {
               <Poster
                 poster_path={data.season_poster_path}
                 title={data.show_title}
-                id={data.season_id}
-                itemId={data.season_id}
+                itemId={params.id.toString()}
+                type="season"
+                seasonId={data.season_id}
               />
             </Suspense>
           </div>
@@ -74,7 +79,7 @@ export default async function TVSeason({ params }: Props) {
               >
                 <MovieInfo
                   vote_average={data.season_vote_average}
-                  release_date={data.first_air_date.split('-')[0]}
+                  release_date={data.first_air_date}
                   language={data.languages}
                   certification={data.content_rating}
                   networks={data.networks}
@@ -88,8 +93,10 @@ export default async function TVSeason({ params }: Props) {
                 fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
               >
                 <MobileButtons
-                  itemId={data.season_id}
+                  itemId={params.id.toString() + '2'}
                   title={data.show_title}
+                  type="season"
+                  seasonId={data.season_id}
                 />
               </Suspense>
             </div>

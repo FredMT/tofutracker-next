@@ -11,7 +11,7 @@ import Overview from '@/app/movie/components/Overview'
 import CastAndCrew from '@/app/movie/components/CastAndCrew'
 import { redirect } from 'next/navigation'
 import Seasons from '@/app/tv/components/Seasons'
-import Videos from '@/app/components/Videos'
+// import Videos from '@/app/components/Videos'
 import AnimeSeasons from '@/app/components/AnimeSeasons'
 import MovieDetails from '@/app/movie/components/MovieDetails'
 import RecommendedMovies from '@/app/movie/components/RecommendedMovies'
@@ -114,6 +114,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 poster_path={movie.details.poster_path}
                 title={movie.details.title}
                 itemId={movie.details.id}
+                type="anime"
               />
             </Suspense>
           </div>
@@ -150,6 +151,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 <MobileButtons
                   itemId={movie.details.id}
                   title={movie.details.title}
+                  type="anime"
                 />
               </Suspense>
             </div>
@@ -230,6 +232,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 poster_path={tv.details.poster_path}
                 title={tv.details.title}
                 itemId={params.id}
+                type="anime"
               />
             </Suspense>
           </div>
@@ -263,7 +266,11 @@ export default async function Anime({ params }: { params: { id: string } }) {
               <Suspense
                 fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
               >
-                <MobileButtons itemId={params.id} title={tv.details.title} />
+                <MobileButtons
+                  itemId={params.id}
+                  title={tv.details.title}
+                  type="anime"
+                />
               </Suspense>
             </div>
             <div className="mt-6">

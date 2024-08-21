@@ -1,4 +1,5 @@
 'use client'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogClose,
@@ -9,21 +10,37 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import UseFormStatusPendingButton from './UseFormStatusPendingButton'
-import { useFormState } from 'react-dom'
 import { useToast } from '@/components/ui/use-toast'
 import { useEffect } from 'react'
-import { removeFromLibrary } from './actions'
+import { useFormState } from 'react-dom'
+import {
+  removeFromLibrary,
+  removeFromLibraryTv,
+  removeFromLibraryTvSeason,
+} from './actions'
+import UseFormStatusPendingButton from './UseFormStatusPendingButton'
 
 export default function RemoveFromLibrary({
   userId,
   mediaId,
+  isMovie,
+  type,
+  seasonId,
 }: {
   userId: number
   mediaId: string
+  isMovie: boolean
+  type: string
+  seasonId?: number
 }) {
-  const [state, formAction] = useFormState(removeFromLibrary, null)
+  const [state, formAction] = useFormState(
+    isMovie
+      ? removeFromLibrary
+      : type === 'season'
+        ? removeFromLibraryTvSeason
+        : removeFromLibraryTv,
+    null
+  )
   const { toast } = useToast()
 
   useEffect(() => {
@@ -40,7 +57,7 @@ export default function RemoveFromLibrary({
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className="basis-5/6 rounded-l-md rounded-r-none"
+          className={`${isMovie ? 'basis-5/6' : 'w-full'} ${isMovie ? 'rounded-r-none' : 'rounded-br-none rounded-tr-md'} rounded-bl-none rounded-tl-md`}
           variant="destructive"
         >
           Remove from Library
@@ -55,14 +72,19 @@ export default function RemoveFromLibrary({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="secondary">Cancel</Button>
-          </DialogClose>
-          <form action={formAction}>
-            <input type="hidden" name="userId" value={userId.toString()} />
-            <input type="hidden" name="mediaId" value={mediaId} />
-            <UseFormStatusPendingButton text="Remove" variant="destructive" />
-          </form>
+          <div className="flex w-full justify-end space-x-2">
+            <DialogClose asChild>
+              <Button variant="secondary">Cancel</Button>
+            </DialogClose>
+            <form action={formAction}>
+              <input type="hidden" name="userId" value={userId} />
+              <input type="hidden" name="mediaId" value={mediaId} />
+              {type === 'season' && seasonId && (
+                <input type="hidden" name="seasonId" value={seasonId} />
+              )}
+              <UseFormStatusPendingButton text="Remove" variant="destructive" />
+            </form>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

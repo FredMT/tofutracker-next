@@ -13,13 +13,16 @@ import { useToast } from '@/components/ui/use-toast'
 import Rating from './Rating'
 import { useState, useEffect, useRef } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
-import { rateMedia } from './actions'
+import { rateMedia, rateMediaTv, rateMediaTvSeason } from './actions'
 
 type Props = {
   userId: number
   mediaId: string
   data: any
   title: string
+  isMovie: boolean
+  type: string
+  seasonId?: number
 }
 
 function SubmitButton() {
@@ -32,13 +35,28 @@ function SubmitButton() {
   )
 }
 
-export default function RateButton({ userId, mediaId, data, title }: Props) {
+export default function RateButton({
+  userId,
+  mediaId,
+  data,
+  title,
+  isMovie,
+  type,
+  seasonId,
+}: Props) {
   const [rating, setRating] = useState(data?.rating || 0)
   const [open, setOpen] = useState(false)
-  const [state, formAction] = useFormState(rateMedia, {
-    success: false,
-    message: '',
-  })
+  const [state, formAction] = useFormState(
+    type === 'movie'
+      ? rateMedia
+      : type === 'season'
+        ? rateMediaTvSeason
+        : rateMediaTv,
+    {
+      success: false,
+      message: '',
+    }
+  )
   const { toast } = useToast()
   const formSubmittedRef = useRef(false)
   const { pending } = useFormStatus()
@@ -51,9 +69,16 @@ export default function RateButton({ userId, mediaId, data, title }: Props) {
   const starSize = getStarSize(rating)
 
   const handleSubmit = (formData: FormData) => {
-    formData.append('user_id', userId.toString())
+    {
+      type !== 'season' && formData.append('user_id', userId.toString())
+    }
     formData.append('media_id', mediaId)
     formData.append('rating', rating.toString())
+    {
+      type === 'season' &&
+        seasonId &&
+        formData.append('seasonId', seasonId.toString())
+    }
     formSubmittedRef.current = true
     formAction(formData)
   }

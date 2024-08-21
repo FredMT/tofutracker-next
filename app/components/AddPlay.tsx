@@ -61,7 +61,7 @@ export default function AddPlay({
         <Popover open={mainPopoverOpen} onOpenChange={setMainPopoverOpen}>
           <TooltipTrigger asChild>
             <PopoverTrigger asChild>
-              <Button className="basis-1/6 rounded-l-none rounded-r-md px-2">
+              <Button className="basis-1/6 rounded-l-none rounded-br-none rounded-tr-md px-2">
                 <Plus />
               </Button>
             </PopoverTrigger>

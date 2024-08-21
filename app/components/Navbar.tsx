@@ -1,16 +1,16 @@
-import React from 'react'
-import { Menu } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { getCurrentUser } from '@/lib/session'
+import { Menu } from 'lucide-react'
 import Link from 'next/link'
 import SearchButton from './SearchButton'
-import { ThemeButton } from './ThemeButton'
-import { getCurrentUser } from '@/lib/session'
 import SignIn from './SignIn'
 import Signout from './Signout'
+import { ThemeButton } from './ThemeButton'
 
 export default async function Navbar() {
   const user = await getCurrentUser()
@@ -31,10 +31,10 @@ export default async function Navbar() {
         <div className="flex gap-4 py-4 sm:hidden">
           <SearchButton />
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="inline-flex h-10 items-center justify-center whitespace-nowrap rounded-md bg-secondary px-4 py-2 text-sm font-medium text-secondary-foreground ring-offset-background transition-colors hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+            <DropdownMenuTrigger asChild>
+              <Button>
                 <Menu />
-              </div>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40 p-4" align="end">
               <div className="flex flex-col gap-y-2">

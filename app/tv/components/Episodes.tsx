@@ -7,7 +7,7 @@ export default function Episodes({
   backdrop_path,
   episodes,
 }: {
-  episodes: any[]
+  episodes: any
   backdrop_path: string
 }) {
   return (

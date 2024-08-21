@@ -1,10 +1,7 @@
 'use client'
 import { Badge } from '@/components/ui/badge'
 import { HoverCardContent, HoverCardPortal } from '@/components/ui/hover-card'
-import React from 'react'
 import { User } from 'lucia'
-import AddToLibraryButtonHoverCard from './AddToLibraryButtonHoverCard'
-import AddCheckInButton from './AddCheckInButton'
 
 export default function MovieCardHoverCard({
   item,
@@ -68,14 +65,11 @@ export default function MovieCardHoverCard({
             </div>
           )}
 
-          <div className="flex flex-row justify-center gap-x-2">
-            <AddToLibraryButtonHoverCard
-              user={user}
-              item={item}
-              style="basis-1/2 min-w-[200px]"
-            />
-            <AddCheckInButton user={user} item={item} />
-          </div>
+          {
+            // <div className="flex flex-row justify-center gap-x-2">
+            //add buttons here
+            //</div>
+          }
         </div>
       </HoverCardContent>
     </HoverCardPortal>

@@ -15,16 +15,26 @@ import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useToast } from '@/components/ui/use-toast'
 import { Check } from 'lucide-react'
 import { useForm } from 'react-hook-form'
-import { changeWatchStatus } from './actions'
+import {
+  changeWatchStatus,
+  changeWatchStatusTv,
+  changeWatchStatusTvSeason,
+} from './actions'
 
 export function WatchStatusSelect({
   userId,
   mediaId,
   data,
+  isMovie,
+  type,
+  seasonId,
 }: {
   userId: number
   mediaId: string
   data: any
+  isMovie: boolean
+  type: string
+  seasonId?: number
 }) {
   const { toast } = useToast()
   const watchStatus = data ? data.watch_status : null
@@ -35,6 +45,7 @@ export function WatchStatusSelect({
       mediaId,
       watchStatus: watchStatus || '',
       addPlay: false,
+      seasonId: seasonId || null,
     },
   })
 
@@ -44,7 +55,12 @@ export function WatchStatusSelect({
       formData.append(key, String(value))
     })
 
-    const result = await changeWatchStatus(null, formData)
+    const result =
+      type === 'movie'
+        ? await changeWatchStatus(null, formData)
+        : type === 'season'
+          ? await changeWatchStatusTvSeason(null, formData)
+          : await changeWatchStatusTv(null, formData)
     if (result.success) {
       toast({
         title: 'Success',
@@ -81,7 +97,12 @@ export function WatchStatusSelect({
 
   const handleStatusChange = (newStatus: string, addPlay: boolean = false) => {
     form.setValue('watchStatus', newStatus)
-    form.setValue('addPlay', addPlay)
+    {
+      type === 'movie' && form.setValue('addPlay', addPlay)
+    }
+    {
+      type === 'season' && seasonId && form.setValue('seasonId', seasonId)
+    }
     form.handleSubmit(onSubmit)()
   }
 
@@ -96,28 +117,18 @@ export function WatchStatusSelect({
               <FormControl>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="w-full justify-start">
-                      {getDisplayStatus(watchStatus)}
+                    <Button variant="outline" className="w-full justify-center">
+                      Status: {getDisplayStatus(watchStatus)}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56">
                     <DropdownMenuLabel>Watch Status</DropdownMenuLabel>
-                    {data === null ? (
-                      <DropdownMenuItem
-                        onSelect={() => handleStatusChange('COMPLETED', true)}
-                      >
-                        <div className="flex items-center">
-                          <div className="mr-2 h-4 w-4">
-                            {watchStatus === status && (
-                              <Check className="h-4 w-4" />
-                            )}
-                          </div>
-                          <span>Completed</span>
-                        </div>
-                      </DropdownMenuItem>
-                    ) : (
+                    {isMovie ? (
                       <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
+                        <DropdownMenuSubTrigger
+                          disabled={data && data.watch_status === 'COMPLETED'}
+                          className={`${data && data.watch_status === 'COMPLETED' ? 'cursor-not-allowed opacity-50' : ''}`}
+                        >
                           <div className="flex items-center">
                             <div className="mr-2 h-4 w-4">
                               {watchStatus === 'COMPLETED' && (
@@ -127,29 +138,47 @@ export function WatchStatusSelect({
                             <span>Completed</span>
                           </div>
                         </DropdownMenuSubTrigger>
-                        <DropdownMenuSubContent>
-                          <DropdownMenuItem
-                            onSelect={() =>
-                              handleStatusChange('COMPLETED', false)
-                            }
-                          >
-                            Set Status
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onSelect={() =>
-                              handleStatusChange('COMPLETED', true)
-                            }
-                          >
-                            Also add a Play
-                          </DropdownMenuItem>
-                        </DropdownMenuSubContent>
+                        {!(data && data.watch_status === 'COMPLETED') && (
+                          <DropdownMenuSubContent>
+                            <DropdownMenuItem
+                              onSelect={() =>
+                                handleStatusChange('COMPLETED', false)
+                              }
+                            >
+                              Set Status
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onSelect={() =>
+                                handleStatusChange('COMPLETED', true)
+                              }
+                            >
+                              Also add a Play
+                            </DropdownMenuItem>
+                          </DropdownMenuSubContent>
+                        )}
                       </DropdownMenuSub>
+                    ) : (
+                      <DropdownMenuItem
+                        onSelect={() => handleStatusChange('COMPLETED')}
+                        disabled={data && data.watch_status === 'COMPLETED'}
+                      >
+                        <div className="flex items-center">
+                          <div className="mr-2 h-4 w-4">
+                            {watchStatus === 'COMPLETED' && (
+                              <Check className="h-4 w-4" />
+                            )}
+                          </div>
+                          <span>Completed</span>
+                        </div>
+                      </DropdownMenuItem>
                     )}
 
                     {['PLANNING', 'ONHOLD', 'DROPPED'].map((status) => (
                       <DropdownMenuItem
                         key={status}
                         onSelect={() => handleStatusChange(status)}
+                        disabled={data && data.watch_status === status}
+                        className="cursor-pointer"
                       >
                         <div className="flex items-center">
                           <div className="mr-2 h-4 w-4">

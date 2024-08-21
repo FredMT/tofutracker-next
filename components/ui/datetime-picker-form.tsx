@@ -1,9 +1,5 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import * as z from 'zod'
-import * as React from 'react'
 import {
   Form,
   FormControl,
@@ -13,7 +9,11 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { LoadingButton } from '@/components/ui/loader-button'
-import { DateTimePicker } from '@/components/ui/datetime-picker'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as React from 'react'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
+import { DateTimePicker } from './datetime-picker'
 
 const FormSchema = z.object({
   datetime: z.date().refine((date) => date <= new Date(), {
@@ -29,7 +29,7 @@ interface DatetimePickerFormProps {
   serverAction: (formData: FormData) => void
   userId: string
   mediaId: string
-  onSuccess: () => void
+  onSuccess?: () => void
 }
 
 const DatetimePickerForm: React.FC<DatetimePickerFormProps> = ({
@@ -49,7 +49,7 @@ const DatetimePickerForm: React.FC<DatetimePickerFormProps> = ({
     formData.append('userId', userId)
     formData.append('mediaId', mediaId)
     await serverAction(formData)
-    onSuccess()
+    onSuccess && onSuccess()
   }
 
   return (
