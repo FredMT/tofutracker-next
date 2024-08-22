@@ -32,11 +32,14 @@ async function getTVData(id: number) {
   return result
 }
 
-async function getAnimeSeasons(id: number) {
-  const data = await fetch(`http://localhost:3030/api/anime/seasons/${id}`, {
-    cache: 'no-store',
-    credentials: 'include',
-  })
+async function getAnimeSeasons(tvdb_id: number) {
+  const data = await fetch(
+    `http://localhost:3030/api/anime/seasons/${tvdb_id}`,
+    {
+      cache: 'no-store',
+      credentials: 'include',
+    }
+  )
   const result = await data.json()
   return result
 }
@@ -210,7 +213,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
   } else {
     const tv = await getTVData(parseInt(params.id))
     const recommendedTV = await getRecommendedTV(parseInt(params.id))
-    const seasons = await getAnimeSeasons(parseInt(params.id + '2'))
+    const seasons = await getAnimeSeasons(tv.details.tvdb_id)
 
     return (
       <div className="flex flex-col gap-y-6">

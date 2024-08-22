@@ -12,8 +12,7 @@ interface AnimeInfo {
 }
 
 interface RelatedAnimeData {
-  relatedIds: number[]
-  chains: AnimeInfo[][]
+  main: AnimeInfo[]
   specials: AnimeInfo[]
 }
 
@@ -66,17 +65,11 @@ export default function RelatedAnime({
 }) {
   return (
     <div className="mt-6 space-y-6">
-      {data.chains.map((chain, index) => (
-        <div key={`series-${index}`}>
-          <h2 className="mb-3 text-lg font-semibold">Series {index + 1}</h2>
-          <div className="flex flex-wrap gap-x-3">
-            {chain.map((show) => (
-              <AnimeCard key={show.id} show={show} showId={showId} />
-            ))}
-          </div>
-          <Separator className="my-4" />
-        </div>
-      ))}
+      <div className="flex flex-wrap gap-x-3">
+        {data.main.map((show) => (
+          <AnimeCard key={show.id} show={show} showId={showId} />
+        ))}
+      </div>
 
       {data.specials.length > 0 && (
         <div>
