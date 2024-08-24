@@ -261,7 +261,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                   release_date={tv.details.first_air_date.split('-')[0]}
                   language={tv.details.original_language}
                   certification={tv.details.content_rating}
-                  networks={tv.details.networks.slice(0, 3)}
+                  networks={tv.details.networks}
                 />
               </Suspense>
             </div>
@@ -270,7 +270,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
               >
                 <MobileButtons
-                  itemId={params.id}
+                  itemId={params.id + `3`}
                   title={tv.details.title}
                   type="anime"
                 />

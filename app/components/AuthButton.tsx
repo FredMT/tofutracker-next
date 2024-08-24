@@ -1,8 +1,4 @@
-import { createClient } from '@/utils/supabase/server'
-import Link from 'next/link'
-import { redirect } from 'next/navigation'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,35 +7,20 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
+import { getProfile } from '@/data-access/profiles'
+import { getCurrentUser } from '@/lib/session'
+import Link from 'next/link'
+import SignIn from './SignIn'
+import Signout from './Signout'
 
 export default async function AuthButton() {
-  const supabase = createClient()
+  const user = await getCurrentUser()
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
+  if (!user) return <SignIn />
 
-  let username = null
-  if (user?.id) {
-    const { data, error } = await supabase
-      .from('profile')
-      .select('username')
-      .eq('id', user.id)
-      .single()
-    if (error) {
-      console.error('Failed to fetch username:', error.message)
-    } else {
-      username = data?.username
-    }
-  }
+  const profile = await getProfile(user.id)
 
-  const signOut = async () => {
-    'use server'
-
-    const supabase = createClient()
-    await supabase.auth.signOut()
-    return redirect('/')
-  }
+  if (!profile) return null
 
   return user ? (
     <>
@@ -47,61 +28,53 @@ export default async function AuthButton() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar>
-              <AvatarImage src={user.user_metadata.profile_picture} />
+              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-40">
-            <Link href={`/profile/${username}`}>
+            <Link href={`/profile/${profile.username}`}>
               <DropdownMenuItem className="cursor-pointer">
                 Profile
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
-            <Link href={`/profile/${username}/settings`}>
-              <DropdownMenuItem className="cursor-pointer">
+            <DropdownMenuItem className="cursor-pointer" asChild>
+              <Link href={`/profile/${profile.username}/settings`}>
                 Settings
-              </DropdownMenuItem>
-            </Link>
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <form action={signOut}>
-              <DropdownMenuItem className="cursor-pointer">
-                <button className="flex w-full justify-start">Logout</button>
-              </DropdownMenuItem>
-            </form>
+            <Signout />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
       <div className="flex gap-2 max-sm:flex-col sm:hidden">
         <Avatar>
-          <AvatarImage src={user.user_metadata.profile_picture} />
+          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
         </Avatar>
 
         <Separator className="my-2 sm:hidden" />
 
         <div className="flex flex-col gap-2 sm:hidden">
-          <Link href={`/profile/${username}`}>
+          <Link href={`/profile/${profile.username}`}>
             <button>Profile</button>
           </Link>
 
           <Separator className="my-1 sm:hidden" />
 
-          <Link href={`/profile/${username}/settings`}>
+          <Link href={`/profile/${profile.username}/settings`}>
             <button>Settings</button>
           </Link>
 
           <Separator className="my-1 sm:hidden" />
 
-          <form action={signOut}>
-            <button>Logout</button>
-          </form>
+          <Signout />
 
           <Separator className="my-1 sm:hidden" />
         </div>
       </div>
     </>
   ) : (
-    <Link href="/login">
-      <Button variant="secondary">Login/Sign Up</Button>
-    </Link>
+    <SignIn />
   )
 }

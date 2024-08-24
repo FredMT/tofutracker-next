@@ -8,6 +8,7 @@ import { UserId } from '@/use-cases/types'
 
 export const getCurrentUser = cache(async () => {
   const session = await validateRequest()
+
   if (!session.user) {
     return undefined
   }

@@ -38,45 +38,62 @@ export default async function Details({
   return (
     <Card className="rounded-none border-x-0 border-t-0 pb-8" id="details">
       <div className="mt-4 grid grid-cols-[75px_auto] gap-y-2 lg:grid-cols-[75px_1fr_75px_1fr] lg:gap-y-4">
-        <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
-          Type
-        </div>
-        <div className="ml-6 text-[14px] font-medium leading-[24px]">
-          {type}
-        </div>
-        <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
-          Status
-        </div>
-        <div className="ml-6 text-[14px] font-medium leading-[24px]">
-          {status}
-        </div>
-        <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
-          Creators
-        </div>
-        <div className="flex flex-col">
-          {creators &&
-            creators.map((creator, index) => (
-              <p
-                key={index}
-                className="ml-6 text-[14px] font-medium leading-[24px]"
-              >
-                {creator.name}
+        {type && (
+          <>
+            <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
+              Type
+            </div>
+            <div className="ml-6 text-[14px] font-medium leading-[24px]">
+              {type}
+            </div>
+          </>
+        )}
+        {creators && (
+          <>
+            <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
+              Status
+            </div>
+            <div className="ml-6 text-[14px] font-medium leading-[24px]">
+              {status}
+            </div>
+          </>
+        )}
+        {creators && (
+          <>
+            <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
+              Creators
+            </div>
+            <div className="flex flex-col">
+              {creators.map((creator, index) => (
+                <p
+                  key={index}
+                  className="ml-6 text-[14px] font-medium leading-[24px]"
+                >
+                  {creator.name}
+                </p>
+              ))}
+            </div>
+          </>
+        )}
+        {production_companies && (
+          <>
+            <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
+              Production Companies
+            </div>
+            <div className="flex flex-col">
+              <p className="ml-6 text-[14px] font-medium leading-[24px]">
+                {production_companies
+                  .slice(0, 3)
+                  .map((company, index, array) => (
+                    <React.Fragment key={company.id}>
+                      <span>{company.name}</span>
+                      {index < array.length - 1 && <span>, </span>}
+                    </React.Fragment>
+                  ))}
               </p>
-            ))}
-        </div>
-        <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
-          Production Companies
-        </div>
-        <div className="flex flex-col">
-          <p className="ml-6 text-[14px] font-medium leading-[24px]">
-            {production_companies.slice(0, 3).map((company, index, array) => (
-              <React.Fragment key={company.id}>
-                <span>{company.name}</span>
-                {index < array.length - 1 && <span>, </span>}
-              </React.Fragment>
-            ))}
-          </p>
-        </div>
+            </div>
+          </>
+        )}
 
         {seasons && (
           <>

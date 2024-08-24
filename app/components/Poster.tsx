@@ -41,7 +41,7 @@ export default async function Poster({
         />
         <div className="hidden gap-y-4 sm:flex sm:flex-col">
           <MobileButtons
-            itemId={itemId + `${type === 'movie' ? '' : '2'}`}
+            itemId={itemId + `${type === 'anime' ? '3' : ''}`}
             title={title}
             seasons={seasons}
             type={type}

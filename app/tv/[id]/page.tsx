@@ -9,7 +9,7 @@ import MobileButtons from '@/app/components/MobileButtons'
 import Details from '@/app/tv/components/Details'
 import Overview from '@/app/movie/components/Overview'
 import CastAndCrew from '@/app/movie/components/CastAndCrew'
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import Seasons from '@/app/tv/components/Seasons'
 // import Videos from '@/app/components/Videos'
 import RecommendedTVShows from '../components/RecommendedTVShows'
@@ -33,6 +33,8 @@ async function getTVData(id: number) {
     credentials: 'include',
   })
   const result = await data.json()
+
+  if (result.statusCode === 500) return notFound()
   return result
 }
 

@@ -13,6 +13,8 @@ import RemoveFromLibrary from './RemoveFromLibrary'
 import WatchRemainingButton from './WatchRemainingButton'
 import { WatchStatusSelect } from './WatchStatusSelect'
 import { validateRequest } from '@/lib/auth'
+import { getAccountByUserId } from '@/data-access/accounts'
+import { getProfile } from '@/data-access/profiles'
 
 type EpisodeData = {
   name: string
@@ -87,6 +89,7 @@ export default async function MobileButtons({
   seasonId?: number
 }) {
   const user = await getCurrentUser()
+
   const isMovie = type === 'movie'
 
   if (!user) {
@@ -104,6 +107,7 @@ export default async function MobileButtons({
       </div>
     )
   }
+  const profile = await getProfile(user?.id)
 
   const library = isMovie
     ? await getLibraryData(user.id, itemId)

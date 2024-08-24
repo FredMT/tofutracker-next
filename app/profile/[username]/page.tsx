@@ -1,37 +1,3 @@
-'use server'
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import { createClient } from '@/utils/supabase/server'
-import Image from 'next/image'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
-// import ActivityDialog from '@/app/profile/[username]/components/ActivityDialog'
-import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
-// import ProfileBanner from '@/app/profile/[username]/components/ProfileBanner'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { LayoutGrid, TableProperties } from 'lucide-react'
-import { DataTable } from '@/app/profile/[username]/components/data-table'
-import { columns } from '@/app/profile/[username]/components/columns'
-
-type Item = {
-  item_id: number
-  item_type: string
-  item_poster: string
-  item_title: string
-  activity_id: string
-  item_created_at: string
-  hasLiked?: boolean
-  list_type: string
-  rating: number
-  likes: number
-  comments: number
-}
-
-type ActivityData = {
-  success: boolean
-  message: string
-  posters: Item[]
-}
-
 // export const generateMetadata = ({
 //   params,
 // }: {

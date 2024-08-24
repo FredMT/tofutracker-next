@@ -121,21 +121,25 @@ export default async function Anime({ params }: Props) {
               <AnimeDetails anime={anime} creators={data?.creators} />
             </Suspense>
           </div>
-          <div className="mt-6">
-            <div className="contentpagedetailtitle" id="overview">
-              Overview
+          {anime?.description && (
+            <div className="mt-6">
+              <div className="contentpagedetailtitle" id="overview">
+                Overview
+              </div>
+
+              <Suspense
+                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
+              >
+                <Overview
+                  overview={anime.description}
+                  next_episode={data?.next_episode}
+                  previous_episode={data?.previous_episode}
+                />
+              </Suspense>
             </div>
+          )}
 
-            <Suspense fallback={<Skeleton className="mt-6 h-[300px] w-full" />}>
-              <Overview
-                overview={anime.description}
-                next_episode={data?.next_episode}
-                previous_episode={data?.previous_episode}
-              />
-            </Suspense>
-          </div>
-
-          {Boolean(episodes.main.length) && (
+          {Boolean(episodes?.main?.length) && (
             <div className="mt-6">
               <div className="contentpagedetailtitle" id="overview">
                 Main Episodes
@@ -152,7 +156,7 @@ export default async function Anime({ params }: Props) {
             </div>
           )}
 
-          {Boolean(episodes.specials.length) && (
+          {Boolean(episodes?.specials?.length) && (
             <div className="mt-6">
               <div className="contentpagedetailtitle" id="overview">
                 Special Episodes

@@ -29,10 +29,6 @@ async function getTVSeasonData(id: number, season_number: number) {
 export default async function TVSeason({ params }: Props) {
   const data = await getTVSeasonData(params.id, params.season_number)
 
-  console.log(
-    `http://localhost:3030/api/tv/${params.id}/season/${params.season_number}`
-  )
-
   return (
     <div className="flex flex-col gap-y-6">
       <Suspense fallback={<Skeleton className="h-[288px] w-full" />}>

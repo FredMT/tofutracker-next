@@ -49,7 +49,7 @@ export default async function MovieInfo({
           )}
           {networks && (
             <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
-              {networks.map((network: any) => (
+              {networks.slice(0, 3).map((network: any) => (
                 <img
                   key={network.id}
                   className="h-4"

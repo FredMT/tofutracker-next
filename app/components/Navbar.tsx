@@ -9,8 +9,10 @@ import { Menu } from 'lucide-react'
 import Link from 'next/link'
 import SearchButton from './SearchButton'
 import SignIn from './SignIn'
-import Signout from './Signout'
+
 import { ThemeButton } from './ThemeButton'
+import Signout from './Signout'
+import AuthButton from './AuthButton'
 
 export default async function Navbar() {
   const user = await getCurrentUser()
@@ -26,7 +28,7 @@ export default async function Navbar() {
         <div className="hidden gap-x-4 p-4 sm:flex">
           <SearchButton />
           <ThemeButton />
-          {user ? <Signout /> : <SignIn />}
+          <AuthButton />
         </div>
         <div className="flex gap-4 py-4 sm:hidden">
           <SearchButton />
@@ -38,7 +40,8 @@ export default async function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40 p-4" align="end">
               <div className="flex flex-col gap-y-2">
-                {user ? <Signout /> : <SignIn />}
+                {/* {user ? <Signout /> : <SignIn />} */}
+                <AuthButton />
                 <ThemeButton />
               </div>
             </DropdownMenuContent>
