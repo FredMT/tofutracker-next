@@ -1,11 +1,11 @@
-import { db } from "@/db";
-import { UserId } from "@/use-cases/types";
-import { Profile } from "@prisma/client";
+import { db } from '@/db'
+import { UserId } from '@/use-cases/types'
+import { Profile } from '@prisma/client'
 
 export async function createProfile(
   userId: UserId,
   displayName: string,
-  image?: string,
+  image?: string
 ) {
   const profile = await db.profile.upsert({
     where: { user_id: userId },
@@ -14,21 +14,22 @@ export async function createProfile(
       user_id: userId,
       image,
       username: displayName,
+      created_at: new Date(),
     },
-  });
-  return profile;
+  })
+  return profile
 }
 
 export async function updateProfile(
   userId: UserId,
-  updateProfile: Partial<Profile>,
+  updateProfile: Partial<Profile>
 ) {
   await db.profile.update({
     where: {
       user_id: userId,
     },
     data: updateProfile,
-  });
+  })
 }
 
 export async function getProfile(userId: UserId) {
@@ -36,7 +37,7 @@ export async function getProfile(userId: UserId) {
     where: {
       user_id: userId,
     },
-  });
+  })
 
-  return profile;
+  return profile
 }

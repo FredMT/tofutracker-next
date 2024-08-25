@@ -40,7 +40,6 @@ export default async function Navbar() {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-40 p-4" align="end">
               <div className="flex flex-col gap-y-2">
-                {/* {user ? <Signout /> : <SignIn />} */}
                 <AuthButton />
                 <ThemeButton />
               </div>

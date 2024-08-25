@@ -49,11 +49,11 @@ export default async function AuthButton() {
         </DropdownMenu>
       </div>
       <div className="flex gap-2 max-sm:flex-col sm:hidden">
-        <Avatar>
+        <Avatar className="max-sm:hidden">
           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
         </Avatar>
 
-        <Separator className="my-2 sm:hidden" />
+        <Separator className="my-2 max-sm:hidden" />
 
         <div className="flex flex-col gap-2 sm:hidden">
           <Link href={`/profile/${profile.username}`}>

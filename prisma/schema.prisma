@@ -9,13 +9,192 @@ datasource db {
   schemas  = ["public", "users"]
 }
 
+model Account {
+  id           Int         @id @default(autoincrement())
+  user_id      Int         @unique
+  account_type AccountType
+  github_id    Int?        @unique
+  google_id    String?     @unique
+  password     String?
+  salt         String?
+  user         user        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@schema("users")
+}
+
+model MagicLink {
+  id               Int      @id @default(autoincrement())
+  email            String   @unique
+  token            String?
+  token_expires_at DateTime
+
+  @@index([email])
+  @@schema("users")
+}
+
+model Profile {
+  id         Int         @id @default(autoincrement())
+  user_id    Int         @unique
+  username   String?
+  image_id   String?
+  image      String?
+  bio        String      @default("")
+  created_at DateTime
+  user       user        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_media UserMedia[] @relation("UserMediaToProfile")
+  UserMedia  UserMedia[]
+
+  @@index([user_id])
+  @@schema("users")
+}
+
+model ResetToken {
+  id               Int      @id @default(autoincrement())
+  user_id          Int      @unique
+  token            String?
+  token_expires_at DateTime
+  user             user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@schema("users")
+}
+
+model Session {
+  id        String   @id
+  userId    Int
+  expiresAt DateTime
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@schema("users")
+}
+
+model user {
+  id               Int               @id @default(autoincrement())
+  email            String            @unique
+  email_verified   DateTime?
+  Account          Account?
+  CheckIn          CheckIn[]
+  Profile          Profile?
+  ResetToken       ResetToken?
+  Session          Session[]
+  user_media       UserMedia[]       @relation("UserMediaToUser")
+  UserMediaLike    UserMediaLike[]
+  VerifyEmailToken VerifyEmailToken?
+
+  @@index([email])
+  @@index([id])
+  @@map("user")
+  @@schema("users")
+}
+
+model VerifyEmailToken {
+  id               Int      @id @default(autoincrement())
+  user_id          Int      @unique
+  token            String?
+  token_expires_at DateTime
+  User             user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@schema("users")
+}
+
+model UserMedia {
+  id                      Int             @id @default(autoincrement())
+  user_id                 Int
+  media_id                Int
+  last_watched_episode_id Int?
+  watch_status            WatchStatus
+  rating                  Float?          @db.Real
+  previous_watch_status   WatchStatus?
+  created_at              DateTime        @default(now()) @db.Timestamptz(3)
+  CheckIn                 CheckIn[]
+  user_episodes           UserEpisode[]
+  // user                    user            @relation(fields: [user_id], references: [id], map: "UserMedia_user_id_fkey1")
+  profile                 Profile         @relation("UserMediaToProfile", fields: [user_id], references: [user_id], map: "UserMedia_user_id_fkey2")
+  UserMediaLike           UserMediaLike[]
+  user_seasons            UserSeason[]
+  watch_history           WatchHistory[]
+  userId                  Int?
+  user                    user?           @relation("UserMediaToUser", fields: [user_id], references: [id], map: "UserMedia_user_id_fkey1")
+  Profile                 Profile?        @relation(fields: [profileId], references: [id])
+  profileId               Int?
+
+  @@unique([user_id, media_id])
+  @@index([user_id])
+  @@index([media_id])
+  @@schema("users")
+}
+
+model UserSeason {
+  id                      Int          @id @default(autoincrement())
+  user_media_id           Int
+  season_id               Int
+  last_watched_episode_id Int?
+  watch_status            WatchStatus?
+  rating                  Float?       @db.Real
+  user_media              UserMedia    @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_media_id, season_id])
+  @@schema("users")
+}
+
+model UserEpisode {
+  id            Int       @id @default(autoincrement())
+  user_media_id Int
+  episode_id    Int
+  rating        Float?    @db.Real
+  user_media    UserMedia @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_media_id, episode_id])
+  @@schema("users")
+}
+
+model WatchHistory {
+  id            Int            @id @default(autoincrement())
+  user_media_id Int
+  episode_id    Int?
+  season_id     Int?
+  watched_at    DateTime       @default(now()) @db.Timestamptz(3)
+  media_type    WatchMediaType
+  user_media    UserMedia      @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+
+  @@index([user_media_id])
+  @@index([episode_id])
+  @@index([season_id])
+  @@index([watched_at])
+  @@schema("users")
+}
+
+model CheckIn {
+  id                    Int       @id @default(autoincrement())
+  end_time              DateTime
+  media_id              Int
+  previous_watch_status String?
+  start_time            DateTime  @default(now())
+  user_id               Int
+  media_type            MediaType
+  user_media_id         Int
+  user                  user      @relation(fields: [user_id], references: [id])
+  user_media            UserMedia @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, media_id])
+  @@index([end_time])
+  @@index([media_id])
+  @@schema("users")
+}
+
 /// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-// model anidb_anime {
+// model TrendingItem {
 // @@schema("public")
 // }
 
 /// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-// model anidb_mapping {
+// model public__prisma_migrations {
+// @@map("_prisma_migrations")
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_anime {
 // @@schema("public")
 // }
 
@@ -35,12 +214,42 @@ datasource db {
 // }
 
 /// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_mapping {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
 // model anidb_relations {
 // @@schema("public")
 // }
 
 /// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
 // model anidb_similar {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anidb_tvdb_mapping {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anime {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anime_episodes {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anime_seasons {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model anime_series_grouping {
 // @@schema("public")
 // }
 
@@ -175,6 +384,16 @@ datasource db {
 // }
 
 /// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model tvdb_episodes {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model tvdb_series {
+// @@schema("public")
+// }
+
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
 // model videos {
 // @@schema("public")
 // }
@@ -184,187 +403,19 @@ datasource db {
 // @@schema("public")
 // }
 
-model Account {
-  id           Int         @id @default(autoincrement())
-  user_id      Int         @unique
-  account_type AccountType
-  github_id    Int?        @unique
-  google_id    String?     @unique
-  password     String?
-  salt         String?
-  user         user        @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@index([user_id])
-  @@schema("users")
-}
-
-model MagicLink {
-  id               Int      @id @default(autoincrement())
-  email            String   @unique
-  token            String?
-  token_expires_at DateTime
-
-  @@index([email])
-  @@schema("users")
-}
-
-model Profile {
-  id       Int     @id @default(autoincrement())
-  user_id  Int     @unique
-  username String?
-  image_id String?
-  image    String?
-  bio      String  @default("")
-  user     user    @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@index([user_id])
-  @@schema("users")
-}
-
-model ResetToken {
-  id               Int      @id @default(autoincrement())
-  user_id          Int      @unique
-  token            String?
-  token_expires_at DateTime
-  user             user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@schema("users")
-}
-
-model Session {
-  id        String   @id
-  userId    Int
-  expiresAt DateTime
-  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@schema("users")
-}
-
-model user {
-  id               Int               @id @default(autoincrement())
-  email            String            @unique
-  email_verified   DateTime?
-  Account          Account?
-  CheckIn          CheckIn[]
-  Profile          Profile?
-  ResetToken       ResetToken?
-  Session          Session[]
-  user_media       UserMedia[]
-  VerifyEmailToken VerifyEmailToken?
-
-  @@index([email])
-  @@index([id])
-  @@map("user")
-  @@schema("users")
-}
-
-model VerifyEmailToken {
-  id               Int      @id @default(autoincrement())
-  user_id          Int      @unique
-  token            String?
-  token_expires_at DateTime
-  User             user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
-
-  @@schema("users")
-}
-
-model UserMedia {
-  id                      Int            @id @default(autoincrement())
-  user_id                 Int
-  media_id                Int
-  last_watched_episode_id Int?
-  watch_status            WatchStatus
-  start_date              DateTime?
-  end_date                DateTime?
-  rating                  Float?         @db.Real
-  previous_watch_status   WatchStatus?
-  CheckIn                 CheckIn[]
-  user_episodes           UserEpisode[]
-  user                    user           @relation(fields: [user_id], references: [id])
-  user_seasons            UserSeason[]
-  watch_history           WatchHistory[]
-
-  @@unique([user_id, media_id])
-  @@index([user_id])
-  @@index([media_id])
-  @@schema("users")
-}
-
-model UserSeason {
-  id                      Int         @id @default(autoincrement())
-  user_media_id           Int
-  season_id               Int
-  last_watched_episode_id Int?
-  watch_status            WatchStatus
-  start_date              DateTime?   @default(now()) @db.Timestamptz(3)
-  end_date                DateTime?
-  rating                  Float?      @db.Real
-  user_media              UserMedia   @relation(fields: [user_media_id], references: [id])
-
-  @@unique([user_media_id, season_id])
-  @@schema("users")
-}
-
-model UserEpisode {
+model UserMediaLike {
   id            Int       @id @default(autoincrement())
+  user_id       Int
   user_media_id Int
-  episode_id    Int
-  rating        Float?    @db.Real
-  user_media    UserMedia @relation(fields: [user_media_id], references: [id])
+  created_at    DateTime  @default(now()) @db.Timestamptz(3)
+  user          user      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  UserMedia     UserMedia @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
 
-  @@unique([user_media_id, episode_id])
-  @@schema("users")
-}
-
-model WatchHistory {
-  id            Int            @id @default(autoincrement())
-  user_media_id Int
-  episode_id    Int?
-  season_id     Int?
-  watched_at    DateTime       @default(now()) @db.Timestamptz(3)
-  media_type    WatchMediaType
-  user_media    UserMedia      @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
-
+  @@unique([user_id, user_media_id])
+  @@index([user_id])
   @@index([user_media_id])
-  @@index([episode_id])
-  @@index([season_id])
-  @@index([watched_at])
   @@schema("users")
 }
-
-model CheckIn {
-  id                    Int       @id @default(autoincrement())
-  end_time              DateTime
-  media_id              Int
-  previous_watch_status String?
-  start_time            DateTime  @default(now())
-  user_id               Int
-  media_type            MediaType
-  user_media_id         Int
-  user                  user      @relation(fields: [user_id], references: [id])
-  user_media            UserMedia @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
-
-  @@unique([user_id, media_id])
-  @@index([end_time])
-  @@index([media_id])
-  @@schema("users")
-}
-
-/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-// model TrendingItem {
-// @@schema("public")
-// }
-
-/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-// model anidb_tvdb_mapping {
-// @@schema("public")
-// }
-
-/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
-// model public__prisma_migrations {
-// @@map("_prisma_migrations")
-// @@schema("public")
-// }
 
 enum ImageType {
   BACKDROP

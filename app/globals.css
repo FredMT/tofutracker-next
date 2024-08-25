@@ -73,6 +73,25 @@
   body {
     @apply bg-background text-foreground;
   }
+  h1 {
+    @apply scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl;
+  }
+
+  h2 {
+    @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
+  }
+
+  h3 {
+    @apply scroll-m-20 text-2xl font-semibold tracking-tight;
+  }
+
+  h4 {
+    @apply scroll-m-20 text-xl font-semibold tracking-tight;
+  }
+
+  p {
+    @apply leading-7;
+  }
 }
 
 @layer utilities {
@@ -97,5 +116,12 @@
     background-color: rgba(155, 155, 155, 0.5);
     border-radius: 20px;
     border: transparent;
+  }
+
+  .detail {
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 166.667% */
   }
 }
