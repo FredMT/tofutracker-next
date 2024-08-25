@@ -8,17 +8,20 @@ export async function addToLibrary(formData: FormData) {
   const mediaId = formData.get('mediaId')
 
   try {
-    const res = await fetch('http://localhost:3030/api/user-media/add-movie', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user_id: userId,
-        media_id: mediaId,
-        watch_status: 'COMPLETED',
-      }),
-    })
+    const res = await fetch(
+      `${process.env.BACKEND_BASE_URL}user-media/add-movie`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          media_id: mediaId,
+          watch_status: 'COMPLETED',
+        }),
+      }
+    )
 
     const data = await res.json()
 
@@ -38,16 +41,19 @@ export async function addToLibraryTv(formData: FormData) {
   const showId = formData.get('mediaId')
 
   try {
-    const res = await fetch('http://localhost:3030/api/user-media/add-show', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        user_id: userId,
-        show_id: showId,
-      }),
-    })
+    const res = await fetch(
+      `${process.env.BACKEND_BASE_URL}user-media/add-show`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          show_id: showId,
+        }),
+      }
+    )
 
     const data = await res.json()
 
@@ -73,17 +79,20 @@ export async function addToLibraryTvSeason(formData: FormData) {
   const seasonId = formData.get('seasonId')
 
   try {
-    const res = await fetch('http://localhost:3030/api/user-media/add-season', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        session_id: sessionId,
-        show_id: showId,
-        season_id: seasonId,
-      }),
-    })
+    const res = await fetch(
+      `${process.env.BACKEND_BASE_URL}user-media/add-season`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          session_id: sessionId,
+          show_id: showId,
+          season_id: seasonId,
+        }),
+      }
+    )
 
     const data = await res.json()
 
@@ -104,7 +113,7 @@ export async function removeFromLibrary(prevState: any, formData: FormData) {
 
   try {
     const res = await fetch(
-      'http://localhost:3030/api/user-media/delete-movie',
+      `${process.env.BACKEND_BASE_URL}user-media/delete-movie`,
       {
         method: 'POST',
         headers: {
@@ -137,7 +146,7 @@ export async function removeFromLibraryTv(prevState: any, formData: FormData) {
 
   try {
     const res = await fetch(
-      'http://localhost:3030/api/user-media/delete-show',
+      `${process.env.BACKEND_BASE_URL}user-media/delete-show`,
       {
         method: 'DELETE',
         headers: {
@@ -178,7 +187,7 @@ export async function removeFromLibraryTvSeason(
 
   try {
     const res = await fetch(
-      `http://localhost:3030/api/user-media/delete-season?session_id=${session.session.id}&showId=${showId}&seasonId=${seasonId}`,
+      `${process.env.BACKEND_BASE_URL}user-media/delete-season?session_id=${session.session.id}&showId=${showId}&seasonId=${seasonId}`,
       {
         method: 'DELETE',
         headers: {
@@ -217,7 +226,7 @@ export async function addPlayAction(prevState: any, formData: FormData) {
 
   try {
     const res = await fetch(
-      'http://localhost:3030/api/user-media/add-play-movie',
+      `${process.env.BACKEND_BASE_URL}user-media/add-play-movie`,
       {
         method: 'POST',
         headers: {
@@ -247,7 +256,7 @@ export async function checkInAction(prevState: any, formData: FormData) {
   const mediaId = formData.get('mediaId')
   const autocomplete = formData.get('autocomplete') === 'true'
 
-  const response = await fetch('http://localhost:3030/api/check-in', {
+  const response = await fetch(`${process.env.BACKEND_BASE_URL}check-in`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -269,7 +278,7 @@ export async function cancelCheckInAction(prevState: any, formData: FormData) {
   const mediaId = formData.get('mediaId')
 
   const res = await fetch(
-    `http://localhost:3030/api/check-in/${userId}/${mediaId}`,
+    `${process.env.BACKEND_BASE_URL}check-in/${userId}/${mediaId}`,
     {
       method: 'DELETE',
       credentials: 'include',
@@ -298,7 +307,7 @@ export async function rateMedia(prevState: any, formData: FormData) {
 
   try {
     const response = await fetch(
-      'http://localhost:3030/api/user-media/rate-movie',
+      `${process.env.BACKEND_BASE_URL}user-media/rate-movie`,
       {
         method: 'POST',
         headers: {
@@ -335,7 +344,7 @@ export async function rateMediaTv(prevState: any, formData: FormData) {
 
   try {
     const response = await fetch(
-      'http://localhost:3030/api/user-media/rate-show',
+      `${process.env.BACKEND_BASE_URL}user-media/rate-show`,
       {
         method: 'POST',
         headers: {
@@ -383,7 +392,7 @@ export async function rateMediaTvSeason(prevState: any, formData: FormData) {
 
   try {
     const response = await fetch(
-      'http://localhost:3030/api/user-media/rate-season',
+      `${process.env.BACKEND_BASE_URL}user-media/rate-season`,
       {
         method: 'POST',
         headers: {
@@ -430,7 +439,7 @@ export async function changeWatchStatus(prevState: any, formData: FormData) {
 
   try {
     const res = await fetch(
-      'http://localhost:3030/api/user-media/change-movie-status',
+      `${process.env.BACKEND_BASE_URL}user-media/change-movie-status`,
       {
         method: 'POST',
         headers: {
@@ -470,7 +479,7 @@ export async function changeWatchStatusTvSeason(
 
   try {
     const res = await fetch(
-      'http://localhost:3030/api/user-media/change-season-status',
+      `${process.env.BACKEND_BASE_URL}user-media/change-season-status`,
       {
         method: 'POST',
         headers: {
@@ -507,7 +516,7 @@ export async function changeWatchStatusTv(prevState: any, formData: FormData) {
 
   try {
     const res = await fetch(
-      'http://localhost:3030/api/user-media/change-tv-status',
+      `${process.env.BACKEND_BASE_URL}user-media/change-tv-status`,
       {
         method: 'POST',
         headers: {
@@ -543,7 +552,7 @@ export async function watchRemainingAction(formData: FormData) {
 
   try {
     const response = await fetch(
-      'http://localhost:3030/api/user-media/watch-remaining-tv',
+      `${process.env.BACKEND_BASE_URL}user-media/watch-remaining-tv`,
       {
         method: 'POST',
         headers: {
@@ -583,7 +592,7 @@ export async function watchRemainingActionTvSeason(formData: FormData) {
 
   try {
     const response = await fetch(
-      'http://localhost:3030/api/user-media/watch-remaining-season',
+      `${process.env.BACKEND_BASE_URL}user-media/watch-remaining-season`,
       {
         method: 'POST',
         headers: {
@@ -623,7 +632,7 @@ export async function quickTrackAction(formData: FormData) {
 
   try {
     const response = await fetch(
-      'http://localhost:3030/api/user-media/quick-track',
+      `${process.env.BACKEND_BASE_URL}user-media/quick-track`,
       {
         method: 'POST',
         headers: {

@@ -9,7 +9,7 @@ export const metadata = {
 
 async function getTrendingData(user: User | undefined) {
   const body = user ? JSON.stringify({ user_id: user.id }) : null
-  const res = await fetch('http://localhost:3030/api/trending/items', {
+  const res = await fetch(`${process.env.BACKEND_BASE_URL}trending/items`, {
     method: 'POST',
     body: body,
     headers: body ? { 'Content-Type': 'application/json' } : undefined,

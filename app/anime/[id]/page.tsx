@@ -24,7 +24,7 @@ import RecommendedMovies from '@/app/movie/components/RecommendedMovies'
 // }
 
 async function getTVData(id: number) {
-  const data = await fetch(`http://localhost:3030/api/tv/${id}`, {
+  const data = await fetch(`${process.env.BACKEND_BASE_URL}tv/${id}`, {
     cache: 'no-store',
     credentials: 'include',
   })
@@ -34,7 +34,7 @@ async function getTVData(id: number) {
 
 async function getAnimeSeasons(tvdb_id: number) {
   const data = await fetch(
-    `http://localhost:3030/api/anime/seasons/${tvdb_id}`,
+    `${process.env.BACKEND_BASE_URL}anime/seasons/${tvdb_id}`,
     {
       cache: 'no-store',
       credentials: 'include',
@@ -45,7 +45,7 @@ async function getAnimeSeasons(tvdb_id: number) {
 }
 
 async function getMovieData(id: number) {
-  const data = await fetch(`http://localhost:3030/api/movie/${id}`, {
+  const data = await fetch(`${process.env.BACKEND_BASE_URL}movie/${id}`, {
     cache: 'no-cache',
     credentials: 'include',
   })
@@ -58,7 +58,7 @@ async function getMovieData(id: number) {
 
 async function getRecommendedMovies(id: number) {
   const data = await fetch(
-    `http://localhost:3030/api/anime/recommendations/${id}?type=movie`,
+    `${process.env.BACKEND_BASE_URL}anime/recommendations/${id}?type=movie`,
     {
       cache: 'no-store',
       credentials: 'include',
@@ -70,7 +70,7 @@ async function getRecommendedMovies(id: number) {
 
 async function getRecommendedTV(id: number) {
   const data = await fetch(
-    `http://localhost:3030/api/anime/recommendations/${id}?type=tv`,
+    `${process.env.BACKEND_BASE_URL}anime/recommendations/${id}?type=tv`,
     {
       cache: 'no-store',
       credentials: 'include',
@@ -81,7 +81,7 @@ async function getRecommendedTV(id: number) {
 }
 
 async function getAnimeType(id: number) {
-  const data = await fetch(`http://localhost:3030/api/anime/type/${id}`, {
+  const data = await fetch(`${process.env.BACKEND_BASE_URL}anime/type/${id}`, {
     credentials: 'include',
   })
   const result = await data.json()

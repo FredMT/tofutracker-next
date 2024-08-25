@@ -28,7 +28,7 @@ type Props = {
 }
 
 async function getTVData(id: number) {
-  const data = await fetch(`http://localhost:3030/api/tv/${id}`, {
+  const data = await fetch(`${process.env.BACKEND_BASE_URL}tv/${id}`, {
     cache: 'no-store',
     credentials: 'include',
   })
@@ -40,7 +40,7 @@ async function getTVData(id: number) {
 
 async function getRecommendedTvShows(id: number) {
   const data = await fetch(
-    `http://localhost:3030/api/tv/${id}/recommendations`,
+    `${process.env.BACKEND_BASE_URL}tv/${id}/recommendations`,
     {
       cache: 'no-store',
       credentials: 'include',

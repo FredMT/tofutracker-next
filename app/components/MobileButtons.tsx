@@ -28,7 +28,7 @@ type EpisodeData = {
 
 async function getLibraryData(userId: number, itemId: string) {
   const data = await fetch(
-    `http://localhost:3030/api/user-media/movie/details`,
+    `${process.env.BACKEND_BASE_URL}user-media/movie/details`,
     {
       next: { tags: ['is-in-library'] },
       cache: 'no-cache',
@@ -46,7 +46,7 @@ async function getLibraryData(userId: number, itemId: string) {
 
 async function getLibraryTvData(userId: number, itemId: string) {
   const data = await fetch(
-    `http://localhost:3030/api/user-media/tv/details?userId=${userId}&showId=${itemId.slice(0, -1)}`,
+    `${process.env.BACKEND_BASE_URL}user-media/tv/details?userId=${userId}&showId=${itemId.slice(0, -1)}`,
     {
       next: { tags: ['is-in-library'] },
       cache: 'no-cache',
@@ -63,7 +63,7 @@ async function getLibraryTvSeasonData(itemId: string, seasonId: number) {
   if (!session.session || !session) return null
 
   const data = await fetch(
-    `http://localhost:3030/api/user-media/season/details?session_id=${session.session.id}&showId=${itemId}&seasonId=${seasonId}`,
+    `${process.env.BACKEND_BASE_URL}user-media/season/details?session_id=${session.session.id}&showId=${itemId}&seasonId=${seasonId}`,
     {
       next: { tags: ['is-in-library'] },
       cache: 'no-cache',

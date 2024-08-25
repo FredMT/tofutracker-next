@@ -26,22 +26,25 @@ export async function addOrRemoveFromLibrary(
   try {
     if (!existingUserMedia) {
       // Add to library
-      response = await fetch('http://localhost:3030/api/user-media/add-movie', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: parseInt(user_id),
-          media_id: parseInt(media_id + '1'),
-          watch_status: 'COMPLETED',
-        }),
-        credentials: 'include',
-      })
+      response = await fetch(
+        `${process.env.BACKEND_BASE_URL}user-media/add-movie`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: parseInt(user_id),
+            media_id: parseInt(media_id + '1'),
+            watch_status: 'COMPLETED',
+          }),
+          credentials: 'include',
+        }
+      )
     } else {
       // Remove from library
       response = await fetch(
-        'http://localhost:3030/api/user-media/delete-movie',
+        `${process.env.BACKEND_BASE_URL}user-media/delete-movie`,
         {
           method: 'DELETE',
           headers: {

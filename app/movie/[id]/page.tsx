@@ -29,7 +29,7 @@ export const generateMetadata = async ({ params }: Props) => {
 }
 
 async function getMovieData(id: number) {
-  const data = await fetch(`http://localhost:3030/api/movie/${id}`, {
+  const data = await fetch(`${process.env.BACKEND_BASE_URL}movie/${id}`, {
     cache: 'no-cache',
     credentials: 'include',
   })
@@ -42,7 +42,7 @@ async function getMovieData(id: number) {
 
 async function getRecommendedMovies(id: number) {
   const data = await fetch(
-    `http://localhost:3030/api/movie/${id}/recommendations`,
+    `${process.env.BACKEND_BASE_URL}movie/${id}/recommendations`,
     {
       cache: 'no-cache',
       credentials: 'include',

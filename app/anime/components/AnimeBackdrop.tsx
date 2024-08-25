@@ -12,7 +12,7 @@ type Images = {
 }
 
 async function getAnimeImages(id: number) {
-  const url = `http://localhost:3030/api/anime/images/${id}`
+  const url = `${process.env.BACKEND_BASE_URL}anime/images/${id}`
   const data = await fetch(url)
   const result = await data.json()
   return result

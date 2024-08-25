@@ -14,7 +14,7 @@ import Episodes from '@/app/tv/components/Episodes'
 
 export const generateMetadata = async ({ params }: Props) => {
   const result = await fetch(
-    'http://localhost:3030/api/anime/details/' + params.season_id.split('-')[0]
+    `${process.env.BACKEND_BASE_URL}anime/details/${params.season_id.split('-')[0]}`
   )
   const data = await result.json()
   return {
@@ -30,7 +30,7 @@ type Props = {
 }
 
 async function getAnimeRelations(id: number) {
-  const data = await fetch(`http://localhost:3030/api/anime/relations/${id}`, {
+  const data = await fetch(`${process.env.BACKEND_BASE_URL}anime/relations/${id}`, {
     cache: 'no-store',
     credentials: 'include',
   })
@@ -39,7 +39,7 @@ async function getAnimeRelations(id: number) {
 }
 
 async function getAnimeDetails(id: number) {
-  const data = await fetch(`http://localhost:3030/api/anime/details/${id}`, {
+  const data = await fetch(`${process.env.BACKEND_BASE_URL}anime/details/${id}`, {
     cache: 'no-store',
     credentials: 'include',
   })
@@ -48,7 +48,7 @@ async function getAnimeDetails(id: number) {
 }
 
 async function getAnimeEpisodes(id: number) {
-  const data = await fetch(`http://localhost:3030/api/anime/episodes/${id}`, {
+  const data = await fetch(`${process.env.BACKEND_BASE_URL}anime/episodes/${id}`, {
     cache: 'no-store',
     credentials: 'include',
   })
@@ -57,7 +57,7 @@ async function getAnimeEpisodes(id: number) {
 }
 
 async function getAnimeImages(id: number) {
-  const url = `http://localhost:3030/api/anime/images/${id}`
+  const url = `${process.env.BACKEND_BASE_URL}anime/images/${id}`
   const data = await fetch(url)
   const result = await data.json()
   return result
