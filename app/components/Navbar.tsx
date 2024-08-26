@@ -8,15 +8,11 @@ import { getCurrentUser } from '@/lib/session'
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
 import SearchButton from './SearchButton'
-import SignIn from './SignIn'
 
-import { ThemeButton } from './ThemeButton'
-import Signout from './Signout'
 import AuthButton from './AuthButton'
+import { ThemeButton } from './ThemeButton'
 
 export default async function Navbar() {
-  const user = await getCurrentUser()
-
   return (
     <div className="absolute top-0 z-50 w-full">
       <div className="mx-auto flex w-[80%] justify-between">

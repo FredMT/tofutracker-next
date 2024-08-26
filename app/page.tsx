@@ -3,6 +3,8 @@ import TrendingCarousel from '@/app/components/TrendingCarousel'
 import { User } from 'lucia'
 import { getCurrentUser } from '@/lib/session'
 
+export const fetchCache = 'force-no-store'
+
 export const metadata = {
   title: 'Homepage - TofuTracker',
 }
