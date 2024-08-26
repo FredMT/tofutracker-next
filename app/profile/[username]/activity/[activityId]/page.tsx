@@ -43,7 +43,7 @@ async function getActivityLoggedInUser(activityId: number) {
 
 async function getComments(activityId: number) {
   const res = await fetch(
-    `http://localhost:3030/api/comments/no-user?user_media_id=${activityId}`,
+    `${process.env.BACKEND_BASE_URL}comments/no-user?user_media_id=${activityId}`,
     {
       method: 'GET',
       cache: 'no-store',
@@ -64,7 +64,7 @@ async function getCommentsLoggedInUser(activityId: number) {
   const sessionId = session.session.id
 
   const res = await fetch(
-    `http://localhost:3030/api/comments/with-user?user_media_id=${activityId}&session_id=${sessionId}`,
+    `${process.env.BACKEND_BASE_URL}comments/with-user?user_media_id=${activityId}&session_id=${sessionId}`,
     {
       method: 'GET',
       cache: 'no-store',
