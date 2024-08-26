@@ -33,7 +33,7 @@ export default function Footer() {
         </Link>
       </div>
       <div className="w-full">
-        <p className="select-none text-center font-syne text-[8vw] font-semibold uppercase not-italic leading-[normal] text-[color:var(--primary)]">
+        <p className="select-none text-center font-syne text-[8vw] font-semibold uppercase not-italic leading-[normal]">
           TOFUTRACKER
         </p>
       </div>

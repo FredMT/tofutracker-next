@@ -27,7 +27,7 @@ export default async function Profile({
 
   return (
     <>
-      <div className="flex h-full min-h-[288px] w-full items-center justify-center bg-[#888888] sm:max-h-[360px]">
+      <div className="flex h-full min-h-[288px] w-full items-center justify-center sm:max-h-[360px]">
         <ProfileBanner />
       </div>
       <div className="mx-auto mt-6 flex w-full px-3 max-sm:flex-col max-sm:space-y-6 sm:space-x-9 lg:space-x-12 xl:px-14 2xl:px-44">

@@ -46,8 +46,6 @@ export default async function ProfileBanner() {
         height={720}
         className="min-h-[288px] w-full object-cover sm:max-h-[360px]"
       />
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center bg-gradient-to-t from-black to-transparent p-12 opacity-35" />
-      <div className="absolute left-0 right-0 top-0 flex justify-center bg-gradient-to-b from-black to-transparent p-12 opacity-50" />
     </>
   )
   //   }
