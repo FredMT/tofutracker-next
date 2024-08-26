@@ -9,6 +9,8 @@
 // import ProfileBannerChosenItemDialog from './ProfileBannerChosenItemDialog'
 // import { updateBannerFromLibraryItems } from '../settings/components/actions'
 
+import Image from 'next/image'
+
 export default async function ProfileBanner() {
   //   if (user && user.user_metadata.username === viewedUserUsername) {
   //     if (!user.user_metadata.profile_banner_picture) {
@@ -37,7 +39,7 @@ export default async function ProfileBanner() {
   // }
   return (
     <>
-      <img
+      <Image
         src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/869ae92e-855f-4458-8e52-e9d04604a682/dcpu91w-4d4efd42-8eb0-4a2a-8d6e-3ac600501bdc.jpg/v1/fill/w_1024,h_434,q_75,strp/spider_man_into_the_spider_verse___banner_by_williansantos26_dcpu91w-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NDM0IiwicGF0aCI6IlwvZlwvODY5YWU5MmUtODU1Zi00NDU4LThlNTItZTlkMDQ2MDRhNjgyXC9kY3B1OTF3LTRkNGVmZDQyLThlYjAtNGEyYS04ZDZlLTNhYzYwMDUwMWJkYy5qcGciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.cw4t2Y9PBc1NmJJX7SlOg-oTZ2zj4QEqK2EKB0XtDcw"
         alt="Profile banner"
         width={1280}

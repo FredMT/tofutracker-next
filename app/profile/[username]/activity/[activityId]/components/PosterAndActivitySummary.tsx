@@ -8,6 +8,7 @@ import Link from 'next/link'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { toggleLike } from './actions'
+import Image from 'next/image'
 
 export default function PosterAndActivitySummary({
   posterImage,
@@ -39,10 +40,12 @@ export default function PosterAndActivitySummary({
     <div className="sm:sticky sm:top-6">
       <div className="flex w-full flex-col space-y-6 sm:max-w-[300px]">
         <div className="flex h-[350px] min-w-[230px] justify-center sm:justify-start">
-          <img
+          <Image
             src={`https://image.tmdb.org/t/p/w500${posterImage}`}
-            alt={`Poster of ${title} by ${username}`}
+            alt={`Poster of ${title}`}
             className="rounded-md object-cover"
+            width={500}
+            height={750}
           />
         </div>
         <div className="flex flex-col sm:max-w-[300px]">

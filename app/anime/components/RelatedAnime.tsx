@@ -10,6 +10,7 @@ import Link from 'next/link'
 import useSWR from 'swr'
 import React from 'react'
 import { Card } from '@/components/ui/card'
+import Image from 'next/image'
 
 type RelatedAnime = {
   type: string
@@ -56,7 +57,7 @@ export default function RelatedAnime({
                     <CarouselItem key={item.related_id}>
                       <Link href={`/anime/${showId}/season/${item.related_id}`}>
                         <div className="flex flex-col">
-                          <img
+                          <Image
                             src={`https://tofutrackeranime2.b-cdn.net/posters/${item.poster}`}
                             alt={`${item.title} Poster`}
                             className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px] lg:h-[211px] lg:w-[140px]"

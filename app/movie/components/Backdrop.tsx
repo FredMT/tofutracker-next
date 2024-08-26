@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 export default async function Backdrop({
@@ -11,7 +12,7 @@ export default async function Backdrop({
 }) {
   return (
     <div className="relative overflow-hidden">
-      <img
+      <Image
         className="h-[288px] w-full object-cover sm:h-[576px] sm:w-full"
         src={backdrop_path}
         alt={title}
@@ -19,7 +20,7 @@ export default async function Backdrop({
         height={1080}
       />
       {logo_path && (
-        <img
+        <Image
           src={logo_path}
           alt={title}
           width={1920}

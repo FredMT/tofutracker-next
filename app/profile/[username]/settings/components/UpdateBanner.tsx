@@ -5,6 +5,7 @@ import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingBut
 
 import { z } from 'zod'
 import DeleteBanner from './DeleteBanner'
+import Image from 'next/image'
 
 export const updateBanner = async (formData: FormData) => {
   'use server'
@@ -125,7 +126,7 @@ export default async function UpdateBanner() {
       <div className="flex gap-10">
         <div className="flex-col gap-1">
           <div className="text-sm">Current Banner</div>
-          <img
+          <Image
             src={
               user?.user_metadata.profile_banner_picture
                 ? user?.user_metadata.profile_banner_picture

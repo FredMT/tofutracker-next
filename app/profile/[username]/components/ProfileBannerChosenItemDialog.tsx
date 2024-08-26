@@ -7,6 +7,7 @@ import {
 } from '@/components/ui/dialog'
 import { useState } from 'react'
 import ProfileBannerChosenItemBackdrops from './ProfileBannerChosenItemBackdrops'
+import Image from 'next/image'
 
 type Props = {
   activityData: {
@@ -45,7 +46,7 @@ export default function ProfileBannerChosenItemDialog({
               setSelectedTitle(item.item_title)
             }}
           >
-            <img
+            <Image
               loading="lazy"
               src={item.item_poster}
               alt={item.item_title}

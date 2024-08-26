@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
+import Image from 'next/image'
 import React from 'react'
 
 type MovieInfoProps = {
@@ -50,11 +51,13 @@ export default async function MovieInfo({
           {networks && (
             <div className="flex flex-wrap items-center gap-x-2 gap-y-2">
               {networks.slice(0, 3).map((network: any) => (
-                <img
+                <Image
                   key={network.id}
                   className="h-4"
                   src={`https://image.tmdb.org/t/p/original${network.logo_path}`}
                   alt={network.name}
+                  width={40}
+                  height={20}
                 />
               ))}
             </div>

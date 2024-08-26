@@ -1,36 +1,36 @@
-import { verifyEmailUseCase } from "@/use-cases/users";
+import { verifyEmailUseCase } from '@/use-cases/users'
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic'
 
 export async function GET(request: Request): Promise<Response> {
   try {
-    const url = new URL(request.url);
-    const token = url.searchParams.get("token");
+    const url = new URL(request.url)
+    const token = url.searchParams.get('token')
 
     if (!token) {
       return new Response(null, {
         status: 302,
         headers: {
-          Location: "/sign-in",
+          Location: '/sign-in',
         },
-      });
+      })
     }
 
-    await verifyEmailUseCase(token);
+    await verifyEmailUseCase(token)
 
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/verify-success",
+        Location: '/',
       },
-    });
+    })
   } catch (err) {
-    console.error(err);
+    console.error(err)
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/sign-in",
+        Location: '/sign-in',
       },
-    });
+    })
   }
 }

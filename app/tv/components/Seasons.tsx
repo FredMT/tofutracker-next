@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -27,7 +28,7 @@ export default function Seasons({ seasons }: { seasons: Seasons[] }) {
             <Link
               href={`/tv/${Math.floor(show.show_id / 10)}/season/${show.season_number}`}
             >
-              <img
+              <Image
                 className="h-[210px] w-[140px] rounded-sm object-cover"
                 src={
                   show.poster_path

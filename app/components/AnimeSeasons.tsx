@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -24,7 +25,7 @@ function AnimeCard({ show, showId }: { show: AnimeInfo; showId: string }) {
     >
       <div className="relative">
         <Link href={`/anime/${showId}/season/${show.id}`}>
-          <img
+          <Image
             className="h-[210px] w-[140px] rounded-sm object-cover"
             src={
               show.poster

@@ -2,6 +2,7 @@
 import { Badge } from '@/components/ui/badge'
 import { HoverCardContent, HoverCardPortal } from '@/components/ui/hover-card'
 import { User } from 'lucia'
+import Image from 'next/image'
 
 export default function MovieCardHoverCard({
   item,
@@ -24,11 +25,13 @@ export default function MovieCardHoverCard({
               {item.origin_country && (
                 <div className="flex flex-row items-center justify-center gap-2">
                   {item.origin_country.map((country: string) => (
-                    <img
+                    <Image
                       key={country}
                       src={`http://purecatamphetamine.github.io/country-flag-icons/3x2/${country}.svg`}
                       alt={country}
                       className="size-6"
+                      width={30}
+                      height={20}
                     />
                   ))}
                 </div>

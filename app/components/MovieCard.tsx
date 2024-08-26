@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { HoverCard, HoverCardTrigger } from '@/components/ui/hover-card'
 import dynamic from 'next/dynamic'
 import { User } from 'lucia'
+import Image from 'next/image'
 
 const MovieCardHoverCard = dynamic(() => import('./MovieCardHoverCard'), {
   ssr: false,
@@ -20,7 +21,7 @@ export default function MovieCard({ item, user }: Props) {
       <HoverCard openDelay={300} closeDelay={0}>
         <HoverCardTrigger asChild>
           <Link href={`/${item.media_type}/${item.media_id}`}>
-            <img
+            <Image
               className="w-full rounded-sm object-cover lg:h-[210px] lg:w-[140px]"
               src={`https://image.tmdb.org/t/p/w440_and_h660_face${item.poster_path}`}
               alt={item.title}

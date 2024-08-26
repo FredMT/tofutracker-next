@@ -13,6 +13,7 @@ import {
 import { useState } from 'react'
 import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
 import { useFormState } from 'react-dom'
+import Image from 'next/image'
 
 export default function ProfileBannerChosenItemBackdrops({
   selectedItemID,
@@ -47,7 +48,7 @@ export default function ProfileBannerChosenItemBackdrops({
             {data.data.map((item: any) => (
               <div key={item.file_path}>
                 <DialogTrigger asChild>
-                  <img
+                  <Image
                     loading="lazy"
                     src={`https://image.tmdb.org/t/p/original/${item.file_path}`}
                     alt="backdrop"
@@ -61,7 +62,7 @@ export default function ProfileBannerChosenItemBackdrops({
                     Your banner choice
                   </DialogTitle>
                   <div className="flex flex-col gap-4 p-6">
-                    <img
+                    <Image
                       src={`https://image.tmdb.org/t/p/original/${selectedBackdrop}`}
                       alt="backdrop"
                       width={item.width}

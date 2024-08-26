@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { format, parseISO } from 'date-fns'
 import Link from 'next/link'
 import ProfileBanner from './components/ProfileBanner'
+import Image from 'next/image'
 
 async function getUserLibrary(username: string) {
   const res = await fetch(
@@ -90,10 +91,12 @@ export default async function Profile({
                         <Link
                           href={`/profile/${params.username}/activity/${item.id}`}
                         >
-                          <img
+                          <Image
                             src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
                             alt={`Poster ${item.title}`}
                             className="h-full w-full rounded-sm object-cover"
+                            width={500}
+                            height={750}
                           />
                         </Link>
                       </div>

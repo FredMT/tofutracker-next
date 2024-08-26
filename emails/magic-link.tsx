@@ -16,6 +16,7 @@ import {
 
 import { env } from '@/env'
 import { applicationName } from '@/app-config'
+import Image from 'next/image'
 
 export const BASE_URL = env.HOST_NAME
 
@@ -30,7 +31,7 @@ export function MagicLinkEmail({ token }: { token: string }) {
           <Body className="mx-auto my-auto bg-white font-sans">
             <Container className="mx-auto my-[40px] w-[465px] rounded border border-solid border-[#eaeaea] p-[20px]">
               <Section className="mt-[32px]">
-                <Img
+                <Image
                   src={`${BASE_URL}/group.jpeg`}
                   width="160"
                   height="48"
