@@ -43,7 +43,6 @@ model Profile {
   created_at DateTime
   user       user        @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_media UserMedia[] @relation("UserMediaToProfile")
-  UserMedia  UserMedia[]
 
   @@index([user_id])
   @@schema("users")
@@ -74,10 +73,12 @@ model user {
   email_verified   DateTime?
   Account          Account?
   CheckIn          CheckIn[]
+  Comment          Comment[]
+  CommentLike      CommentLike[]
   Profile          Profile?
   ResetToken       ResetToken?
   Session          Session[]
-  user_media       UserMedia[]       @relation("UserMediaToUser")
+  user_media       UserMedia[]       @relation("UserMediaToProfile")
   UserMediaLike    UserMediaLike[]
   VerifyEmailToken VerifyEmailToken?
 
@@ -107,16 +108,13 @@ model UserMedia {
   previous_watch_status   WatchStatus?
   created_at              DateTime        @default(now()) @db.Timestamptz(3)
   CheckIn                 CheckIn[]
+  Comment                 Comment[]
   user_episodes           UserEpisode[]
-  // user                    user            @relation(fields: [user_id], references: [id], map: "UserMedia_user_id_fkey1")
+  user                    user            @relation("UserMediaToProfile", fields: [user_id], references: [id], map: "UserMedia_user_id_fkey1")
   profile                 Profile         @relation("UserMediaToProfile", fields: [user_id], references: [user_id], map: "UserMedia_user_id_fkey2")
   UserMediaLike           UserMediaLike[]
   user_seasons            UserSeason[]
   watch_history           WatchHistory[]
-  userId                  Int?
-  user                    user?           @relation("UserMediaToUser", fields: [user_id], references: [id], map: "UserMedia_user_id_fkey1")
-  Profile                 Profile?        @relation(fields: [profileId], references: [id])
-  profileId               Int?
 
   @@unique([user_id, media_id])
   @@index([user_id])
@@ -179,6 +177,20 @@ model CheckIn {
   @@unique([user_id, media_id])
   @@index([end_time])
   @@index([media_id])
+  @@schema("users")
+}
+
+model UserMediaLike {
+  id            Int       @id @default(autoincrement())
+  user_id       Int
+  user_media_id Int
+  created_at    DateTime  @default(now()) @db.Timestamptz(3)
+  user          user      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  UserMedia     UserMedia @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, user_media_id])
+  @@index([user_id])
+  @@index([user_media_id])
   @@schema("users")
 }
 
@@ -403,17 +415,38 @@ model CheckIn {
 // @@schema("public")
 // }
 
-model UserMediaLike {
-  id            Int       @id @default(autoincrement())
-  user_id       Int
+model Comment {
+  id            Int           @id @default(autoincrement())
+  content       String?
+  created_at    DateTime      @default(now())
+  updated_at    DateTime
+  user_id       Int?
   user_media_id Int
-  created_at    DateTime  @default(now()) @db.Timestamptz(3)
-  user          user      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  UserMedia     UserMedia @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+  parent_id     Int?
+  deleted_at    DateTime?
+  Comment       Comment?      @relation("CommentToComment", fields: [parent_id], references: [id], onDelete: Cascade)
+  other_Comment Comment[]     @relation("CommentToComment")
+  user          user?         @relation(fields: [user_id], references: [id])
+  UserMedia     UserMedia     @relation(fields: [user_media_id], references: [id], onDelete: Cascade)
+  CommentLike   CommentLike[]
 
-  @@unique([user_id, user_media_id])
+  @@index([parent_id])
   @@index([user_id])
   @@index([user_media_id])
+  @@schema("users")
+}
+
+model CommentLike {
+  id         Int      @id @default(autoincrement())
+  user_id    Int
+  comment_id Int
+  created_at DateTime @default(now())
+  Comment    Comment  @relation(fields: [comment_id], references: [id], onDelete: Cascade)
+  user       user     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, comment_id])
+  @@index([comment_id])
+  @@index([user_id])
   @@schema("users")
 }
 

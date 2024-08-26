@@ -1,11 +1,9 @@
-import { notFound } from 'next/navigation'
-import React from 'react'
-import ActivityUserAndRelativeActivityTime from './components/ActivityUserAndRelativeActivityTime'
-import PosterAndActivitySummary from './components/PosterAndActivitySummary'
 import { Separator } from '@/components/ui/separator'
-import CommentsList from './components/CommentsList'
-import CommentBox from './components/CommentBox'
+import { getCurrentUser } from '@/lib/session'
+import { notFound } from 'next/navigation'
+import ActivityUserAndRelativeActivityTime from './components/ActivityUserAndRelativeActivityTime'
 import CommentSection from './components/CommentSection'
+import PosterAndActivitySummary from './components/PosterAndActivitySummary'
 import { validateRequest } from '@/lib/auth'
 
 async function getActivity(activityId: number) {
@@ -21,7 +19,15 @@ async function getActivity(activityId: number) {
   return data
 }
 
-async function getActivityLoggedInUser(activityId: number, sessionId: string) {
+async function getActivityLoggedInUser(activityId: number) {
+  'use server'
+  const session = await validateRequest()
+  if (!session || !session.session) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  const sessionId = session.session.id
+
   const res = await fetch(
     `${process.env.BACKEND_BASE_URL}user-media/activity/loggedinuser/with-like-status?activityId=${activityId}&session_id=${sessionId}`,
     {
@@ -35,21 +41,61 @@ async function getActivityLoggedInUser(activityId: number, sessionId: string) {
   return data
 }
 
+async function getComments(activityId: number) {
+  const res = await fetch(
+    `http://localhost:3030/api/comments/no-user?user_media_id=${activityId}`,
+    {
+      method: 'GET',
+      cache: 'no-store',
+      next: { tags: ['comments'] },
+    }
+  )
+  const result = await res.json()
+  return result
+}
+
+async function getCommentsLoggedInUser(activityId: number) {
+  'use server'
+  const session = await validateRequest()
+  if (!session || !session.session) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  const sessionId = session.session.id
+
+  const res = await fetch(
+    `http://localhost:3030/api/comments/with-user?user_media_id=${activityId}&session_id=${sessionId}`,
+    {
+      method: 'GET',
+      cache: 'no-store',
+      next: { tags: ['comments'] },
+    }
+  )
+  const result = await res.json()
+  return result
+}
+
 export default async function ActivityPage({
   params,
 }: {
   params: { activityId: string }
 }) {
-  const session = await validateRequest()
-  let success, data
+  const user = await getCurrentUser()
+  let success, data, comments
 
-  if (session && session.session) {
-    ;({ success, data } = await getActivityLoggedInUser(
-      +params.activityId,
-      session.session.id
-    ))
+  if (user) {
+    try {
+      const result = await getActivityLoggedInUser(+params.activityId)
+      success = result.success
+      data = result.data
+      comments = await getCommentsLoggedInUser(+params.activityId)
+    } catch (error) {
+      console.error('Error fetching activity for logged-in user:', error)
+      return notFound()
+    }
   } else {
     ;({ success, data } = await getActivity(+params.activityId))
+    comments = await getComments(+params.activityId)
   }
 
   if (!success) return notFound()
@@ -72,10 +118,14 @@ export default async function ActivityPage({
             likes={data.like_count}
             hasLiked={data.hasLiked}
             activityId={params.activityId}
-            session={session}
+            user={user}
           />
           <div className="sm:hidden">
-            <CommentSection activityId={params.activityId} />
+            <CommentSection
+              activityId={params.activityId}
+              comments={comments}
+              user={user}
+            />
           </div>
         </div>
 
@@ -89,7 +139,11 @@ export default async function ActivityPage({
             <Separator className="my-4 max-sm:hidden" />
           </div>
           <div className="flex-grow overflow-y-auto">
-            <CommentSection activityId={params.activityId} />
+            <CommentSection
+              activityId={params.activityId}
+              comments={comments}
+              user={user}
+            />
           </div>
         </div>
       </div>

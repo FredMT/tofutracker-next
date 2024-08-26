@@ -1,15 +1,13 @@
 'use client'
 import { Button } from '@/components/ui/button'
+import { Form } from '@/components/ui/form'
 import { Separator } from '@/components/ui/separator'
-import { validateRequest } from '@/lib/auth'
+import { User } from 'lucia'
 import { Heart } from 'lucide-react'
 import Link from 'next/link'
-import { Form } from '@/components/ui/form'
-import { revalidateTag } from 'next/cache'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
-import { Session, User } from 'lucia'
-import { toggleLike } from './actionts'
+import { toggleLike } from './actions'
 
 export default function PosterAndActivitySummary({
   posterImage,
@@ -18,7 +16,7 @@ export default function PosterAndActivitySummary({
   likes,
   hasLiked = false,
   activityId,
-  session,
+  user,
 }: {
   posterImage: string
   username: string
@@ -26,23 +24,15 @@ export default function PosterAndActivitySummary({
   likes: number
   hasLiked?: boolean
   activityId: string
-  session:
-    | {
-        user: User
-        session: Session
-      }
-    | {
-        user: null
-        session: null
-      }
+  user?: User | null
 }) {
   const [isPending, startTransition] = useTransition()
   const form = useForm()
 
   const onSubmit = () => {
-    if (session.session?.id) {
-      startTransition(() => toggleLike(activityId, session.session!.id))
-    }
+    startTransition(async () => {
+      await toggleLike(activityId)
+    })
   }
 
   return (
@@ -61,7 +51,7 @@ export default function PosterAndActivitySummary({
               {username} added {title} to their library
             </div>
             <div className="flex basis-2/12 items-center justify-center">
-              {session.user && session.session?.id ? (
+              {user ? (
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)}>
                     <Button
@@ -93,7 +83,7 @@ export default function PosterAndActivitySummary({
               {likes} {likes > 1 ? 'likes' : 'like'}
             </p>
           ) : null}
-          <Separator className="sm:hidden" />
+          <Separator className="mt-2 sm:hidden" />
         </div>
       </div>
     </div>
