@@ -43,7 +43,7 @@ export default function MovieCard({ item, user }: Props) {
           <div>{item.release_date && item.release_date.split(', ')[1]}</div>
           <div>
             {item.vote_average > 0 && (
-              <p>{`• ${item.vote_average.toFixed(2)}`}</p>
+              <div>{`• ${item.vote_average.toFixed(2)}`}</div>
             )}
           </div>
         </span>
