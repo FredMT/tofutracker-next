@@ -1,14 +1,13 @@
-import type { Metadata } from 'next'
-import { Inter as FontSans } from 'next/font/google'
-import { Syne } from 'next/font/google'
-import './globals.css'
-import { cn } from '@/lib/utils'
-import { ThemeProvider } from '@/components/ui/theme-provider'
-import Navbar from '@/app/components/Navbar'
 import Footer from '@/app/components/Footer'
+import Navbar from '@/app/components/Navbar'
+import { ThemeProvider } from '@/components/ui/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
+import { cn } from '@/lib/utils'
 import { Analytics } from '@vercel/analytics/react'
+import type { Metadata } from 'next'
+import { Inter as FontSans, Syne } from 'next/font/google'
 import NextTopLoader from 'nextjs-toploader'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: {

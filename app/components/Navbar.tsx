@@ -22,12 +22,12 @@ export default async function Navbar() {
           </div>
         </Link>
         <div className="hidden gap-x-4 p-4 sm:flex">
-          <SearchButton />
+          {/* <SearchButton /> */}
           <ThemeButton />
           <AuthButton />
         </div>
         <div className="flex gap-4 py-4 sm:hidden">
-          <SearchButton />
+          {/* <SearchButton /> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button>
