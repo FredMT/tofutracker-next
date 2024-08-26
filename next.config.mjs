@@ -12,6 +12,12 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: '*.wixmp.com',
+        port: '',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
         hostname: 'image.tmdb.org',
         port: '',
         pathname: '/t/p/**',
