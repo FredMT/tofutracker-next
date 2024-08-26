@@ -38,7 +38,6 @@ export default function RegisterPage() {
 
   const { execute, isPending, error } = useServerAction(signUpAction, {
     onError({ err }) {
-      console.log(err)
       toast({
         title: 'Something went wrong',
         description: err.message,
