@@ -11,10 +11,11 @@ interface CommentCardProps {
   username: string
   createdAt: string
   commentText: string
+  user_media_id: number
   avatarUrl: string
   likes: number
   hasLiked: boolean
-  onReply: (commentId: number) => void
+  onReply: (commentId: number, username: string) => void
   isReply?: boolean
   user: User | undefined
 }
@@ -25,6 +26,7 @@ export default function CommentCard({
   createdAt,
   commentText,
   avatarUrl,
+  user_media_id,
   likes,
   hasLiked,
   onReply,
@@ -88,26 +90,30 @@ export default function CommentCard({
         </div>
         <p className="mb-4">{commentText}</p>
       </div>
-      <div className="flex basis-2/12 items-start justify-center space-x-2">
-        <div className="flex flex-col items-center">
-          <button onClick={() => onReply(id)}>
-            <Reply size={20} />
-          </button>
-        </div>
-        <div className="flex flex-col items-center">
-          <button onClick={handleLikeClick} disabled={isPending}>
-            <Heart
-              size={20}
-              className={
-                optimisticLikes.hasLiked ? 'fill-red-500 text-red-500' : 'none'
-              }
-            />
-          </button>
-          <div className="mt-1">
-            {optimisticLikes.count > 0 ? optimisticLikes.count : ''}
+      {username !== 'TTUser' && (
+        <div className="flex basis-2/12 items-start justify-center space-x-2">
+          <div className="flex flex-col items-center">
+            <button onClick={() => onReply(id, username)}>
+              <Reply size={20} />
+            </button>
+          </div>
+          <div className="flex flex-col items-center">
+            <button onClick={handleLikeClick} disabled={isPending}>
+              <Heart
+                size={20}
+                className={
+                  optimisticLikes.hasLiked
+                    ? 'fill-red-500 text-red-500'
+                    : 'none'
+                }
+              />
+            </button>
+            <div className="mt-1">
+              {optimisticLikes.count > 0 ? optimisticLikes.count : ''}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

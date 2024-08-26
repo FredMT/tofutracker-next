@@ -1,5 +1,3 @@
-// CommentsList.tsx
-'use client'
 import React from 'react'
 import CommentCard from './CommentCard'
 import { formatDistanceToNow } from 'date-fns'
@@ -36,13 +34,13 @@ interface Comments {
 interface CommentsListProps {
   activityId: string
   comments: Comments
-  onReply: (commentId: number) => void
+  onReply: (commentId: number, username: string) => void
   user: User | undefined
 }
 
 const CommentWithReplies: React.FC<{
   comment: Comment
-  onReply: (commentId: number) => void
+  onReply: (commentId: number, username: string) => void
   user: User | undefined
 }> = ({ comment, onReply, user }) => {
   const flattenReplies = (
@@ -72,8 +70,11 @@ const CommentWithReplies: React.FC<{
         commentText={comment.content ?? 'Deleted'}
         avatarUrl={comment.user?.Profile.image ?? '/default-avatar.png'}
         likes={comment._count.likes}
+        user_media_id={comment.user_media_id}
         hasLiked={comment.hasLiked}
-        onReply={() => onReply(comment.id)}
+        onReply={() =>
+          onReply(comment.id, comment.user?.Profile.username ?? 'TTUser')
+        }
         user={user}
       />
       {allReplies.length > 0 && (
@@ -93,8 +94,11 @@ const CommentWithReplies: React.FC<{
                 reply.user?.Profile.image ?? 'https://github.com/shadcn.png'
               }
               likes={reply._count.likes}
+              user_media_id={comment.user_media_id}
               hasLiked={reply.hasLiked}
-              onReply={() => onReply(reply.id)}
+              onReply={() =>
+                onReply(reply.id, reply.user?.Profile.username ?? 'TTUser')
+              }
               isReply
               user={user}
             />

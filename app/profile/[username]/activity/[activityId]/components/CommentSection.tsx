@@ -1,4 +1,3 @@
-// CommentSection.tsx
 'use client'
 import { useRef, useState } from 'react'
 import CommentBox from './CommentBox'
@@ -23,9 +22,11 @@ export default function CommentSection({
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [replyToId, setReplyToId] = useState<number | null>(null)
+  const [replyToUsername, setReplyToUsername] = useState<string | null>(null)
 
-  const handleReply = (commentId: number) => {
+  const handleReply = (commentId: number, username: string) => {
     setReplyToId(commentId)
+    setReplyToUsername(username)
     inputRef.current?.focus()
   }
 
@@ -40,7 +41,14 @@ export default function CommentSection({
         />
       </div>
       <div className="sticky bottom-0">
-        <CommentBox inputRef={inputRef} replyToId={replyToId} user={user} />
+        <CommentBox
+          inputRef={inputRef}
+          parentId={replyToId}
+          replyToUsername={replyToUsername}
+          user={user}
+          setParentId={setReplyToId}
+          setReplyToUsername={setReplyToUsername}
+        />
       </div>
     </>
   )
