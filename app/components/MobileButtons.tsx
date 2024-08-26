@@ -107,7 +107,6 @@ export default async function MobileButtons({
       </div>
     )
   }
-  const profile = await getProfile(user?.id)
 
   const library = isMovie
     ? await getLibraryData(user.id, itemId)

@@ -61,7 +61,6 @@ export async function GET(request: Request): Promise<Response> {
       },
     })
   } catch (e) {
-    console.log(e)
     // the specific error message depends on the provider
     if (e instanceof OAuth2RequestError) {
       // invalid code

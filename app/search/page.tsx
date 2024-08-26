@@ -81,7 +81,6 @@ export default function Search() {
   // )
 
   // if (searchResultsError) {
-  //   console.log(searchResultsError)
   //   return (
   //     <div className="mt-20 flex flex-col gap-6 px-4">
   //       <p>

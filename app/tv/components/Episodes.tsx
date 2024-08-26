@@ -27,7 +27,7 @@ export default function Episodes({
             height={80}
           />
           <div className="grid gap-1">
-            <div className="font-medium">{`Episode ${episode.number}${episode.name ? `: ${episode.name}` : ''}`}</div>
+            <div className="font-medium">{`Episode ${episode.number || episode.episode_number}${episode.name ? `: ${episode.name}` : ''}`}</div>
             {episode.overview && (
               <div className="text-muted-foreground">
                 <EpisodeOverview overview={episode.overview} />
@@ -35,9 +35,13 @@ export default function Episodes({
             )}
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <ClockIcon className="h-4 w-4" />
-              {episode.aired && (
-                <span>{format(episode.aired, 'do MMMM, yyyy')}</span>
-              )}
+              {episode.aired ? (
+                <span>{format(new Date(episode.aired), 'do MMMM, yyyy')}</span>
+              ) : episode.air_date ? (
+                <span>
+                  {format(new Date(episode.air_date), 'do MMMM, yyyy')}
+                </span>
+              ) : null}
               {episode.runtime && (
                 <>
                   <span>•</span>

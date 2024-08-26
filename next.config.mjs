@@ -18,6 +18,18 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'tofutrackeranime2.b-cdn.net',
+        port: '',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'artworks.thetvdb.com',
+        port: '',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
         hostname: 'image.tmdb.org',
         port: '',
         pathname: '/t/p/**',

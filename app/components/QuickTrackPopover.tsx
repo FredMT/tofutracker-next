@@ -120,7 +120,6 @@ const SeasonEpisodeSelector: React.FC = () => {
     const removed = Array.from(originalSelectedEpisodes).filter(
       (id) => !selectedEpisodes.has(id)
     )
-    console.log('Changes submitted:', { added, removed })
     setOriginalSelectedEpisodes(new Set(selectedEpisodes))
     setHasChanges(false)
     setIsSeasonsPopoverOpen(false) // Close the main popover
