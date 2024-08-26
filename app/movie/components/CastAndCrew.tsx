@@ -70,7 +70,7 @@ export default function CastAndCrew({
                       src={
                         profile_path
                           ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${profile_path}`
-                          : `https://placehold.co/300x450?text=${name.replaceAll(' ', '+')}`
+                          : `https://placehold.co/300x450/webp?text=${name.replaceAll(' ', '+')}`
                       }
                       alt={`${name}`}
                       className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px] lg:h-[211px] lg:w-[140px]"
@@ -110,7 +110,7 @@ export default function CastAndCrew({
                       src={
                         profile_path
                           ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${profile_path}`
-                          : `https://placehold.co/300x450?text=${name.replaceAll(' ', '+')}`
+                          : `https://placehold.co/300x450/webp?text=${name.replaceAll(' ', '+')}`
                       }
                       alt={`${name}`}
                       className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px] lg:h-[211px] lg:w-[140px]"

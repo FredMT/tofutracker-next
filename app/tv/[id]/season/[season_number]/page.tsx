@@ -48,7 +48,7 @@ export default async function TVSeason({ params }: Props) {
               <Poster
                 poster_path={data.season_poster_path}
                 title={data.show_title}
-                itemId={params.id.toString()}
+                itemId={params.id.toString() + '2'}
                 type="season"
                 seasonId={data.season_id}
               />

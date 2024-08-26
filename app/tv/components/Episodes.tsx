@@ -11,6 +11,7 @@ export default function Episodes({
   episodes: any
   backdrop_path: string
 }) {
+  console.log(episodes)
   return (
     <div className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {episodes.map((episode: any) => (
@@ -19,7 +20,9 @@ export default function Episodes({
             src={
               episode.image
                 ? `https://artworks.thetvdb.com${episode.image}`
-                : `https://image.tmdb.org/t/p/original${backdrop_path}`
+                : episode.still_path
+                  ? `https://image.tmdb.org/t/p/original${episode.still_path}`
+                  : `https://image.tmdb.org/t/p/original${backdrop_path}`
             }
             alt={`Episode ${episode.number}: ${episode.name}`}
             className="aspect-video w-full rounded-lg object-cover"
@@ -45,7 +48,11 @@ export default function Episodes({
               {episode.runtime && (
                 <>
                   <span>•</span>
-                  <span>{episode.runtime} min</span>
+                  <span>
+                    {typeof episode.runtime === 'number'
+                      ? `${episode.runtime} min`
+                      : episode.runtime}
+                  </span>
                 </>
               )}
             </div>

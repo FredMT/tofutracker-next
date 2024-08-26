@@ -57,7 +57,8 @@ export default function CheckInButton({
     const formData = new FormData(event.currentTarget)
     const submitter = event.nativeEvent.submitter as HTMLButtonElement
     const autocomplete = submitter.value === 'true'
-    formData.set('autocomplete', autocomplete.toString())
+    // formData.set('autocomplete', autocomplete.toString())
+    formData.set('autocomplete', 'false')
     checkInFormAction(formData)
   }
 

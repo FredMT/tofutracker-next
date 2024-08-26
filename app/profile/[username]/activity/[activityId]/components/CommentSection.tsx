@@ -32,7 +32,7 @@ export default function CommentSection({
 
   return (
     <>
-      <div className="flex-grow overflow-y-scroll pb-[1000px]">
+      <div className="h-full flex-grow overflow-y-auto">
         <CommentsList
           activityId={activityId}
           onReply={handleReply}

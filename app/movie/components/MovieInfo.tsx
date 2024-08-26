@@ -24,8 +24,8 @@ export default async function MovieInfo({
 }: MovieInfoProps) {
   return (
     <Card className="mt-6 w-full rounded-none border-x-0 border-y-2" id="info">
-      <CardContent className="px-5 py-[18px]">
-        <div className="flex flex-wrap justify-center gap-x-6 gap-y-4 sm:justify-start">
+      <CardContent className="p-0 py-[18px]">
+        <div className="flex flex-wrap justify-center gap-y-4 space-x-6 sm:justify-start">
           <Badge className="dark:bg-transparent dark:text-white dark:ring-1 dark:ring-white">
             {vote_average.toFixed(2)}
           </Badge>

@@ -47,7 +47,7 @@ export default function HomepageTrendingCarousel({ data }: { data: any }) {
                       <Image
                         src={`https://image.tmdb.org/t/p/w300${item.logo_path})`}
                         alt={item.title}
-                        className="object-contain object-center drop-shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+                        className="select-none object-contain object-center drop-shadow-[0_0_10px_rgba(0,0,0,0.5)]"
                         sizes="100vw, 100vw"
                         priority
                         fill
