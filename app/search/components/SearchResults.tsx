@@ -1,5 +1,7 @@
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { use } from 'react'
+import SearchResultCard from './SearchResultCard'
+import SearchResultsTabs from './SearchResultsTabs'
 
 async function fetchSearchResults(query: string) {
   if (!query) return null
@@ -13,41 +15,37 @@ async function fetchSearchResults(query: string) {
   return response.json()
 }
 
-export default function SearchResults({ query }: { query: string }) {
+export default function SearchResults({
+  query,
+  type,
+}: {
+  query: string
+  type: string
+}) {
   const results = use(fetchSearchResults(query))
 
   if (!query) {
     return null
   }
 
-  const { movies, tv, anime } = results || {}
-
   return (
     <div>
       <div className="mt-4 flex flex-col space-y-1">
         <div className="body">Search results for</div>
         <div className="large">{`"${query.trim()}"`}</div>
-        <Tabs defaultValue="movies">
-          <TabsList className="w-full justify-evenly bg-transparent p-0 md:h-12">
-            <TabsTrigger
-              value="movies"
-              className="basis-1/3 ring-purple-500 data-[state=active]:ring-1"
-            >
-              Movies ({results?.movies?.length || 0})
-            </TabsTrigger>
-            <TabsTrigger
-              value="tv"
-              className="basis-1/3 ring-purple-500 data-[state=active]:ring-1"
-            >
-              TV ({results?.tv?.length || 0})
-            </TabsTrigger>
-            <TabsTrigger
-              value="anime"
-              className="basis-1/3 ring-purple-500 data-[state=active]:ring-1"
-            >
-              Anime ({results?.anime?.length || 0})
-            </TabsTrigger>
-          </TabsList>
+        <Tabs defaultValue={type}>
+          <SearchResultsTabs results={results} />
+          {['movies', 'tv', 'anime'].map((tab) => (
+            <TabsContent value={tab} key={tab}>
+              <div className="mt-4 flex flex-col space-y-1">
+                <div className="mt-4 flex flex-col space-y-6">
+                  {results?.[tab]?.map((item: any) => (
+                    <SearchResultCard data={item} key={item.id} />
+                  ))}
+                </div>
+              </div>
+            </TabsContent>
+          ))}
         </Tabs>
       </div>
     </div>

@@ -32,7 +32,7 @@ export default function HomepageTrendingCarousel({ data }: { data: any }) {
         {trendingData
           .filter((item: any) => item.logo_path !== null)
           .map((item: any) => (
-            <CarouselItem key={item.media_id} className="h-[60vh]">
+            <CarouselItem key={item.media_id} className="h-[70vh]">
               <div className="relative h-full w-full">
                 <Image
                   src={`https://image.tmdb.org/t/p/original${item.backdrop_path}`}

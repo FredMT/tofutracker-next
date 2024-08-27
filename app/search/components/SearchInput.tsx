@@ -17,7 +17,9 @@ export function SearchInput({ query }: { query: string }) {
 
   const debouncedSearch = useDebounce((query: string) => {
     if (query.trim()) {
-      router.push(`/search?query=${encodeURIComponent(query.trim())}`)
+      router.push(
+        `/search?query=${encodeURIComponent(query.trim())}&type=movies`
+      )
     } else {
       router.push('/search')
     }

@@ -30,7 +30,7 @@ export default async function AnimeBackdrop({
   return (
     <div className="relative overflow-hidden">
       <Image
-        className="h-[288px] w-full object-cover sm:h-[576px] sm:w-full"
+        className="h-[70vh] w-full object-cover sm:w-full"
         src={
           images.data
             ? `https://image.tmdb.org/t/p/w1280${images.data.backdrop}`

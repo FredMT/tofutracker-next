@@ -61,9 +61,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex flex-col gap-y-6">
-      <Suspense
-        fallback={<Skeleton className="h-[288px] w-full sm:h-[576px]" />}
-      >
+      <Suspense fallback={<Skeleton className="h-[70vh] w-full" />}>
         <Backdrop
           backdrop_path={`https://image.tmdb.org/t/p/original${movie.details.backdrop_path}`}
           title={movie.details.title}
