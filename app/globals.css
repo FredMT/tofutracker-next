@@ -78,7 +78,7 @@
   }
 
   h2 {
-    @apply scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0;
+    @apply scroll-m-20 text-3xl font-semibold tracking-tight transition-colors;
   }
 
   h3 {
@@ -123,5 +123,13 @@
     font-style: normal;
     font-weight: 500;
     line-height: 20px; /* 166.667% */
+  }
+
+  .body {
+    @apply text-[14px] font-normal not-italic leading-[24px];
+  }
+
+  .large {
+    @apply text-lg font-semibold;
   }
 }

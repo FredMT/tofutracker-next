@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge'
 import {
   Carousel,
   CarouselContent,
@@ -44,26 +45,30 @@ export default function RecommendedMedia({
                 href={`/${type === 'anime' ? 'anime' : basePath}/${item.id}`}
               >
                 <div className="flex flex-col">
-                  <Image
-                    src={
-                      item.poster_path
-                        ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${item.poster_path}`
-                        : `https://placehold.co/300x450/webp?text=${item.title.replaceAll(' ', '+')}`
-                    }
-                    alt={`${item.title} Poster`}
-                    className="h-[138px] w-[92px] rounded-md object-cover md:h-[169px] md:w-[112px] lg:h-[211px] lg:w-[140px]"
-                    width={300}
-                    height={450}
-                  />
+                  <div className="relative">
+                    <Image
+                      className="w-full rounded-sm object-cover lg:h-[210px] lg:w-[140px]"
+                      src={`https://image.tmdb.org/t/p/w440_and_h660_face${item.poster_path}`}
+                      alt={item.title}
+                      width={112}
+                      height={168}
+                      sizes="100vw"
+                    />
+                    <div className="absolute right-1 top-1">
+                      {item.vote_average > 0 && (
+                        <Badge className="border-0 bg-gradient-to-r from-[#90CEA1] via-[#3CBEC9] to-[#00B3E5]">
+                          <div>{`${item.vote_average.toFixed(1)}`}</div>
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
                   <div className="mt-2 line-clamp-2 text-[14px] font-medium leading-5 text-secondary-foreground">
                     {item.title}
                   </div>
-                  <div className="text-[12px] text-muted-foreground">
-                    <span>{item.release_date.slice(0, 4)}</span> &bull; &nbsp;
-                    <span className="tracking-wide">
-                      {item.vote_average.toFixed(2)}/10
-                    </span>
-                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    {item.release_date.slice(0, 4)}
+                  </span>{' '}
+                  &nbsp;
                 </div>
               </Link>
             </CarouselItem>

@@ -18,8 +18,6 @@ export default function HomepageTrendingCarousel({ data }: { data: any }) {
     { ...data.tv[index] },
   ])
 
-  console.log(trendingData)
-
   return (
     <Carousel
       className="h-full w-full"

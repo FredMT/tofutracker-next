@@ -1,16 +1,14 @@
-import { Skeleton } from '@/components/ui/skeleton'
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import React, { Suspense } from 'react'
-import Title from '@/app/movie/components/Title'
-import AnimeInfo from '@/app/anime/components/AnimeInfo'
-import MobileButtons from '@/app/components/MobileButtons'
-import AnimeDetails from '@/app/anime/components/AnimeDetails'
 import AnimeBackdrop from '@/app/anime/components/AnimeBackdrop'
+import AnimeDetails from '@/app/anime/components/AnimeDetails'
+import AnimeInfo from '@/app/anime/components/AnimeInfo'
 import AnimePoster from '@/app/anime/components/AnimePoster'
-import Overview from '@/app/movie/components/Overview'
 import RelatedAnime from '@/app/anime/components/RelatedAnime'
+import Overview from '@/app/movie/components/Overview'
+import Title from '@/app/movie/components/Title'
 import Episodes from '@/app/tv/components/Episodes'
+import { Skeleton } from '@/components/ui/skeleton'
+import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 
 export const generateMetadata = async ({ params }: Props) => {
   const result = await fetch(
@@ -30,28 +28,37 @@ type Props = {
 }
 
 async function getAnimeRelations(id: number) {
-  const data = await fetch(`${process.env.BACKEND_BASE_URL}anime/relations/${id}`, {
-    cache: 'no-store',
-    credentials: 'include',
-  })
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}anime/relations/${id}`,
+    {
+      cache: 'no-store',
+      credentials: 'include',
+    }
+  )
   const result = await data.json()
   return result
 }
 
 async function getAnimeDetails(id: number) {
-  const data = await fetch(`${process.env.BACKEND_BASE_URL}anime/details/${id}`, {
-    cache: 'no-store',
-    credentials: 'include',
-  })
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}anime/details/${id}`,
+    {
+      cache: 'no-store',
+      credentials: 'include',
+    }
+  )
   const result = await data.json()
   return result
 }
 
 async function getAnimeEpisodes(id: number) {
-  const data = await fetch(`${process.env.BACKEND_BASE_URL}anime/episodes/${id}`, {
-    cache: 'no-store',
-    credentials: 'include',
-  })
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}anime/episodes/${id}`,
+    {
+      cache: 'no-store',
+      credentials: 'include',
+    }
+  )
   const result = await data.json()
   return result
 }

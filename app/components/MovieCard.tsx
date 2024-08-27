@@ -5,10 +5,7 @@ import { HoverCard, HoverCardTrigger } from '@/components/ui/hover-card'
 import dynamic from 'next/dynamic'
 import { User } from 'lucia'
 import Image from 'next/image'
-
-const MovieCardHoverCard = dynamic(() => import('./MovieCardHoverCard'), {
-  ssr: false,
-})
+import { Badge } from '@/components/ui/badge'
 
 type Props = {
   item: any
@@ -18,36 +15,34 @@ type Props = {
 export default function MovieCard({ item, user }: Props) {
   return (
     <Card className="min-h-[260px] min-w-[112px] border-0 sm:min-h-[302px] sm:min-w-[140px]">
-      <HoverCard openDelay={300} closeDelay={0}>
-        <HoverCardTrigger asChild>
-          <Link href={`/${item.media_type}/${item.media_id}`}>
-            <Image
-              className="w-full rounded-sm object-cover lg:h-[210px] lg:w-[140px]"
-              src={`https://image.tmdb.org/t/p/w440_and_h660_face${item.poster_path}`}
-              alt={item.title}
-              width={112}
-              height={168}
-              sizes="100vw"
-            />
-          </Link>
-        </HoverCardTrigger>
-        <MovieCardHoverCard item={item} user={user} />
-      </HoverCard>
+      <Link href={`/${item.media_type}/${item.media_id}`}>
+        <div className="relative">
+          <Image
+            className="w-full rounded-sm object-cover lg:h-[210px] lg:w-[140px]"
+            src={`https://image.tmdb.org/t/p/w440_and_h660_face${item.poster_path}`}
+            alt={item.title}
+            width={112}
+            height={168}
+            sizes="100vw"
+          />
+          <div className="absolute right-1 top-1">
+            {item.vote_average > 0 && (
+              <Badge className="border-0 bg-gradient-to-r from-[#90CEA1] via-[#3CBEC9] to-[#00B3E5] text-black">
+                <div>{`${item.vote_average.toFixed(1)}`}</div>
+              </Badge>
+            )}
+          </div>
+        </div>
+      </Link>
       <div className="mt-4 flex flex-col gap-y-2">
         <Link href={`/${item.media_type}/${item.media_id}`}>
           <h3 className="line-clamp-2 text-[14px] font-semibold leading-6 text-secondary-foreground">
             {item.title}
           </h3>
-        </Link>
-
-        <span className="flex gap-1 text-xs text-muted-foreground">
-          <div>{item.release_date && item.release_date.split(', ')[1]}</div>
-          <div>
-            {item.vote_average > 0 && (
-              <div>{`• ${item.vote_average.toFixed(2)}`}</div>
-            )}
+          <div className="text-xs text-muted-foreground">
+            {item.release_date && item.release_date.split(', ')[1]}
           </div>
-        </span>
+        </Link>
       </div>
     </Card>
   )

@@ -11,7 +11,6 @@ export default function Episodes({
   episodes: any
   backdrop_path: string
 }) {
-  console.log(episodes)
   return (
     <div className="mt-6 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       {episodes.map((episode: any) => (
