@@ -24,31 +24,27 @@ export default async function Navbar() {
             TOFUTRACKER
           </div>
         </Link>
-        {process.env.NEXT_PUBLIC_MAINTENANCE_MODE !== 'true' && (
-          <>
-            <div className="hidden gap-x-4 p-4 sm:flex">
-              <SearchButton />
-              <ThemeButton />
-              <AuthButton />
-            </div>
-            <div className="flex gap-4 py-4 sm:hidden">
-              <SearchButton />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button>
-                    <Menu />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-40 p-4" align="end">
-                  <div className="flex flex-col gap-y-2">
-                    <AuthButton />
-                    <ThemeButton />
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </>
-        )}
+        <div className="hidden gap-x-4 p-4 sm:flex">
+          <SearchButton />
+          <ThemeButton />
+          <AuthButton />
+        </div>
+        <div className="flex gap-4 py-4 sm:hidden">
+          <SearchButton />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button>
+                <Menu />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-40 p-4" align="end">
+              <div className="flex flex-col gap-y-2">
+                <AuthButton />
+                <ThemeButton />
+              </div>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </div>
   )

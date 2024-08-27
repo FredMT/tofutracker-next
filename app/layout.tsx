@@ -1,12 +1,12 @@
-import Footer from '@/app/components/Footer'
-import Navbar from '@/app/components/Navbar'
-import { ThemeProvider } from '@/components/ui/theme-provider'
-import { Toaster } from '@/components/ui/toaster'
+// import Footer from '@/app/components/Footer'
+// import Navbar from '@/app/components/Navbar'
+// import { ThemeProvider } from '@/components/ui/theme-provider'
+// import { Toaster } from '@/components/ui/toaster'
 import { cn } from '@/lib/utils'
-import { Analytics } from '@vercel/analytics/react'
+// import { Analytics } from '@vercel/analytics/react'
 import type { Metadata } from 'next'
 import { Inter as FontSans, Syne } from 'next/font/google'
-import NextTopLoader from 'nextjs-toploader'
+// import NextTopLoader from 'nextjs-toploader'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -45,7 +45,7 @@ export default function RootLayout({
           syne_init.variable
         )}
       >
-        <ThemeProvider
+        {/* <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
@@ -53,11 +53,12 @@ export default function RootLayout({
         >
           <NextTopLoader color="#7C3AED" showSpinner={false} />
           <Navbar />
-          {/* <div className="flex-1">{children}</div> */}
+          <div className="flex-1">{children}</div>
           <Toaster />
-          {/* <Footer /> */}
+          <Footer />
         </ThemeProvider>
-        <Analytics debug={false} mode="development" />
+        <Analytics debug={false} mode="development" /> */}
+        <p>Under maintenance</p>
       </body>
     </html>
   )
