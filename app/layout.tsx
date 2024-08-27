@@ -55,7 +55,7 @@ export default function RootLayout({
           <Navbar />
           {/* <div className="flex-1">{children}</div> */}
           <Toaster />
-          <Footer />
+          {/* <Footer /> */}
         </ThemeProvider>
         <Analytics debug={false} mode="development" />
       </body>
