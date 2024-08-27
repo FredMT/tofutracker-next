@@ -53,7 +53,7 @@ export default function RootLayout({
         >
           <NextTopLoader color="#7C3AED" showSpinner={false} />
           <Navbar />
-          <div className="flex-1">{children}</div>
+          {/* <div className="flex-1">{children}</div> */}
           <Toaster />
           <Footer />
         </ThemeProvider>
