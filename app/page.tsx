@@ -28,7 +28,7 @@ export default async function Home() {
   return (
     <main className="flex min-h-dvh flex-col gap-y-6">
       <HomepageTrendingCarousel data={trendingData} />
-      <div className="space-y-6 p-6 xl:mx-40">
+      <div className="space-y-6 p-5 xl:px-40">
         <TrendingCarousel
           title="Trending Movies"
           items={trendingData.movies}

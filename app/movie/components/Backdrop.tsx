@@ -13,7 +13,7 @@ export default async function Backdrop({
   return (
     <div className="relative overflow-hidden">
       <Image
-        className="h-[288px] w-full object-cover sm:h-[576px] sm:w-full"
+        className="h-[288px] w-full object-cover sm:h-[576px] sm:w-full md:h-[774px]"
         src={backdrop_path}
         alt={title}
         width={1920}

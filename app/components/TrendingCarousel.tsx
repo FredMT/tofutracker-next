@@ -23,7 +23,7 @@ export default function TrendingCarousel({ title, items, user }: Props) {
         {title}
       </div>
       <Carousel
-        className="w-full"
+        className="w-full max-w-[1676px]"
         opts={{
           dragFree: true,
           align: 'start',

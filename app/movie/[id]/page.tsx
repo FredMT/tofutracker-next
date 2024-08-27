@@ -70,7 +70,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
           logo_path={`https://image.tmdb.org/t/p/w300${movie.details.logo_path}`}
         />
       </Suspense>
-      <div className="flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8 xl:px-40">
+      <div className="mx-auto flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8 xl:px-40">
         <div className="flex justify-center">
           <Suspense
             fallback={
@@ -85,7 +85,7 @@ export default async function Movie({ params }: { params: { id: string } }) {
             />
           </Suspense>
         </div>
-        <div className="flex basis-4/5 flex-col">
+        <div className="flex max-w-[1100px] basis-4/5 flex-col">
           <div className="flex justify-center sm:justify-start">
             <Suspense fallback={<Skeleton className="mt-6 h-6 w-[60vw]" />}>
               <Title title={movie.details.title} />

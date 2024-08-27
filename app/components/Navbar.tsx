@@ -15,7 +15,7 @@ import { ThemeButton } from './ThemeButton'
 export default async function Navbar() {
   return (
     <div className="absolute top-0 z-50 w-full">
-      <div className="mx-auto flex w-[80%] justify-between">
+      <div className="mx-auto flex max-w-[1676px] justify-between px-5 xl:px-40">
         <Link href="/">
           <div className="select-none p-4 font-syne text-[24px] font-semibold uppercase">
             TOFUTRACKER

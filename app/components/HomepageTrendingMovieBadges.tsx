@@ -12,7 +12,7 @@ export default function HomepageTrendingMovieBadges({
       <div className="flex gap-x-4">
         {genres.map((item: any) => (
           <Badge
-            key={item.id}
+            key={item.id + Math.random()}
             className="border-white bg-transparent text-white"
           >
             {item.name}
