@@ -7,7 +7,7 @@ async function fetchSearchResults(query: string) {
   if (!query) return null
 
   const response = await fetch(
-    `http://localhost:3030/api/search?query=${encodeURIComponent(query)}&page=1`
+    `${process.env.BACKEND_BASE_URL}search?query=${encodeURIComponent(query)}&page=1`
   )
   if (!response.ok) {
     throw new Error('Failed to fetch search results')
