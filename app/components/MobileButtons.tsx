@@ -44,9 +44,9 @@ async function getLibraryData(userId: number, itemId: string) {
   return result
 }
 
-async function getLibraryTvData(userId: number, itemId: string) {
+async function getLibraryTvData(userId: number, itemId: string | number) {
   const data = await fetch(
-    `${process.env.BACKEND_BASE_URL}user-media/tv/details?userId=${userId}&showId=${itemId.slice(0, -1)}`,
+    `${process.env.BACKEND_BASE_URL}user-media/tv/details?userId=${userId}&showId=${itemId.toString().slice(0, -1)}`,
     {
       next: { tags: ['is-in-library'] },
       cache: 'no-cache',

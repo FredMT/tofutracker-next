@@ -50,7 +50,24 @@ async function getRecommendedTvShows(id: number) {
   return result
 }
 
+async function checkIfAnime(id: number) {
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}anime/is-anime/${id}`,
+    {
+      cache: 'no-cache',
+      credentials: 'include',
+    }
+  )
+  const result = await data.json()
+  console.log(result)
+  return result
+}
+
 export default async function TVShow({ params }: { params: { id: string } }) {
+  const { is_anime } = await checkIfAnime(parseInt(params.id))
+  if (is_anime) {
+    redirect(`/anime/${params.id}`)
+  }
   const tv = await getTVData(parseInt(params.id))
   const recommended = await getRecommendedTvShows(parseInt(params.id))
 

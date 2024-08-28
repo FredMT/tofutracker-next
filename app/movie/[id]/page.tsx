@@ -10,7 +10,7 @@ import MobileButtons from '@/app/components/MobileButtons'
 import MovieDetails from '@/app/movie/components/MovieDetails'
 import Overview from '@/app/movie/components/Overview'
 import CastAndCrew from '@/app/movie/components/CastAndCrew'
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { createClient } from '@/utils/supabase/server'
 import RecommendedMovies from '../components/RecommendedMovies'
@@ -34,9 +34,7 @@ async function getMovieData(id: number) {
     credentials: 'include',
   })
   const result = await data.json()
-  if (result.message === 'Is an anime') {
-    redirect(`/anime/${result.data.anidb_id}`)
-  }
+  if (result.statusCode === 500) return notFound()
   return result
 }
 
@@ -55,7 +53,23 @@ async function getRecommendedMovies(id: number) {
   return result
 }
 
+async function checkIfAnime(id: number) {
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}anime/is-anime/${id}`,
+    {
+      cache: 'no-cache',
+      credentials: 'include',
+    }
+  )
+  const result = await data.json()
+  return result
+}
+
 export default async function Movie({ params }: { params: { id: string } }) {
+  const { is_anime } = await checkIfAnime(parseInt(params.id))
+  if (is_anime) {
+    redirect(`/anime/${params.id}`)
+  }
   const { data: movie } = await getMovieData(parseInt(params.id))
   const recommendedMovies = await getRecommendedMovies(parseInt(params.id))
 

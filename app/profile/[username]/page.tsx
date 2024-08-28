@@ -2,9 +2,9 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { format, parseISO } from 'date-fns'
+import Image from 'next/image'
 import Link from 'next/link'
 import ProfileBanner from './components/ProfileBanner'
-import Image from 'next/image'
 
 async function getUserLibrary(username: string) {
   const res = await fetch(
