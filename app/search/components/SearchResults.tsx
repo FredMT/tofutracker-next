@@ -1,5 +1,4 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { use } from 'react'
 import SearchResultCard from './SearchResultCard'
 import SearchResultsTabs from './SearchResultsTabs'
 
@@ -7,22 +6,29 @@ async function fetchSearchResults(query: string) {
   if (!query) return null
 
   const response = await fetch(
-    `${process.env.BACKEND_BASE_URL}search?query=${encodeURIComponent(query)}&page=1`
+    `${process.env.BACKEND_BASE_URL}search?query=${encodeURIComponent(query)}`,
+    {
+      cache: 'no-cache',
+    }
   )
+
   if (!response.ok) {
     throw new Error('Failed to fetch search results')
   }
-  return response.json()
+
+  console.log(response)
+  const results = await response.json()
+  return results
 }
 
-export default function SearchResults({
+export default async function SearchResults({
   query,
   type,
 }: {
   query: string
   type: string
 }) {
-  const results = use(fetchSearchResults(query))
+  const results = await fetchSearchResults(query)
 
   if (!query) {
     return null

@@ -59,7 +59,6 @@ async function checkIfAnime(id: number) {
     }
   )
   const result = await data.json()
-  console.log(result)
   return result
 }
 
