@@ -629,7 +629,22 @@ export async function quickTrackAction(formData: FormData) {
   const sessionId = session.session.id
   const showId = formData.get('showId')
   const updates = formData.get('updates')
+  const media_type = formData.get('media_type')
 
+  let body: {
+    session_id: string
+    show_id: FormDataEntryValue | null
+    updates: FormDataEntryValue | null
+    media_type?: string
+  } = {
+    session_id: sessionId,
+    show_id: showId,
+    updates: updates,
+  }
+
+  if (media_type === 'anime') {
+    body.media_type = 'anime'
+  }
   try {
     const response = await fetch(
       `${process.env.BACKEND_BASE_URL}user-media/quick-track`,
@@ -638,11 +653,7 @@ export async function quickTrackAction(formData: FormData) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          session_id: sessionId,
-          show_id: showId,
-          updates: updates,
-        }),
+        body: JSON.stringify(body),
         credentials: 'include',
       }
     )

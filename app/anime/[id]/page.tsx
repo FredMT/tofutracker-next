@@ -116,7 +116,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 poster_path={movie.details.poster_path}
                 title={movie.details.title}
                 itemId={movie.details.id}
-                type="anime"
+                type="movie"
               />
             </Suspense>
           </div>
@@ -153,7 +153,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 <MobileButtons
                   itemId={movie.details.id}
                   title={movie.details.title}
-                  type="anime"
+                  type="movie"
                 />
               </Suspense>
             </div>
@@ -234,7 +234,9 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 poster_path={tv.details.poster_path}
                 title={tv.details.title}
                 itemId={params.id}
-                type="anime"
+                type="tv"
+                seasons={seasons.main}
+                isAnime={true}
               />
             </Suspense>
           </div>
@@ -269,9 +271,11 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
               >
                 <MobileButtons
-                  itemId={params.id + `3`}
+                  itemId={params.id + '2'}
                   title={tv.details.title}
-                  type="anime"
+                  type="tv"
+                  seasons={seasons.main}
+                  isAnime={true}
                 />
               </Suspense>
             </div>

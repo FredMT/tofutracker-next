@@ -63,23 +63,26 @@ export default function QuickTrackDialog({
               .map((season) => {
                 const { watchedCount, percentage } = getSeasonProgress(
                   season.id,
-                  season.episode_count
+                  season.episodes.length
                 )
                 return (
                   <AccordionItem value={season.id.toString()} key={season.id}>
                     <AccordionTrigger className="hover:no-underline">
                       <div className="flex w-full items-center justify-evenly space-x-2">
                         <Checkbox
-                          checked={watchedCount === season.episode_count}
+                          checked={watchedCount === season.episodes.length}
                           onCheckedChange={() => toggleSeason(season)}
                           onClick={(e) => e.stopPropagation()}
                         />
-                        <span className="basis-1/6">{season.name}</span>
+                        <span className="basis-1/6 text-sm">
+                          {season.name ?? season.title}
+                        </span>
                         <div className="basis-2/6">
                           <Progress value={percentage} className="h-2" />
                         </div>
                         <div className="basis-1/6 text-sm">
-                          {watchedCount}/{season.episode_count} ({percentage}%)
+                          {watchedCount}/{season.episodes.length} ({percentage}
+                          %)
                         </div>
                       </div>
                     </AccordionTrigger>

@@ -20,6 +20,7 @@ export default async function Poster({
   type,
   seasons,
   seasonId,
+  isAnime = false,
 }: {
   poster_path: string
   title: string
@@ -27,6 +28,7 @@ export default async function Poster({
   type: string
   seasons?: Season[]
   seasonId?: number
+  isAnime?: boolean
 }) {
   return (
     <div className="flex flex-col gap-y-6" id="poster">
@@ -41,13 +43,12 @@ export default async function Poster({
         />
         <div className="hidden gap-y-4 sm:flex sm:flex-col">
           <MobileButtons
-            itemId={
-              itemId + `${type === 'anime' ? '3' : type === 'tv' ? '2' : ''}`
-            }
+            itemId={itemId + `${type === 'tv' ? '2' : ''}`}
             title={title}
             seasons={seasons}
             type={type}
             seasonId={seasonId}
+            isAnime={isAnime ? true : false}
           />
         </div>
       </div>

@@ -8,7 +8,6 @@ function shapeErrors({ err }: any) {
   // let's all errors pass through to the UI so debugging locally is easier
   const isDev = env.NODE_ENV === 'development'
   if (isAllowedError || isDev) {
-    console.error(err)
     return {
       code: err.code ?? 'ERROR',
       message: `${isDev ? 'DEV ONLY ENABLED - ' : ''}${err.message}`,

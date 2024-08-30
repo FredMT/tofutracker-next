@@ -70,7 +70,7 @@ export default function QuickTrackDrawer({
                       />
                       <div className="flex flex-grow items-center space-x-6">
                         <div className="ml-4 w-[70px] text-sm font-medium">
-                          {season.name}
+                          {season.name ?? season.title}
                         </div>
                         <div className="basis-2/5">
                           <Progress value={percentage} className="h-2" />
@@ -85,9 +85,9 @@ export default function QuickTrackDrawer({
                   </DrawerTrigger>
                   <DrawerContent className="max-h-[485px]">
                     <DrawerHeader>
-                      <DrawerTitle>{season.name}</DrawerTitle>
+                      <DrawerTitle>{season.name ?? season.title}</DrawerTitle>
                       <DrawerDescription className="text-center text-sm">
-                        Track your progress for {season.name}
+                        Track your progress for {season.name ?? season.title}
                       </DrawerDescription>
                     </DrawerHeader>
                     <ScrollArea className="h-[500px]">

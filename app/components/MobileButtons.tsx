@@ -81,12 +81,14 @@ export default async function MobileButtons({
   seasons,
   type,
   seasonId,
+  isAnime = false,
 }: {
   itemId: string
   title: string
   seasons?: Season[]
   type: string
   seasonId?: number
+  isAnime?: boolean
 }) {
   const user = await getCurrentUser()
 
@@ -149,6 +151,7 @@ export default async function MobileButtons({
           seasons={seasons!}
           watchedEpisodeIds={library.data.watched_episode_ids}
           showId={itemId}
+          isAnime={isAnime ? true : false}
         />
       )}
       {!isMovie &&
