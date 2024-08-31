@@ -234,7 +234,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 poster_path={tv.details.poster_path}
                 title={tv.details.title}
                 itemId={params.id}
-                type="tv"
+                type="animetv"
                 seasons={seasons.main}
                 isAnime={true}
               />
@@ -273,7 +273,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 <MobileButtons
                   itemId={params.id + '2'}
                   title={tv.details.title}
-                  type="tv"
+                  type="animetv"
                   seasons={seasons.main}
                   isAnime={true}
                 />

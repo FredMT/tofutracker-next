@@ -1,11 +1,11 @@
-import { generateRandomToken } from "@/data-access/utils";
-import { db } from "@/db";
-import { UserId } from "@/use-cases/types";
-import { TOKEN_LENGTH, TOKEN_TTL } from "./magic-links";
+import { generateRandomToken } from '@/data-access/utils'
+import { db } from '@/db'
+import { UserId } from '@/use-cases/types'
+import { TOKEN_LENGTH, TOKEN_TTL } from './magic-links'
 
 export async function createVerifyEmailToken(userId: UserId) {
-  const token = await generateRandomToken(TOKEN_LENGTH);
-  const token_expires_at = new Date(Date.now() + TOKEN_TTL);
+  const token = await generateRandomToken(TOKEN_LENGTH)
+  const token_expires_at = new Date(Date.now() + TOKEN_TTL)
 
   await db.verifyEmailToken.upsert({
     where: { user_id: userId },
@@ -18,9 +18,9 @@ export async function createVerifyEmailToken(userId: UserId) {
       token,
       token_expires_at,
     },
-  });
+  })
 
-  return token;
+  return token
 }
 
 export async function getVerifyEmailToken(token: string) {
@@ -28,9 +28,9 @@ export async function getVerifyEmailToken(token: string) {
     where: {
       token,
     },
-  });
+  })
 
-  return existingToken;
+  return existingToken
 }
 
 export async function deleteVerifyEmailToken(token: string) {
@@ -38,5 +38,5 @@ export async function deleteVerifyEmailToken(token: string) {
     where: {
       token,
     },
-  });
+  })
 }

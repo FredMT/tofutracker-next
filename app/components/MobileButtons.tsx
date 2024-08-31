@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { validateRequest } from '@/lib/auth'
 import { getCurrentUser } from '@/lib/session'
 import { Season } from '@/types/tv'
 import Link from 'next/link'
@@ -12,9 +13,6 @@ import RateButton from './RateButton'
 import RemoveFromLibrary from './RemoveFromLibrary'
 import WatchRemainingButton from './WatchRemainingButton'
 import { WatchStatusSelect } from './WatchStatusSelect'
-import { validateRequest } from '@/lib/auth'
-import { getAccountByUserId } from '@/data-access/accounts'
-import { getProfile } from '@/data-access/profiles'
 
 type EpisodeData = {
   name: string

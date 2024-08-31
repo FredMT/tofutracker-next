@@ -19,9 +19,13 @@ export default function AddToLibraryButton({
       action={
         type === 'movie'
           ? addToLibrary
-          : type === 'season'
-            ? addToLibraryTvSeason
-            : addToLibraryTv
+          : type === 'tv'
+            ? addToLibraryTv
+            : type === 'season'
+              ? addToLibraryTvSeason
+              : type === 'animetv'
+                ? '#'
+                : '#'
       }
     >
       <input type="hidden" name="userId" value={user.id} />

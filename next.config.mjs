@@ -42,12 +42,6 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'pngudnlyaeyujvgndkse.supabase.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
         hostname: 'www.github.com',
         port: '',
         pathname: '/shadcn.png',

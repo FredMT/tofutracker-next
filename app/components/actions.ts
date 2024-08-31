@@ -4,22 +4,23 @@ import { validateRequest } from '@/lib/auth'
 import { revalidateTag } from 'next/cache'
 
 export async function addToLibrary(formData: FormData) {
-  const userId = formData.get('userId')
+  const session = await validateRequest()
+  if (!session || !session.session) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  const sessionId = session.session.id
   const mediaId = formData.get('mediaId')
+
+  if (!mediaId) {
+    return { success: false, message: 'Media ID is required' }
+  }
 
   try {
     const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/add-movie`,
+      `${process.env.BACKEND_BASE_URL}user-media/movies/add?session_id=${sessionId}&mediaId=${mediaId}&watchStatus=COMPLETED`,
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          media_id: mediaId,
-          watch_status: 'COMPLETED',
-        }),
       }
     )
 
@@ -37,21 +38,16 @@ export async function addToLibrary(formData: FormData) {
 }
 
 export async function addToLibraryTv(formData: FormData) {
-  const userId = formData.get('userId')
+  const session = await validateRequest()
+  if (!session || !session.session) {
+    return { success: false, message: 'Unauthorized' }
+  }
   const showId = formData.get('mediaId')
-
   try {
     const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/add-show`,
+      `${process.env.BACKEND_BASE_URL}user-media/shows/add?session_id=${session.session.id}&showId=${showId}`,
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          show_id: showId,
-        }),
       }
     )
 
@@ -80,17 +76,39 @@ export async function addToLibraryTvSeason(formData: FormData) {
 
   try {
     const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/add-season`,
+      `${process.env.BACKEND_BASE_URL}user-media/shows/add-season?session_id=${sessionId}&show_id=${showId}&season_id=${seasonId}`,
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          session_id: sessionId,
-          show_id: showId,
-          season_id: seasonId,
-        }),
+      }
+    )
+
+    const data = await res.json()
+
+    revalidateTag('is-in-library')
+
+    return { success: data.success, message: data.message }
+  } catch (error) {
+    return {
+      success: false,
+      message: 'An error occurred while adding to library',
+    }
+  }
+}
+
+export async function addToLibraryAnimeTv(formData: FormData) {
+  const session = await validateRequest()
+  if (!session || !session.session) {
+    return { success: false, message: 'Unauthorized' }
+  }
+
+  const sessionId = session.session.id
+  const showId = formData.get('mediaId')
+
+  try {
+    const res = await fetch(
+      `${process.env.BACKEND_BASE_URL}user-media/anime/add?session_id=${sessionId}&animeId=${showId}`,
+      {
+        method: 'POST',
       }
     )
 
@@ -212,28 +230,23 @@ export async function removeFromLibraryTvSeason(
 
 export async function addPlayAction(prevState: any, formData: FormData) {
   const datetime = formData.get('datetime')
-  const userId = formData.get('userId')
-  const mediaId = formData.get('mediaId')
-
-  const body: any = {
-    user_id: userId,
-    media_id: mediaId,
+  const session = await validateRequest()
+  if (!session || !session.session) {
+    return { success: false, message: 'Unauthorized' }
   }
 
+  const mediaId = formData.get('mediaId')
+  let watchDate = new Date().toISOString()
+
   if (datetime) {
-    body.watch_date = new Date(datetime as string).toISOString()
+    watchDate = new Date(datetime as string).toISOString()
   }
 
   try {
     const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/add-play-movie`,
+      `${process.env.BACKEND_BASE_URL}user-media/movies/add-play?session_id=${session.session.id}&mediaId=${mediaId}&watchDate=${watchDate}`,
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-        credentials: 'include',
       }
     )
 
