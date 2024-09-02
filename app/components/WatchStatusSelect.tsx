@@ -95,10 +95,6 @@ export function WatchStatusSelect({
         return 'On Hold'
       case 'DROPPED':
         return 'Dropped'
-      case 'WATCHING':
-        return 'Watching'
-      case 'REWATCHING':
-        return 'Rewatching'
       default:
         return 'Choose Status'
     }
@@ -135,73 +131,25 @@ export function WatchStatusSelect({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56">
                     <DropdownMenuLabel>Watch Status</DropdownMenuLabel>
-                    {isMovie ? (
-                      <DropdownMenuSub>
-                        <DropdownMenuSubTrigger
-                          disabled={data && data.watch_status === 'COMPLETED'}
-                          className={`${data && data.watch_status === 'COMPLETED' ? 'cursor-not-allowed opacity-50' : ''}`}
+                    {['COMPLETED', 'PLANNING', 'ONHOLD', 'DROPPED'].map(
+                      (status) => (
+                        <DropdownMenuItem
+                          key={status}
+                          onSelect={() => handleStatusChange(status)}
+                          disabled={data && data.watch_status === status}
+                          className="cursor-pointer"
                         >
                           <div className="flex items-center">
                             <div className="mr-2 h-4 w-4">
-                              {watchStatus === 'COMPLETED' && (
+                              {watchStatus === status && (
                                 <Check className="h-4 w-4" />
                               )}
                             </div>
-                            <span>Completed</span>
+                            <span>{getDisplayStatus(status)}</span>
                           </div>
-                        </DropdownMenuSubTrigger>
-                        {!(data && data.watch_status === 'COMPLETED') && (
-                          <DropdownMenuSubContent>
-                            <DropdownMenuItem
-                              onSelect={() =>
-                                handleStatusChange('COMPLETED', false)
-                              }
-                            >
-                              Set Status
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onSelect={() =>
-                                handleStatusChange('COMPLETED', true)
-                              }
-                            >
-                              Also add a Play
-                            </DropdownMenuItem>
-                          </DropdownMenuSubContent>
-                        )}
-                      </DropdownMenuSub>
-                    ) : (
-                      <DropdownMenuItem
-                        onSelect={() => handleStatusChange('COMPLETED')}
-                        disabled={data && data.watch_status === 'COMPLETED'}
-                      >
-                        <div className="flex items-center">
-                          <div className="mr-2 h-4 w-4">
-                            {watchStatus === 'COMPLETED' && (
-                              <Check className="h-4 w-4" />
-                            )}
-                          </div>
-                          <span>Completed</span>
-                        </div>
-                      </DropdownMenuItem>
+                        </DropdownMenuItem>
+                      )
                     )}
-
-                    {[`'PLANNING', 'ONHOLD', 'DROPPED'`].map((status) => (
-                      <DropdownMenuItem
-                        key={status}
-                        onSelect={() => handleStatusChange(status)}
-                        disabled={data && data.watch_status === status}
-                        className="cursor-pointer"
-                      >
-                        <div className="flex items-center">
-                          <div className="mr-2 h-4 w-4">
-                            {watchStatus === status && (
-                              <Check className="h-4 w-4" />
-                            )}
-                          </div>
-                          <span>{getDisplayStatus(status)}</span>
-                        </div>
-                      </DropdownMenuItem>
-                    ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </FormControl>
