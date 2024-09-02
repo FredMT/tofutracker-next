@@ -25,7 +25,6 @@ export function QuickTrack({
   type?: string
   isAnime?: boolean
 }) {
-  console.log(isAnime)
   const isDesktop = useMediaQuery('(min-width: 640px)')
   const { toast } = useToast()
   const [watchedEpisodes, setWatchedEpisodes] = useState<WatchedEpisodes>({})
@@ -93,9 +92,12 @@ export function QuickTrack({
     )
 
     const formData = new FormData()
-    formData.append('showId', showId)
-    formData.append('updates', JSON.stringify(updates))
-    isAnime && formData.append('media_type', 'anime')
+    // Change here: Wrap updates in an object with showId as the key
+    formData.append(
+      'updates',
+      JSON.stringify({ [type === 'animetv' ? `${showId}2` : showId]: updates })
+    )
+    isAnime && formData.append('media_type', 'animetv')
 
     try {
       const result = await quickTrackAction(formData)

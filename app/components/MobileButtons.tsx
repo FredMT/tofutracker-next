@@ -14,16 +14,6 @@ import RemoveFromLibrary from './RemoveFromLibrary'
 import WatchRemainingButton from './WatchRemainingButton'
 import { WatchStatusSelect } from './WatchStatusSelect'
 
-type EpisodeData = {
-  name: string
-  id: number
-  episode_number: number
-  air_date: string
-  runtime: string
-  overview: string
-  still_path: string
-}
-
 async function getLibraryData(userId: number, itemId: string) {
   const data = await fetch(
     `${process.env.BACKEND_BASE_URL}user-media/movie/details`,
@@ -56,12 +46,63 @@ async function getLibraryTvData(userId: number, itemId: string | number) {
   return result
 }
 
+async function getLibraryAnimeMovieData(itemId: string | number) {
+  const session = await validateRequest()
+  if (!session.session || !session) return null
+  const sessionId = session.session.id
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}media-details?session_id=${sessionId}&mediaId=${itemId.toString().slice(0, -1)}&mediaType=ANIME_MOVIE`,
+    {
+      next: { tags: ['is-in-library'] },
+      cache: 'no-cache',
+      credentials: 'include',
+      method: 'GET',
+    }
+  )
+  const result = await data.json()
+  return result
+}
+
 async function getLibraryTvSeasonData(itemId: string, seasonId: number) {
   const session = await validateRequest()
   if (!session.session || !session) return null
 
   const data = await fetch(
     `${process.env.BACKEND_BASE_URL}user-media/season/details?session_id=${session.session.id}&showId=${itemId}&seasonId=${seasonId}`,
+    {
+      next: { tags: ['is-in-library'] },
+      cache: 'no-cache',
+      credentials: 'include',
+      method: 'GET',
+    }
+  )
+  const result = await data.json()
+  return result
+}
+
+async function getLibraryAnimeSeasonData(itemId: string, seasonId: number) {
+  const session = await validateRequest()
+  if (!session.session || !session) return null
+
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}user-media/anime/season/details?session_id=${session.session.id}&animeId=${itemId}&animeSeasonId=${seasonId}`,
+    {
+      next: { tags: ['is-in-library'] },
+      cache: 'no-cache',
+      credentials: 'include',
+      method: 'GET',
+    }
+  )
+  const result = await data.json()
+  return result
+}
+
+async function getLibraryAnimeData(itemId: string) {
+  const session = await validateRequest()
+  if (!session.session || !session) return null
+
+  const data = await fetch(
+    `${process.env.BACKEND_BASE_URL}media-details?session_id=${session.session.id}&mediaId=${itemId}&mediaType=ANIME_SHOW`,
     {
       next: { tags: ['is-in-library'] },
       cache: 'no-cache',
@@ -112,7 +153,13 @@ export default async function MobileButtons({
     ? await getLibraryData(user.id, itemId)
     : type === 'season'
       ? await getLibraryTvSeasonData(itemId, seasonId!)
-      : await getLibraryTvData(user.id, itemId)
+      : type === 'animetv'
+        ? await getLibraryAnimeData(itemId)
+        : type === 'animetvseason'
+          ? await getLibraryAnimeSeasonData(itemId, seasonId!)
+          : type === 'animemovie'
+            ? await getLibraryAnimeMovieData(itemId)
+            : await getLibraryTvData(user.id, itemId)
 
   return (
     <div className="flex w-full flex-col gap-y-2">
@@ -135,7 +182,7 @@ export default async function MobileButtons({
             />
             {isMovie && <AddPlay userId={user.id} mediaId={itemId} />}
           </div>
-          {!isMovie && (
+          {!isMovie && type !== 'animemovie' && (
             <EpisodeProgress
               watched_episodes={library.data.watched_episodes}
               aired_episodes={library.data.aired_episodes}
@@ -144,14 +191,19 @@ export default async function MobileButtons({
         </div>
       )}
 
-      {!isMovie && type !== 'season' && library.data && (
-        <QuickTrack
-          seasons={seasons!}
-          watchedEpisodeIds={library.data.watched_episode_ids}
-          showId={itemId}
-          isAnime={isAnime ? true : false}
-        />
-      )}
+      {!isMovie &&
+        type !== 'season' &&
+        type !== 'animetvseason' &&
+        type !== 'animemovie' &&
+        library.data && (
+          <QuickTrack
+            seasons={seasons!}
+            watchedEpisodeIds={library.data.watched_episode_ids}
+            showId={itemId}
+            isAnime={isAnime ? true : false}
+            type={type}
+          />
+        )}
       {!isMovie &&
         library.data &&
         library.data.watched_episodes < library.data.aired_episodes && (

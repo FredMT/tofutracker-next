@@ -10,10 +10,17 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { useToast } from '@/components/ui/use-toast'
-import Rating from './Rating'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
-import { rateMedia, rateMediaTv, rateMediaTvSeason } from './actions'
+import {
+  rateMedia,
+  rateMediaTv,
+  rateMediaTvAnime,
+  rateMediaTvAnimeMovie,
+  rateMediaTvAnimeSeason,
+  rateMediaTvSeason,
+} from './actions'
+import Rating from './Rating'
 
 type Props = {
   userId: number
@@ -51,7 +58,13 @@ export default function RateButton({
       ? rateMedia
       : type === 'season'
         ? rateMediaTvSeason
-        : rateMediaTv,
+        : type === 'animetv'
+          ? rateMediaTvAnime
+          : type === 'animetvseason'
+            ? rateMediaTvAnimeSeason
+            : type === 'animemovie'
+              ? rateMediaTvAnimeMovie
+              : rateMediaTv,
     {
       success: false,
       message: '',
@@ -75,9 +88,10 @@ export default function RateButton({
     formData.append('media_id', mediaId)
     formData.append('rating', rating.toString())
     {
-      type === 'season' &&
-        seasonId &&
-        formData.append('seasonId', seasonId.toString())
+      type === 'season' ||
+        (type === 'animetvseason' &&
+          seasonId &&
+          formData.append('seasonId', seasonId.toString()))
     }
     formSubmittedRef.current = true
     formAction(formData)

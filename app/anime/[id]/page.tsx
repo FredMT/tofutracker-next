@@ -82,10 +82,12 @@ async function getRecommendedTV(id: number) {
 
 async function getAnimeType(id: number) {
   const data = await fetch(`${process.env.BACKEND_BASE_URL}anime/type/${id}`, {
-    credentials: 'include',
+    cache: 'force-cache',
+    method: 'GET',
   })
   const result = await data.json()
-  if (result.statusCode === 500) return notFound()
+  if (result.statusCode === 500 || result.statusCode === 404) return notFound()
+
   return result.type
 }
 
@@ -116,7 +118,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 poster_path={movie.details.poster_path}
                 title={movie.details.title}
                 itemId={movie.details.id}
-                type="movie"
+                type="animemovie"
               />
             </Suspense>
           </div>
@@ -153,7 +155,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 <MobileButtons
                   itemId={movie.details.id}
                   title={movie.details.title}
-                  type="movie"
+                  type="animemovie"
                 />
               </Suspense>
             </div>
@@ -271,7 +273,7 @@ export default async function Anime({ params }: { params: { id: string } }) {
                 fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
               >
                 <MobileButtons
-                  itemId={params.id + '2'}
+                  itemId={params.id}
                   title={tv.details.title}
                   type="animetv"
                   seasons={seasons.main}

@@ -15,7 +15,10 @@ import { useEffect } from 'react'
 import { useFormState } from 'react-dom'
 import {
   removeFromLibrary,
+  removeFromLibraryAnimeMovie,
+  removeFromLibraryAnimeSeason,
   removeFromLibraryTv,
+  removeFromLibraryTvAnime,
   removeFromLibraryTvSeason,
 } from './actions'
 import UseFormStatusPendingButton from './UseFormStatusPendingButton'
@@ -38,7 +41,13 @@ export default function RemoveFromLibrary({
       ? removeFromLibrary
       : type === 'season'
         ? removeFromLibraryTvSeason
-        : removeFromLibraryTv,
+        : type === 'animetv'
+          ? removeFromLibraryTvAnime
+          : type === 'animetvseason'
+            ? removeFromLibraryAnimeSeason
+            : type === 'animemovie'
+              ? removeFromLibraryAnimeMovie
+              : removeFromLibraryTv,
     null
   )
   const { toast } = useToast()
@@ -79,9 +88,10 @@ export default function RemoveFromLibrary({
             <form action={formAction}>
               <input type="hidden" name="userId" value={userId} />
               <input type="hidden" name="mediaId" value={mediaId} />
-              {type === 'season' && seasonId && (
-                <input type="hidden" name="seasonId" value={seasonId} />
-              )}
+              {type === 'season' ||
+                (type === 'animetvseason' && seasonId && (
+                  <input type="hidden" name="seasonId" value={seasonId} />
+                ))}
               <UseFormStatusPendingButton text="Remove" variant="destructive" />
             </form>
           </div>

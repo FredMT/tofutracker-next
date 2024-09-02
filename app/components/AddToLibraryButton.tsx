@@ -1,6 +1,12 @@
 'use client'
 import { User } from 'lucia'
-import { addToLibrary, addToLibraryTv, addToLibraryTvSeason } from './actions'
+import {
+  addToLibrary,
+  addToLibraryMovieAnime,
+  addToLibraryTv,
+  addToLibraryTvAnime,
+  addToLibraryTvSeason,
+} from './actions'
 import UseFormStatusPendingButton from './UseFormStatusPendingButton'
 
 export default function AddToLibraryButton({
@@ -24,8 +30,10 @@ export default function AddToLibraryButton({
             : type === 'season'
               ? addToLibraryTvSeason
               : type === 'animetv'
-                ? '#'
-                : '#'
+                ? addToLibraryTvAnime
+                : type === 'animemovie'
+                  ? addToLibraryMovieAnime
+                  : '#'
       }
     >
       <input type="hidden" name="userId" value={user.id} />

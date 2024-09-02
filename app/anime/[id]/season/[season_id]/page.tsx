@@ -3,6 +3,7 @@ import AnimeDetails from '@/app/anime/components/AnimeDetails'
 import AnimeInfo from '@/app/anime/components/AnimeInfo'
 import AnimePoster from '@/app/anime/components/AnimePoster'
 import RelatedAnime from '@/app/anime/components/RelatedAnime'
+import MobileButtons from '@/app/components/MobileButtons'
 import Overview from '@/app/movie/components/Overview'
 import Title from '@/app/movie/components/Title'
 import Episodes from '@/app/tv/components/Episodes'
@@ -95,8 +96,9 @@ export default async function Anime({ params }: Props) {
           >
             <AnimePoster
               title={anime.title}
-              id={anime.id}
+              id={+(params.id + '2')}
               poster={anime.poster}
+              seasonId={anime.id}
             />
           </Suspense>
         </div>
@@ -115,11 +117,16 @@ export default async function Anime({ params }: Props) {
               />
             </Suspense>
           </div>
-          {/* <div className="mt-6 flex justify-center sm:hidden">
+          <div className="mt-6 flex justify-center sm:hidden">
             <Suspense fallback={<Skeleton className="mt-6 h-[168px] w-full" />}>
-              <MobileButtons itemId={anime.id} title={anime.title} />
+              <MobileButtons
+                itemId={params.id + '2'}
+                title={anime.title}
+                type="animetvseason"
+                seasonId={anime.id}
+              />
             </Suspense>
-          </div> */}
+          </div>
           <div className="mt-6">
             <div className="contentpagedetailtitle">Details</div>
             <Suspense fallback={<Skeleton className="mt-6 h-[430px] w-full" />}>

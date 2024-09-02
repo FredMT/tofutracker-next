@@ -6,10 +6,12 @@ export default async function AnimePoster({
   title,
   poster,
   id,
+  seasonId,
 }: {
   title: string
   poster: string
   id: number
+  seasonId?: number
 }) {
   return (
     <div className="flex flex-col gap-y-6" id="poster">
@@ -27,7 +29,12 @@ export default async function AnimePoster({
           priority
         />
         <div className="hidden gap-y-4 sm:flex sm:flex-col">
-          <MobileButtons itemId={id.toString()} title={title} type="anime" />
+          <MobileButtons
+            itemId={id.toString()}
+            title={title}
+            type="animetvseason"
+            seasonId={seasonId}
+          />
         </div>
       </div>
     </div>

@@ -16,7 +16,10 @@ import { useToast } from '@/components/ui/use-toast'
 import { Check } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import {
+  changeAnimeMovieWatchStatus,
   changeWatchStatus,
+  changeWatchStatusAnimeTv,
+  changeWatchStatusAnimeTvSeason,
   changeWatchStatusTv,
   changeWatchStatusTvSeason,
 } from './actions'
@@ -60,7 +63,13 @@ export function WatchStatusSelect({
         ? await changeWatchStatus(null, formData)
         : type === 'season'
           ? await changeWatchStatusTvSeason(null, formData)
-          : await changeWatchStatusTv(null, formData)
+          : type === 'animetv'
+            ? await changeWatchStatusAnimeTv(null, formData)
+            : type === 'animetvseason'
+              ? await changeWatchStatusAnimeTvSeason(null, formData)
+              : type === 'animemovie'
+                ? await changeAnimeMovieWatchStatus(null, formData)
+                : await changeWatchStatusTv(null, formData)
     if (result.success) {
       toast({
         title: 'Success',
@@ -101,7 +110,10 @@ export function WatchStatusSelect({
       type === 'movie' && form.setValue('addPlay', addPlay)
     }
     {
-      type === 'season' && seasonId && form.setValue('seasonId', seasonId)
+      type === 'season' ||
+        (type === 'animetvseason' &&
+          seasonId &&
+          form.setValue('seasonId', seasonId))
     }
     form.handleSubmit(onSubmit)()
   }
@@ -173,7 +185,7 @@ export function WatchStatusSelect({
                       </DropdownMenuItem>
                     )}
 
-                    {['PLANNING', 'ONHOLD', 'DROPPED'].map((status) => (
+                    {[`'PLANNING', 'ONHOLD', 'DROPPED'`].map((status) => (
                       <DropdownMenuItem
                         key={status}
                         onSelect={() => handleStatusChange(status)}

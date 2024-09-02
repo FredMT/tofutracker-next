@@ -16,7 +16,6 @@ async function fetchSearchResults(query: string) {
     throw new Error('Failed to fetch search results')
   }
 
-  console.log(response)
   const results = await response.json()
   return results
 }
