@@ -26,9 +26,11 @@ export const authenticatedAction = createServerActionProcedure()
     const user = await assertAuthenticated()
     return { user }
   })
+  .createServerAction()
 
 export const unauthenticatedAction = createServerActionProcedure()
   .experimental_shapeError(shapeErrors)
   .handler(async () => {
     return { user: undefined }
   })
+  .createServerAction()

@@ -9,7 +9,6 @@ import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
 export const signInAction = unauthenticatedAction
-  .createServerAction()
   .input(
     z.object({
       email: z.string().email(),
