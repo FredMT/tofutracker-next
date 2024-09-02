@@ -5,6 +5,7 @@ import {
   addToLibraryMovieAnime,
   addToLibraryTv,
   addToLibraryTvAnime,
+  addToLibraryTvAnimeSeason,
   addToLibraryTvSeason,
 } from './actions'
 import UseFormStatusPendingButton from './UseFormStatusPendingButton'
@@ -31,16 +32,19 @@ export default function AddToLibraryButton({
               ? addToLibraryTvSeason
               : type === 'animetv'
                 ? addToLibraryTvAnime
-                : type === 'animemovie'
-                  ? addToLibraryMovieAnime
-                  : '#'
+                : type === 'animetvseason'
+                  ? addToLibraryTvAnimeSeason
+                  : type === 'animemovie'
+                    ? addToLibraryMovieAnime
+                    : '#'
       }
     >
       <input type="hidden" name="userId" value={user.id} />
       <input type="hidden" name="mediaId" value={itemId} />
-      {type === 'season' && seasonId && (
-        <input type="hidden" name="seasonId" value={seasonId} />
-      )}
+      {type === 'season' ||
+        (type === 'animetvseason' && seasonId && (
+          <input type="hidden" name="seasonId" value={seasonId} />
+        ))}
       <UseFormStatusPendingButton
         style="w-full"
         text="Add to Library"

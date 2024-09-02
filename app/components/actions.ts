@@ -156,28 +156,35 @@ export async function addToLibraryMovieAnime(formData: FormData) {
   }
 }
 
-export async function addToLibraryAnimeTv(formData: FormData) {
+export async function addToLibraryTvAnimeSeason(formData: FormData) {
   const session = await validateRequest()
-  if (!session || !session.session) {
+  if (!session || !session.session)
     return { success: false, message: 'Unauthorized' }
-  }
 
   const sessionId = session.session.id
-  const showId = formData.get('mediaId')
+  const animeId = formData.get('mediaId')
+  const seasonId = formData.get('seasonId')
+
+  console.log(animeId, seasonId)
 
   try {
     const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/anime/add?session_id=${sessionId}&animeId=${showId}`,
+      `${process.env.BACKEND_BASE_URL}user-media/anime/add-season?seasonId=${seasonId}&animeId=${animeId}&session_id=${sessionId}`,
       {
         method: 'POST',
       }
     )
 
     const data = await res.json()
-
     revalidateTag('is-in-library')
-
-    return { success: data.success, message: data.message }
+    if (data.success) {
+      return { success: data.success, message: 'Anime season added to library' }
+    } else {
+      return {
+        success: false,
+        message: 'Failed to add anime season to library',
+      }
+    }
   } catch (error) {
     return {
       success: false,
