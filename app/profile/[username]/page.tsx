@@ -85,9 +85,20 @@ export default async function Profile({
                         className="relative aspect-[2/3] w-full"
                         key={item.id}
                       >
-                        <Link
-                          href={`/profile/${params.username}/activity/${item.id}`}
-                        >
+                        {item.media_type !== 'ANIME' && (
+                          <Link
+                            href={`/profile/${params.username}/activity/${item.id}`}
+                          >
+                            <Image
+                              src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                              alt={`Poster ${item.title}`}
+                              className="h-full w-full rounded-sm object-cover"
+                              width={500}
+                              height={750}
+                            />
+                          </Link>
+                        )}
+                        {item.media_type === 'ANIME' && (
                           <Image
                             src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
                             alt={`Poster ${item.title}`}
@@ -95,7 +106,7 @@ export default async function Profile({
                             width={500}
                             height={750}
                           />
-                        </Link>
+                        )}
                       </div>
                     ))}
                   </div>
