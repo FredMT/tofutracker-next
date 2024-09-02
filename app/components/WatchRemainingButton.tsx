@@ -10,6 +10,7 @@ import { useToast } from '@/components/ui/use-toast'
 import {
   watchRemainingAction,
   watchRemainingActionTvAnime,
+  watchRemainingActionTvAnimeSeason,
   watchRemainingActionTvSeason,
 } from './actions'
 
@@ -44,9 +45,10 @@ export default function WatchRemainingButton({
     formData.append('mediaId', mediaId.toString())
     formData.append('datetime', new Date().toISOString())
     {
-      type === 'season' &&
-        seasonId &&
-        formData.append('seasonId', seasonId.toString())
+      type === 'season' ||
+        (type === 'animetvseason' &&
+          seasonId &&
+          formData.append('seasonId', seasonId.toString()))
     }
 
     const result =
@@ -54,7 +56,9 @@ export default function WatchRemainingButton({
         ? await watchRemainingActionTvSeason(formData)
         : type === 'animetv'
           ? await watchRemainingActionTvAnime(formData)
-          : await watchRemainingAction(formData)
+          : type === 'animetvseason'
+            ? await watchRemainingActionTvAnimeSeason(formData)
+            : await watchRemainingAction(formData)
     toast({
       title: result.success ? 'Success' : 'Error',
       description: result.message,
