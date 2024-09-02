@@ -71,7 +71,7 @@ export default function WatchRemainingButton({
       </PopoverTrigger>
       <PopoverContent className="max-sm: max-h-[var(--radix-popover-content-available-height)] max-sm:w-[var(--radix-popover-trigger-width)]">
         <div className="flex justify-evenly space-x-4 p-4">
-          {type !== 'animetv' && (
+          {type !== 'animetv' && type !== 'animetvseason' && (
             <Popover>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="w-1/2">

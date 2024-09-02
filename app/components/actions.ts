@@ -165,8 +165,6 @@ export async function addToLibraryTvAnimeSeason(formData: FormData) {
   const animeId = formData.get('mediaId')
   const seasonId = formData.get('seasonId')
 
-  console.log(animeId, seasonId)
-
   try {
     const res = await fetch(
       `${process.env.BACKEND_BASE_URL}user-media/anime/add-season?seasonId=${seasonId}&animeId=${animeId}&session_id=${sessionId}`,
