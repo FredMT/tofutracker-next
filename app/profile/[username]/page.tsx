@@ -4,7 +4,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { format, parseISO } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
-import ProfileBanner from './components/ProfileBanner'
 
 async function getUserLibrary(username: string) {
   const res = await fetch(
@@ -27,9 +26,7 @@ export default async function Profile({
 
   return (
     <>
-      <div className="flex h-full min-h-[288px] w-full items-center justify-center sm:max-h-[360px]">
-        <ProfileBanner />
-      </div>
+      <div className="flex h-full min-h-[288px] w-full items-center justify-center sm:max-h-[360px]"></div>
       <div className="mx-auto mt-6 flex w-full px-3 max-sm:flex-col max-sm:space-y-6 sm:space-x-9 lg:space-x-12 xl:px-14 2xl:px-44">
         <div className="flex h-full w-full flex-grow basis-2/6 lg:basis-3/12">
           <div className="flex justify-center sm:w-full">
