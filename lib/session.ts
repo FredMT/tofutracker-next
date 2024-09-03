@@ -48,7 +48,7 @@ export const isVerifiedUser = async () => {
   return true
 }
 
-export const assertAuthenticated = async () => {
+export const assertAuthenticated = cache(async () => {
   const user = await getCurrentUser()
   if (!user) {
     throw new AuthenticationError()
@@ -58,7 +58,7 @@ export const assertAuthenticated = async () => {
     throw new EmailVerificationError()
   }
   return user
-}
+})
 
 export async function setSession(userId: UserId) {
   const session = await lucia.createSession(userId, {})

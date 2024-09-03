@@ -1,6 +1,5 @@
+import CommentCard from '@/app/profile/[username]/activity/[activityId]/components/CommentCard'
 import React from 'react'
-import CommentCard from './CommentCard'
-import { formatDistanceToNow } from 'date-fns'
 
 interface User {
   id: number

@@ -1,6 +1,7 @@
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { db } from '@/db'
 import { format, parseISO } from 'date-fns'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -17,31 +18,56 @@ async function getUserLibrary(username: string) {
   return data
 }
 
+async function getProfileData(username: string) {
+  const profile = await db.profile.findFirst({
+    where: { username: username },
+    select: { banner_image: true, image: true, bio: true },
+  })
+  return profile
+}
+
 export default async function Profile({
   params,
 }: {
   params: { username: string }
 }) {
-  const userLibrary = await getUserLibrary(params.username)
+  const userLibraryData = getUserLibrary(params.username)
+  const profileData = getProfileData(params.username)
+  const [userLibrary, profile] = await Promise.all([
+    userLibraryData,
+    profileData,
+  ])
 
   return (
     <>
-      <div className="flex h-full min-h-[288px] w-full items-center justify-center sm:max-h-[360px]"></div>
+      <Image
+        src={
+          profile?.banner_image ??
+          `https://tofutrackeranime2.b-cdn.net/mountains.webp`
+        }
+        width={1920}
+        height={360}
+        alt="Banner Picture"
+        className="h-[360px] w-full object-cover"
+      />
       <div className="mx-auto mt-6 flex w-full px-3 max-sm:flex-col max-sm:space-y-6 sm:space-x-9 lg:space-x-12 xl:px-14 2xl:px-44">
         <div className="flex h-full w-full flex-grow basis-2/6 lg:basis-3/12">
           <div className="flex justify-center sm:w-full">
             <div className="flex max-sm:space-x-6 sm:flex-col">
               <Avatar className="size-12 sm:size-24">
                 <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@shadcn"
+                  src={profile?.image ?? `https://github.com/shadcn.png`}
+                  width={96}
+                  height={96}
+                  alt="Banner Picture"
+                  className="overflow-hidden rounded-md"
                 />
               </Avatar>
               <div className="flex flex-col">
                 <h4 className="flex w-full justify-center">
                   {params.username.replace('%20', '-')}
                 </h4>
-                <p className="detail flex w-full">hi :3</p>
+                <p className="detail flex w-full">{profile?.bio}</p>
               </div>
             </div>
           </div>

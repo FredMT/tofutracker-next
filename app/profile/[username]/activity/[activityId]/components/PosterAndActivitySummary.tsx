@@ -7,7 +7,7 @@ import { Heart } from 'lucide-react'
 import Link from 'next/link'
 import { useTransition } from 'react'
 import { useForm } from 'react-hook-form'
-import { toggleLike } from './actions'
+import { toggleLike } from '@/app/profile/[username]/activity/[activityId]/components/actions'
 import Image from 'next/image'
 
 export default function PosterAndActivitySummary({

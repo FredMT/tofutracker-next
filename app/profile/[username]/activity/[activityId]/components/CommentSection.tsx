@@ -1,8 +1,8 @@
 'use client'
 import { useRef, useState } from 'react'
-import CommentBox from './CommentBox'
-import CommentsList from './CommentsList'
 import { User } from 'lucia'
+import CommentsList from '@/app/profile/[username]/activity/[activityId]/components/CommentsList'
+import CommentBox from '@/app/profile/[username]/activity/[activityId]/components/CommentBox'
 
 type ExtendedUser = User & {
   Profile?: {

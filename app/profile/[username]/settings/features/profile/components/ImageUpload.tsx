@@ -1,4 +1,6 @@
-'use-client'
+/* eslint-disable @next/next/no-img-element */
+'use client'
+import { uploadFile } from '@/app/profile/[username]/settings/features/profile/components/actions'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -11,20 +13,28 @@ import {
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { Profile } from '@prisma/client'
 import { ImagePlus } from 'lucide-react'
 import React from 'react'
 import { useDropzone } from 'react-dropzone'
 import { useForm } from 'react-hook-form'
-
 import { z } from 'zod'
 
-export const ImageUploader: React.FC = () => {
+type ImageUploaderProps = {
+  type: 'profile' | 'banner'
+  profile: Profile
+}
+
+export const ImageUploader: React.FC<ImageUploaderProps> = ({
+  type,
+  profile,
+}) => {
   const [preview, setPreview] = React.useState<string | ArrayBuffer | null>('')
+
   const { toast } = useToast()
 
   const formSchema = z.object({
     image: z
-      //Rest of validations done via react dropzone
       .instanceof(File)
       .refine((file) => file.size !== 0, 'Please upload an image'),
   })
@@ -58,15 +68,21 @@ export const ImageUploader: React.FC = () => {
       onDrop,
       maxFiles: 1,
       maxSize: 1000000,
-      accept: { 'image/png': [], 'image/jpg': [], 'image/jpeg': [] },
+      accept: {
+        'image/png': [],
+        'image/jpg': [],
+        'image/jpeg': [],
+        'image/webp': [],
+      },
     })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values)
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const formData = new FormData()
+    formData.append('file', values.image)
+    const result = await uploadFile(formData, profile, type)
     toast({
-      title: 'Image uploaded successfully 🎉',
-      description: `${values.image.name}`,
-      variant: 'success',
+      variant: result?.success ? 'success' : 'destructive',
+      description: result?.message,
     })
   }
 
@@ -77,22 +93,19 @@ export const ImageUploader: React.FC = () => {
           control={form.control}
           name="image"
           render={() => (
-            <FormItem className="mx-auto md:w-1/2">
+            <FormItem className="md:w-1/3">
               <FormLabel
                 className={`${
                   fileRejections.length !== 0 && 'text-destructive'
                 }`}
               >
-                <h2 className="text-xl font-semibold tracking-tight">
-                  Upload your image
-                  <span
-                    className={
-                      form.formState.errors.image || fileRejections.length !== 0
-                        ? 'text-destructive'
-                        : 'text-muted-foreground'
-                    }
-                  ></span>
-                </h2>
+                <span
+                  className={
+                    form.formState.errors.image || fileRejections.length !== 0
+                      ? 'text-destructive'
+                      : 'text-muted-foreground'
+                  }
+                ></span>
               </FormLabel>
               <FormControl>
                 <div
@@ -107,9 +120,9 @@ export const ImageUploader: React.FC = () => {
                     />
                   )}
                   <ImagePlus
-                    className={`size-40 ${preview ? 'hidden' : 'block'}`}
+                    className={`size-20 ${preview ? 'hidden' : 'block'}`}
                   />
-                  <Input {...getInputProps()} type="file" />
+                  <Input {...getInputProps()} type="file" name="file" />
                   {isDragActive ? (
                     <p>Drop the image!</p>
                   ) : (
@@ -120,7 +133,8 @@ export const ImageUploader: React.FC = () => {
               <FormMessage>
                 {fileRejections.length !== 0 && (
                   <p>
-                    Image must be less than 1MB and of type png, jpg, or jpeg
+                    Image must be less than 1MB and of type webp, png, jpg, or
+                    jpeg
                   </p>
                 )}
               </FormMessage>
@@ -130,7 +144,7 @@ export const ImageUploader: React.FC = () => {
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className="mx-auto block h-auto rounded-lg px-8 py-3 text-xl"
+          className="h-auto rounded-lg"
         >
           Submit
         </Button>

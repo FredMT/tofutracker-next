@@ -28,7 +28,10 @@ export default async function AuthButton() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+              <AvatarImage
+                src={profile.image ?? `https://github.com/shadcn.png`}
+                alt="@shadcn"
+              />
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-40">

@@ -24,12 +24,13 @@ export async function updateProfile(
   userId: UserId,
   updateProfile: Partial<Profile>
 ) {
-  await db.profile.update({
+  const profile = await db.profile.update({
     where: {
       user_id: userId,
     },
     data: updateProfile,
   })
+  return profile
 }
 
 export async function getProfile(userId: UserId) {

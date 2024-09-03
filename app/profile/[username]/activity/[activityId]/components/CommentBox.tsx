@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { createComment } from './actions'
+import { createComment } from '@/app/profile/[username]/activity/[activityId]/components/actions'
 
 interface CommentFormValues {
   comment: string

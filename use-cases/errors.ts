@@ -45,3 +45,10 @@ export class EmailVerificationError extends PublicError {
     this.name = 'EmailVerificationError'
   }
 }
+
+export class ProfileUpdateError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'ProfileUpdateError'
+  }
+}

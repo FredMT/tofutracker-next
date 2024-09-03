@@ -1,3 +1,22 @@
+import { applicationName } from '@/app-config'
+import { GitHubUser } from '@/app/api/login/github/callback/route'
+import { GoogleUser } from '@/app/api/login/google/callback/route'
+import {
+  createAccount,
+  createAccountViaGithub,
+  createAccountViaGoogle,
+  updatePassword,
+} from '@/data-access/accounts'
+import {
+  createProfile,
+  getProfile,
+  updateProfile,
+} from '@/data-access/profiles'
+import {
+  createPasswordResetToken,
+  deletePasswordResetToken,
+  getPasswordResetToken,
+} from '@/data-access/reset-tokens'
 import {
   createUser,
   deleteUser,
@@ -5,39 +24,24 @@ import {
   updateUser,
   verifyPassword,
 } from '@/data-access/users'
-import { UserId, UserSession } from '@/use-cases/types'
-import {
-  createAccount,
-  createAccountViaGithub,
-  createAccountViaGoogle,
-  updatePassword,
-} from '@/data-access/accounts'
-import { createProfile, getProfile } from '@/data-access/profiles'
-import { GoogleUser } from '@/app/api/login/google/callback/route'
-import { GitHubUser } from '@/app/api/login/github/callback/route'
-import {
-  createPasswordResetToken,
-  deletePasswordResetToken,
-  getPasswordResetToken,
-} from '@/data-access/reset-tokens'
-import { ResetPasswordEmail } from '@/emails/reset-password'
+import { createTransaction } from '@/data-access/utils'
 import {
   createVerifyEmailToken,
   deleteVerifyEmailToken,
   getVerifyEmailToken,
 } from '@/data-access/verify-email'
+import { ResetPasswordEmail } from '@/emails/reset-password'
 import { VerifyEmail } from '@/emails/verify-email'
-import { applicationName } from '@/app-config'
 import { sendEmail } from '@/lib/email'
 import { generateRandomName } from '@/lib/names'
+import { UserId, UserSession } from '@/use-cases/types'
 import {
   AuthenticationError,
   EmailInUseError,
   LoginError,
   NotFoundError,
+  ProfileUpdateError,
 } from './errors'
-import { db } from '@/db'
-import { createTransaction } from '@/data-access/utils'
 
 export async function deleteUserUseCase(
   authenticatedUser: UserSession,
@@ -167,4 +171,14 @@ export async function verifyEmailUseCase(token: string) {
   await updateUser(userId, { email_verified: new Date() })
   await deleteVerifyEmailToken(token)
   return userId
+}
+
+export async function updateBioUseCase(userId: number, newBio: string) {
+  if (newBio.length < 3) {
+    throw new ProfileUpdateError('Bio cannot be less than 3 characters')
+  }
+  if (newBio.length > 500) {
+    throw new ProfileUpdateError('Bio cannot exceed 500 characters')
+  }
+  return await updateProfile(userId, { bio: newBio })
 }
