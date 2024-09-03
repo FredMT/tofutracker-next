@@ -113,7 +113,7 @@ export default async function Profile({
                       >
                         {item.media_type !== 'ANIME' && (
                           <Link
-                            href={`/profile/${params.username}/activity/${item.id}`}
+                            href={`/user/${params.username}/activity/${item.id}`}
                           >
                             <Image
                               src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}

@@ -1,5 +1,5 @@
 'use client'
-import { ImageUploader } from '@/app/profile/[username]/settings/features/profile/components/ImageUpload'
+import { ImageUploader } from '@/app/user/[username]/settings/features/profile/components/ImageUpload'
 import { Label } from '@/components/ui/label'
 import { Profile } from '@prisma/client'
 

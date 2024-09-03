@@ -6,6 +6,7 @@ import { User, Eye, Image as ImageIcon } from 'lucide-react'
 import ProfileSettings from './features/profile/ProfileSettings'
 import AccountSettings from './features/account/AccountSettings'
 import PrivacySettings from './features/privacy/PrivacySettings'
+import SettingsTabs from '@/app/user/[username]/settings/components/SettingsTabs'
 
 export default async function Settings({
   params,
@@ -20,22 +21,7 @@ export default async function Settings({
   return (
     <div className="container mx-auto mt-[72px] max-w-[1676px] p-5 xl:px-40">
       <h1 className="mb-6 text-3xl font-bold">Settings</h1>
-      <Tabs defaultValue="profile" className="space-y-4">
-        <TabsList className="flex h-full flex-wrap">
-          <TabsTrigger value="profile" className="flex-grow">
-            <ImageIcon className="mr-2 h-4 w-4" /> Profile
-          </TabsTrigger>
-          <TabsTrigger value="account" className="flex-grow">
-            <User className="mr-2 h-4 w-4" /> Account
-          </TabsTrigger>
-          <TabsTrigger value="privacy" className="flex-grow">
-            <Eye className="mr-2 h-4 w-4" /> Privacy
-          </TabsTrigger>
-        </TabsList>
-        <ProfileSettings profile={profile} />
-        <AccountSettings userId={user.id} />
-        <PrivacySettings userId={user.id} />
-      </Tabs>
+      <SettingsTabs profile={profile} />
     </div>
   )
 }

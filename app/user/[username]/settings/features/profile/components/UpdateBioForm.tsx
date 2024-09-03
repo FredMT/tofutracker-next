@@ -15,7 +15,7 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { toast } from '@/components/ui/use-toast'
-import { updateBioAction } from '@/app/profile/[username]/settings/features/profile/components/updateBio'
+import { updateBioAction } from '@/app/user/[username]/settings/features/profile/components/actions'
 import { Profile } from '@prisma/client'
 import { AutosizeTextarea } from '@/components/autosize-textarea'
 

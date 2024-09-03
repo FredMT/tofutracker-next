@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { User } from 'lucia'
 import { formatDistanceToNow } from 'date-fns'
-import { toggleCommentLike } from '@/app/profile/[username]/activity/[activityId]/components/actions'
+import { toggleCommentLike } from '@/app/user/[username]/activity/[activityId]/components/actions'
 
 interface CommentCardProps {
   id: number

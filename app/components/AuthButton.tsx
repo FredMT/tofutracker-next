@@ -35,14 +35,14 @@ export default async function AuthButton() {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-40">
-            <Link href={`/profile/${profile.username}`}>
+            <Link href={`/user/${profile.username}`}>
               <DropdownMenuItem className="cursor-pointer">
                 Profile
               </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer" asChild>
-              <Link href={`/profile/${profile.username}/settings`}>
+              <Link href={`/user/${profile.username}/settings?t=profile`}>
                 Settings
               </Link>
             </DropdownMenuItem>
@@ -59,13 +59,13 @@ export default async function AuthButton() {
         <Separator className="my-2 max-sm:hidden" />
 
         <div className="flex flex-col gap-2 sm:hidden">
-          <Link href={`/profile/${profile.username}`}>
+          <Link href={`/user/${profile.username}`}>
             <button>Profile</button>
           </Link>
 
           <Separator className="my-1 sm:hidden" />
 
-          <Link href={`/profile/${profile.username}/settings`}>
+          <Link href={`/user/${profile.username}/settings?t=profile`}>
             <button>Settings</button>
           </Link>
 

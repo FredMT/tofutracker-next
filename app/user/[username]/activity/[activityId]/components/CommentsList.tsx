@@ -1,4 +1,4 @@
-import CommentCard from '@/app/profile/[username]/activity/[activityId]/components/CommentCard'
+import CommentCard from '@/app/user/[username]/activity/[activityId]/components/CommentCard'
 import React from 'react'
 
 interface User {

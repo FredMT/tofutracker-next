@@ -52,7 +52,6 @@ export async function addToLibraryTv(formData: FormData) {
     )
 
     const data = await res.json()
-    console.log(data)
 
     revalidateTag('is-in-library')
 
@@ -515,6 +514,7 @@ export async function rateMedia(prevState: any, formData: FormData) {
     }
   }
 }
+
 export async function rateMediaTv(prevState: any, formData: FormData) {
   const userId = formData.get('user_id')
   const mediaId = formData.get('media_id')
@@ -523,14 +523,6 @@ export async function rateMediaTv(prevState: any, formData: FormData) {
   if (!userId || !mediaId || !rating) {
     return { success: false, message: 'Missing required fields' }
   }
-
-  console.log(
-    JSON.stringify({
-      user_id: userId,
-      show_id: mediaId,
-      rating: rating,
-    })
-  )
 
   try {
     const response = await fetch(

@@ -21,6 +21,7 @@ import {
   createUser,
   deleteUser,
   getUserByEmail,
+  setEmailVerified,
   updateUser,
   verifyPassword,
 } from '@/data-access/users'
@@ -156,6 +157,7 @@ export async function changePasswordUseCase(token: string, password: string) {
   await createTransaction(async (trx) => {
     await deletePasswordResetToken(token)
     await updatePassword(userId, password)
+    await setEmailVerified(userId)
   })
 }
 
@@ -181,4 +183,20 @@ export async function updateBioUseCase(userId: number, newBio: string) {
     throw new ProfileUpdateError('Bio cannot exceed 500 characters')
   }
   return await updateProfile(userId, { bio: newBio })
+}
+
+export async function updateUsernameUseCase(
+  userId: number,
+  newUsername: string
+) {
+  if (newUsername.length < 4) {
+    throw new ProfileUpdateError('Username cannot be less than 4 characters')
+  }
+  if (newUsername.length > 12) {
+    throw new ProfileUpdateError('Username cannot exceed 12 characters')
+  }
+  if (newUsername.includes(' ')) {
+    throw new ProfileUpdateError('Username cannot contain spaces')
+  }
+  return await updateProfile(userId, { username: newUsername })
 }

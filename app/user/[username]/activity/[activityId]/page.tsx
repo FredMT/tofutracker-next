@@ -1,9 +1,9 @@
 import { Separator } from '@/components/ui/separator'
 import { getCurrentUser } from '@/lib/session'
 import { notFound } from 'next/navigation'
-import ActivityUserAndRelativeActivityTime from '@/app/profile/[username]/activity/[activityId]/components/ActivityUserAndRelativeActivityTime'
-import CommentSection from '@/app/profile/[username]/activity/[activityId]/components/CommentSection'
-import PosterAndActivitySummary from '@/app/profile/[username]/activity/[activityId]/components/PosterAndActivitySummary'
+import ActivityUserAndRelativeActivityTime from '@/app/user/[username]/activity/[activityId]/components/ActivityUserAndRelativeActivityTime'
+import CommentSection from '@/app/user/[username]/activity/[activityId]/components/CommentSection'
+import PosterAndActivitySummary from '@/app/user/[username]/activity/[activityId]/components/PosterAndActivitySummary'
 import { validateRequest } from '@/lib/auth'
 
 async function getActivity(activityId: number) {
