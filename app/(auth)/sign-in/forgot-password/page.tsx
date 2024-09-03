@@ -62,7 +62,8 @@ export default function ForgotPasswordPage() {
           <Terminal className="h-4 w-4" />
           <AlertTitle>Reset link sent</AlertTitle>
           <AlertDescription>
-            We have sent you an email with a link to reset your password.
+            If you have an email account with us, we have sent you an email with
+            a link to reset your password.
           </AlertDescription>
         </Alert>
       )}

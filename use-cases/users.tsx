@@ -5,6 +5,7 @@ import {
   createAccount,
   createAccountViaGithub,
   createAccountViaGoogle,
+  getAccountByUserId,
   updatePassword,
 } from '@/data-access/accounts'
 import {
@@ -134,6 +135,16 @@ export async function resetPasswordUseCase(email: string) {
 
   if (!user) {
     throw new AuthenticationError()
+  }
+
+  const account = await getAccountByUserId(user.id)
+
+  if (!account) {
+    throw new AuthenticationError()
+  }
+
+  if (account.account_type !== 'email') {
+    return
   }
 
   const token = await createPasswordResetToken(user.id)

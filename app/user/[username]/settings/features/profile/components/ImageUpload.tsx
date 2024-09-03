@@ -146,7 +146,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           disabled={form.formState.isSubmitting}
           className="h-auto rounded-lg"
         >
-          Submit
+          Upload {type}
         </Button>
       </form>
     </Form>

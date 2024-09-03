@@ -16,7 +16,7 @@ export default async function ActivityUserAndRelativeActivityTime({
       <div className="flex items-center space-x-2">
         <Avatar>
           <AvatarImage
-            src="https://github.com/shadcn.png"
+            src={image ?? `https://github.com/shadcn.png`}
             alt={`${username}'s avatar`}
           />
         </Avatar>

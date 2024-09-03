@@ -101,7 +101,7 @@ export default async function ActivityPage({
   if (!success) return notFound()
 
   return (
-    <div className="mt-[72px] overflow-y-clip sm:h-[calc(100vh-250px)]">
+    <div className="mt-[72px] overflow-y-clip p-5 sm:h-[calc(100vh-300px)] xl:px-40">
       <div className="flex h-full px-6 pb-6 max-sm:flex-col sm:flex-row sm:space-x-6">
         <div className="space-y-4 sm:flex-shrink-0">
           <div className="sm:hidden">
@@ -138,7 +138,7 @@ export default async function ActivityPage({
             />
             <Separator className="my-4 max-sm:hidden" />
           </div>
-          <div className="flex-grow overflow-y-auto">
+          <div className="flex-grow overflow-y-hidden">
             <CommentSection
               activityId={params.activityId}
               comments={comments}

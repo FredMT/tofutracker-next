@@ -67,7 +67,9 @@ const CommentWithReplies: React.FC<{
         username={comment.user?.Profile.username ?? 'TTUser'}
         createdAt={comment.created_at}
         commentText={comment.content ?? 'Deleted'}
-        avatarUrl={comment.user?.Profile.image ?? '/default-avatar.png'}
+        avatarUrl={
+          comment.user?.Profile.image ?? 'https://www.github.com/shadcn.png'
+        }
         likes={comment._count.likes}
         user_media_id={comment.user_media_id}
         hasLiked={comment.hasLiked}

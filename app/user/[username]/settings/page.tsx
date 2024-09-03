@@ -1,12 +1,7 @@
+import SettingsTabs from '@/app/user/[username]/settings/components/SettingsTabs'
+import { getProfile } from '@/data-access/profiles'
 import { getCurrentUser } from '@/lib/session'
 import { notFound } from 'next/navigation'
-import { getProfile } from '@/data-access/profiles'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { User, Eye, Image as ImageIcon } from 'lucide-react'
-import ProfileSettings from './features/profile/ProfileSettings'
-import AccountSettings from './features/account/AccountSettings'
-import PrivacySettings from './features/privacy/PrivacySettings'
-import SettingsTabs from '@/app/user/[username]/settings/components/SettingsTabs'
 
 export default async function Settings({
   params,

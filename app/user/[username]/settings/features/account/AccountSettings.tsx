@@ -1,7 +1,7 @@
-import { TabsContent } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import UsernameForm from './components/UsernameForm'
+import { TabsContent } from '@/components/ui/tabs'
 import { Profile } from '@prisma/client'
+import UsernameForm from './components/UsernameForm'
 // import PasswordForm from './components/PasswordForm'
 
 export default function AccountSettings({ profile }: { profile: Profile }) {

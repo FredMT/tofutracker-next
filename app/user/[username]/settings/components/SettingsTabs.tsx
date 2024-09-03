@@ -13,9 +13,8 @@ export default function SettingsTabs({ profile }: { profile: Profile }) {
   const searchParams = useSearchParams()
   const tab = searchParams.get('t')
   const router = useRouter()
-
   return (
-    <Tabs defaultValue={tab!} className="space-y-4">
+    <Tabs defaultValue={tab ?? 'profile'} className="space-y-4">
       <TabsList className="flex h-full flex-wrap">
         <TabsTrigger
           value="profile"
