@@ -54,7 +54,7 @@ export default function RecommendedMedia({
                       height={168}
                       sizes="100vw"
                     />
-                    <div className="absolute right-1 top-1">
+                    <div className="absolute right-4 top-1">
                       {item.vote_average > 0 && (
                         <Badge className="border-0 bg-gradient-to-r from-[#90CEA1] via-[#3CBEC9] to-[#00B3E5]">
                           <div>{`${item.vote_average.toFixed(1)}`}</div>

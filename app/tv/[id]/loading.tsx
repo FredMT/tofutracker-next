@@ -19,7 +19,7 @@ export default function Loading() {
       </div>
 
       <div className="mb-6 flex flex-col max-sm:hidden">
-        <Skeleton className="mb-6 h-[70vh] w-full"></Skeleton>
+        <Skeleton className="mb-6 h-[576px] w-full"></Skeleton>
         <div className="flex gap-6 px-5 xl:px-40">
           <div className="flex flex-col gap-6">
             <Skeleton className="h-[273px] w-[182px]"></Skeleton>

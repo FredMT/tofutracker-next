@@ -105,7 +105,7 @@ export default async function Profile({
               </TabsList>
               <TabsContent value="activity" className="mt-6">
                 {userLibrary.data.userMediaItems.length ? (
-                  <div className="grid grid-cols-3 gap-1 sm:gap-2 lg:grid-cols-4">
+                  <div className="grid grid-cols-3 gap-1 sm:gap-2 lg:grid-cols-4 2xl:grid-cols-5">
                     {userLibrary.data.userMediaItems.map((item: any) => (
                       <div
                         className="relative aspect-[2/3] w-full"

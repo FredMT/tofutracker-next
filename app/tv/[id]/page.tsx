@@ -1,17 +1,14 @@
-import React, { Suspense } from 'react'
-import Title from '@/app/movie/components/Title'
-import { Skeleton } from '@/components/ui/skeleton'
-import Backdrop from '@/app/movie/components/Backdrop'
-import Poster from '@/app/components/Poster'
-import Tagline from '@/app/movie/components/Tagline'
-import MovieInfo from '@/app/movie/components/MovieInfo'
 import MobileButtons from '@/app/components/MobileButtons'
-import Details from '@/app/tv/components/Details'
-import Overview from '@/app/movie/components/Overview'
+import Poster from '@/app/components/Poster'
+import Backdrop from '@/app/movie/components/Backdrop'
 import CastAndCrew from '@/app/movie/components/CastAndCrew'
-import { notFound, redirect } from 'next/navigation'
+import MovieInfo from '@/app/movie/components/MovieInfo'
+import Overview from '@/app/movie/components/Overview'
+import Tagline from '@/app/movie/components/Tagline'
+import Title from '@/app/movie/components/Title'
+import Details from '@/app/tv/components/Details'
 import Seasons from '@/app/tv/components/Seasons'
-// import Videos from '@/app/components/Videos'
+import { notFound, redirect } from 'next/navigation'
 import RecommendedTVShows from '../components/RecommendedTVShows'
 
 // export const generateMetadata = async ({ params }: Props) => {
@@ -72,93 +69,63 @@ export default async function TVShow({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex flex-col gap-y-6">
-      <Suspense fallback={<Skeleton className="h-[70vh] w-full" />}>
-        <Backdrop
-          backdrop_path={`https://image.tmdb.org/t/p/original${tv.details.backdrop_path}`}
-          title={tv.details.title}
-          logo_path={`https://image.tmdb.org/t/p/w300${tv.details.logo_path}`}
-        />
-      </Suspense>
+      <Backdrop
+        backdrop_path={`https://image.tmdb.org/t/p/original${tv.details.backdrop_path}`}
+        title={tv.details.title}
+        logo_path={`https://image.tmdb.org/t/p/w300${tv.details.logo_path}`}
+      />
       <div className="mx-auto">
         <div className="flex basis-1/5 flex-col px-5 sm:flex sm:flex-row sm:gap-x-8 xl:px-40">
           <div className="flex justify-center">
-            <Suspense
-              fallback={
-                <Skeleton className="mb-6 h-[186px] w-[124px] rounded-sm border border-muted object-cover sm:h-[273px] sm:w-[182px] md:h-[336px] md:min-w-[224px]" />
-              }
-            >
-              <Poster
-                poster_path={tv.details.poster_path}
-                title={tv.details.title}
-                seasons={tv.seasons}
-                itemId={params.id}
-                type="tv"
-              />
-            </Suspense>
+            <Poster
+              poster_path={tv.details.poster_path}
+              title={tv.details.title}
+              seasons={tv.seasons}
+              itemId={params.id}
+              type="tv"
+            />
           </div>
           <div className="flex max-w-[1100px] basis-4/5 flex-col">
             <div className="flex justify-center sm:justify-between">
-              <Suspense fallback={<Skeleton className="mt-6 h-6" />}>
-                <Title title={tv.details.title} />
-              </Suspense>
+              <Title title={tv.details.title} />
             </div>
             <div className="flex justify-center sm:justify-start">
-              <Suspense
-                fallback={<Skeleton className="mt-6 h-[24px] w-[80%]" />}
-              >
-                <Tagline tagline={tv.details.tagline} />
-              </Suspense>
+              <Tagline tagline={tv.details.tagline} />
             </div>
             <div className="flex justify-center">
-              <Suspense
-                fallback={<Skeleton className="mt-6 h-[94px] w-full" />}
-              >
-                <MovieInfo
-                  vote_average={tv.details.vote_average}
-                  release_date={tv.details.first_air_date.split('-')[0]}
-                  language={tv.details.original_language}
-                  certification={tv.details.content_rating}
-                  networks={tv.details.networks}
-                />
-              </Suspense>
+              <MovieInfo
+                vote_average={tv.details.vote_average}
+                release_date={tv.details.first_air_date.split('-')[0]}
+                language={tv.details.original_language}
+                certification={tv.details.content_rating}
+                networks={tv.details.networks}
+              />
             </div>
             <div className="mt-6 flex justify-center sm:hidden">
-              <Suspense
-                fallback={<Skeleton className="mt-6 h-[168px] w-full" />}
-              >
-                <MobileButtons
-                  itemId={params.id + '2'}
-                  title={tv.details.title}
-                  seasons={tv.seasons}
-                  type="tv"
-                />
-              </Suspense>
+              <MobileButtons
+                itemId={params.id + '2'}
+                title={tv.details.title}
+                seasons={tv.seasons}
+                type="tv"
+              />
             </div>
             <div className="mt-6">
               <div className="contentpagedetailtitle">Details</div>
-              <Suspense
-                fallback={<Skeleton className="mt-6 h-[253px] w-full" />}
-              >
-                <Details
-                  type={tv.details.type}
-                  status={tv.details.status}
-                  creators={tv.details.created_by}
-                  production_companies={tv.details.production_companies}
-                  seasons={tv.details.number_of_seasons}
-                  episodes={tv.details.number_of_episodes}
-                />
-              </Suspense>
+              <Details
+                type={tv.details.type}
+                status={tv.details.status}
+                creators={tv.details.created_by}
+                production_companies={tv.details.production_companies}
+                seasons={tv.details.number_of_seasons}
+                episodes={tv.details.number_of_episodes}
+              />
             </div>
             <div className="mt-6">
               <div className="contentpagedetailtitle" id="overview">
                 Overview
               </div>
 
-              <Suspense
-                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
-              >
-                <Overview overview={tv.details.overview} />
-              </Suspense>
+              <Overview overview={tv.details.overview} />
             </div>
 
             <div className="mt-6">
@@ -166,40 +133,20 @@ export default async function TVShow({ params }: { params: { id: string } }) {
                 Seasons
               </div>
 
-              <Suspense
-                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
-              >
-                <Seasons seasons={tv.seasons} />
-              </Suspense>
+              <Seasons seasons={tv.seasons} />
             </div>
 
             <div className="mt-6">
-              <Suspense
-                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
-              >
-                <CastAndCrew cast={tv.credits.cast} crew={tv.credits.crew} />
-              </Suspense>
+              <CastAndCrew cast={tv.credits.cast} crew={tv.credits.crew} />
             </div>
             <div className="mt-6 pb-6 sm:pb-20">
               <div className="contentpagedetailtitle">Recommended TV Shows</div>
-              <Suspense
-                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
-              >
-                {!recommended.success ? (
-                  <div>No recommended tv shows found</div>
-                ) : (
-                  <RecommendedTVShows recommended={recommended.data} />
-                )}
-              </Suspense>
+              {!recommended.success ? (
+                <div>No recommended tv shows found</div>
+              ) : (
+                <RecommendedTVShows recommended={recommended.data} />
+              )}
             </div>
-            {/* <div className="mt-6 pb-6 sm:pb-20">
-              <div className="contentpagedetailtitle">Videos</div>
-              <Suspense
-                fallback={<Skeleton className="mt-6 h-[300px] w-full" />}
-              >
-                <Videos videos={tv.videos} />
-              </Suspense>
-            </div> */}
           </div>
         </div>
       </div>
