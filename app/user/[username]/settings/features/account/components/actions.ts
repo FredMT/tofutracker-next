@@ -1,11 +1,11 @@
 'use server'
 
-import { authenticatedAction } from '@/lib/safe-action'
+import { authProcedure } from '@/lib/authProcedure'
 import { updateUsernameUseCase } from '@/use-cases/users'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
-export const updateUsernameAction = authenticatedAction
+export const updateUsernameAction = authProcedure
   .input(
     z.object({
       username: z
@@ -27,8 +27,7 @@ export const updateUsernameAction = authenticatedAction
     } catch (error) {
       return {
         success: false,
-        message:
-          'Failed to update username. Please try again or try again later',
+        message: 'Failed to update username. Please try again later',
       }
     }
   })

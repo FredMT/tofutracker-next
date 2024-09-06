@@ -3,6 +3,7 @@ import crypto from 'crypto'
 import { UserId } from '@/use-cases/types'
 import { getAccountByUserId } from '@/data-access/accounts'
 import { user } from '@prisma/client'
+import { getProfileByUsername } from '@/data-access/profiles'
 
 const ITERATIONS = 10000
 const MAGIC_LINK_TOKEN_TTL = 1000 * 60 * 5 // 5 min
@@ -128,4 +129,21 @@ export async function updateUser(userId: UserId, updatedUser: Partial<user>) {
     },
     data: updatedUser,
   })
+}
+
+export async function getUserMedia(username: string) {
+  const profile = await getProfileByUsername(username)
+
+  if (!profile) throw new Error('Profile not found')
+
+  const userMedia = await db.profile.findUniqueOrThrow({
+    where: {
+      id: profile.id,
+    },
+    include: {
+      user_media: true,
+      UserMediaAnime: true,
+    },
+  })
+  return userMedia
 }

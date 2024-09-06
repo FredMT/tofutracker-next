@@ -33,10 +33,20 @@ export async function updateProfile(
   return profile
 }
 
-export async function getProfile(userId: UserId) {
+export async function getProfileByUserId(userId: UserId) {
   const profile = await db.profile.findFirst({
     where: {
       user_id: userId,
+    },
+  })
+
+  return profile
+}
+
+export async function getProfileByUsername(username: string) {
+  const profile = await db.profile.findFirst({
+    where: {
+      username,
     },
   })
 

@@ -4,12 +4,10 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { getCurrentUser } from '@/lib/session'
 import { Menu } from 'lucide-react'
 import Link from 'next/link'
-import SearchButton from './SearchButton'
-
 import AuthButton from './AuthButton'
+import SearchButton from './SearchButton'
 import { ThemeButton } from './ThemeButton'
 
 export default async function Navbar() {

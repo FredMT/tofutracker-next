@@ -1,16 +1,16 @@
 'use server'
 
-import { authenticatedAction } from '@/lib/safe-action'
-import { updateBioUseCase } from '@/use-cases/users'
-import { revalidatePath } from 'next/cache'
-import { z } from 'zod'
 import { db } from '@/db'
+import { authProcedure } from '@/lib/authProcedure'
 import { RateLimitError } from '@/lib/errors'
 import { rateLimitByKey } from '@/lib/limiter'
 import { generateRandomName } from '@/lib/names'
+import { updateBioUseCase } from '@/use-cases/users'
 import { Profile } from '@prisma/client'
+import { revalidatePath } from 'next/cache'
+import { z } from 'zod'
 
-export const updateBioAction = authenticatedAction
+export const updateBioAction = authProcedure
   .input(
     z.object({
       bio: z.string().max(500, 'Bio must be 500 characters or less'),

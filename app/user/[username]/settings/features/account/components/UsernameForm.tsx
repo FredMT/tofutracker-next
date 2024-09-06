@@ -57,7 +57,7 @@ export default function UsernameForm({ profile }: { profile: Profile }) {
     } else {
       router.push(`/user/${data.username}/settings`)
       toast({
-        title: 'Error',
+        title: 'Success',
         description: 'Username updated successfully',
         variant: 'success',
       })

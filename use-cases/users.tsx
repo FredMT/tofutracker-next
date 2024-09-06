@@ -10,7 +10,7 @@ import {
 } from '@/data-access/accounts'
 import {
   createProfile,
-  getProfile,
+  getProfileByUserId,
   updateProfile,
 } from '@/data-access/profiles'
 import {
@@ -57,7 +57,7 @@ export async function deleteUserUseCase(
 }
 
 export async function getUserProfileUseCase(userId: UserId) {
-  const profile = await getProfile(userId)
+  const profile = await getProfileByUserId(userId)
 
   if (!profile) {
     throw new NotFoundError()

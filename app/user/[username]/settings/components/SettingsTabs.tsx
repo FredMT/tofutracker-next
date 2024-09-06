@@ -9,7 +9,13 @@ import { Profile } from '@prisma/client'
 import { Eye, ImageIcon, User } from 'lucide-react'
 import { useSearchParams } from 'next/navigation'
 
-export default function SettingsTabs({ profile }: { profile: Profile }) {
+export default function SettingsTabs({
+  profile,
+  accountType,
+}: {
+  profile: Profile
+  accountType: string
+}) {
   const searchParams = useSearchParams()
   const tab = searchParams.get('t')
   const router = useRouter()
@@ -45,7 +51,7 @@ export default function SettingsTabs({ profile }: { profile: Profile }) {
         </TabsTrigger>
       </TabsList>
       <ProfileSettings profile={profile} />
-      <AccountSettings profile={profile} />
+      <AccountSettings profile={profile} accountType={accountType} />
       <PrivacySettings profile={profile} />
     </Tabs>
   )

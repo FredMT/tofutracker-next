@@ -20,14 +20,6 @@ function shapeErrors({ err }: any) {
   }
 }
 
-export const authenticatedAction = createServerActionProcedure()
-  .experimental_shapeError(shapeErrors)
-  .handler(async () => {
-    const user = await assertAuthenticated()
-    return { user }
-  })
-  .createServerAction()
-
 export const unauthenticatedAction = createServerActionProcedure()
   .experimental_shapeError(shapeErrors)
   .handler(async () => {

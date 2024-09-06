@@ -1,6 +1,7 @@
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { getUserMedia } from '@/data-access/users'
 import { db } from '@/db'
 import { format, parseISO } from 'date-fns'
 import Image from 'next/image'
@@ -88,7 +89,7 @@ export default async function Profile({
             </Card>
           </div>
           <div className="w-full">
-            <Tabs defaultValue="activity" className="mb-6">
+            <Tabs defaultValue="activity" className="mb-6 min-h-[350px]">
               <TabsList className="w-full justify-between space-x-6">
                 <TabsTrigger value="activity" className="w-full">
                   Activity
@@ -135,6 +136,129 @@ export default async function Profile({
                         )}
                       </div>
                     ))}
+                  </div>
+                ) : (
+                  <div className="flex w-full justify-center">
+                    No activity found for user {params.username}
+                  </div>
+                )}
+              </TabsContent>
+              <TabsContent value="movies" className="mt-6">
+                {userLibrary.data.userMediaItems.length ? (
+                  <div className="grid grid-cols-3 gap-1 sm:gap-2 lg:grid-cols-4 2xl:grid-cols-5">
+                    {userLibrary.data.userMediaItems
+                      .filter((item: any) => item.media_type === 'MOVIE')
+                      .map((item: any) => (
+                        <div
+                          className="relative aspect-[2/3] w-full"
+                          key={item.id}
+                        >
+                          {item.media_type !== 'ANIME' && (
+                            <Link
+                              href={`/user/${params.username}/activity/${item.id}`}
+                            >
+                              <Image
+                                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                                alt={`Poster ${item.title}`}
+                                className="h-full w-full rounded-sm object-cover"
+                                width={500}
+                                height={750}
+                              />
+                            </Link>
+                          )}
+                          {item.media_type === 'ANIME' && (
+                            <Image
+                              src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                              alt={`Poster ${item.title}`}
+                              className="h-full w-full rounded-sm object-cover"
+                              width={500}
+                              height={750}
+                            />
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                ) : (
+                  <div className="flex w-full justify-center">
+                    No activity found for user {params.username}
+                  </div>
+                )}
+              </TabsContent>
+              <TabsContent value="tv" className="mt-6">
+                {userLibrary.data.userMediaItems.length ? (
+                  <div className="grid grid-cols-3 gap-1 sm:gap-2 lg:grid-cols-4 2xl:grid-cols-5">
+                    {userLibrary.data.userMediaItems
+                      .filter((item: any) => item.media_type === 'TV')
+                      .map((item: any) => (
+                        <div
+                          className="relative aspect-[2/3] w-full"
+                          key={item.id}
+                        >
+                          {item.media_type !== 'ANIME' && (
+                            <Link
+                              href={`/user/${params.username}/activity/${item.id}`}
+                            >
+                              <Image
+                                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                                alt={`Poster ${item.title}`}
+                                className="h-full w-full rounded-sm object-cover"
+                                width={500}
+                                height={750}
+                              />
+                            </Link>
+                          )}
+                          {item.media_type === 'ANIME' && (
+                            <Image
+                              src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                              alt={`Poster ${item.title}`}
+                              className="h-full w-full rounded-sm object-cover"
+                              width={500}
+                              height={750}
+                            />
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                ) : (
+                  <div className="flex w-full justify-center">
+                    No activity found for user {params.username}
+                  </div>
+                )}
+              </TabsContent>
+              <TabsContent value="anime" className="mt-6">
+                {userLibrary.data.userMediaItems.length ? (
+                  <div className="grid grid-cols-3 gap-1 sm:gap-2 lg:grid-cols-4 2xl:grid-cols-5">
+                    {userLibrary.data.userMediaItems
+                      .filter((item: any) => item.media_type === 'ANIME')
+                      .map((item: any) => (
+                        <div
+                          className="relative aspect-[2/3] w-full"
+                          key={item.id}
+                        >
+                          {item.media_type !== 'ANIME' && (
+                            <Link
+                              href={`/user/${params.username}/activity/${item.id}`}
+                            >
+                              <Image
+                                src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                                alt={`Poster ${item.title}`}
+                                className="h-full w-full rounded-sm object-cover"
+                                width={500}
+                                height={750}
+                              />
+                            </Link>
+                          )}
+                          {item.media_type === 'ANIME' && (
+                            <Image
+                              src={`https://image.tmdb.org/t/p/w500${item.poster_path}`}
+                              alt={`Poster ${item.title}`}
+                              className="h-full w-full rounded-sm object-cover"
+                              width={500}
+                              height={750}
+                            />
+                          )}
+                        </div>
+                      ))}
                   </div>
                 ) : (
                   <div className="flex w-full justify-center">

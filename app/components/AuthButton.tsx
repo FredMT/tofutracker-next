@@ -1,13 +1,15 @@
+import SignOutDropdownMenuItem from '@/app/components/SignOutDropdownMenuItem'
 import { Avatar, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Separator } from '@/components/ui/separator'
-import { getProfile } from '@/data-access/profiles'
+import { getProfileByUserId } from '@/data-access/profiles'
 import { getCurrentUser } from '@/lib/session'
 import Link from 'next/link'
 import SignIn from './SignIn'
@@ -18,7 +20,7 @@ export default async function AuthButton() {
 
   if (!user) return <SignIn />
 
-  const profile = await getProfile(user.id)
+  const profile = await getProfileByUserId(user.id)
 
   if (!profile) return null
 
@@ -35,19 +37,21 @@ export default async function AuthButton() {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-40">
+            <DropdownMenuLabel className="font-semibold">
+              My Account
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
             <Link href={`/user/${profile.username}`}>
               <DropdownMenuItem className="cursor-pointer">
                 Profile
               </DropdownMenuItem>
             </Link>
-            <DropdownMenuSeparator />
             <DropdownMenuItem className="cursor-pointer" asChild>
               <Link href={`/user/${profile.username}/settings?t=profile`}>
                 Settings
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <Signout />
+            <SignOutDropdownMenuItem />
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
