@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function SearchButton() {
   return (
-    <Button variant="ghost" asChild>
+    <Button variant="secondary" asChild>
       <Link href="/search">
         <Search className="size-[1.2rem]" />
       </Link>

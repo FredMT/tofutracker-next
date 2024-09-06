@@ -2,16 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import { Season } from '@/types/tv'
 import MobileButtons from '@/app/(content)/components/shared/MobileButtons'
-
-type EpisodeData = {
-  name: string
-  id: number
-  episode_number: number
-  air_date: string
-  runtime: string
-  overview: string
-  still_path: string
-}
+import { AddToLibraryType } from '@/app/(content)/features/AddToLibrary/AddToLibraryButton'
 
 export default async function Poster({
   poster_path,
@@ -25,7 +16,7 @@ export default async function Poster({
   poster_path: string
   title: string
   itemId: string
-  type: string
+  type: AddToLibraryType
   seasons?: Season[]
   seasonId?: number
   isAnime?: boolean

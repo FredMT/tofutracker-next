@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { validateRequest } from '@/lib/auth'
 import { getCurrentUser } from '@/lib/session'
 import { Season } from '@/types/tv'
 import Link from 'next/link'
@@ -12,7 +11,9 @@ import {
   getLibraryTvData,
   getLibraryTvSeasonData,
 } from '@/use-cases/user-library'
-import AddToLibraryButton from '@/app/(content)/features/AddToLibrary/AddToLibraryButton'
+import AddToLibraryButton, {
+  AddToLibraryType,
+} from '@/app/(content)/features/AddToLibrary/AddToLibraryButton'
 import AddPlay from '@/app/(content)/features/AddPlay/AddPlay'
 import CheckInButton from '@/app/(content)/features/CheckIn/CheckInButton'
 import { QuickTrack } from '@/app/(content)/features/QuickTrack/QuickTrack'
@@ -33,7 +34,7 @@ export default async function MobileButtons({
   itemId: string
   title: string
   seasons?: Season[]
-  type: string
+  type: AddToLibraryType
   seasonId?: number
   isAnime?: boolean
 }) {
@@ -73,12 +74,7 @@ export default async function MobileButtons({
   return (
     <div className="flex w-full flex-col gap-y-2">
       {!library.data ? (
-        <AddToLibraryButton
-          itemId={itemId}
-          user={user}
-          type={type}
-          seasonId={seasonId}
-        />
+        <AddToLibraryButton itemId={itemId} type={type} seasonId={seasonId} />
       ) : (
         <div className="flex flex-col">
           <div className="flex w-full">

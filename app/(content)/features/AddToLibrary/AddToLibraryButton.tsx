@@ -1,53 +1,61 @@
 'use client'
-import { User } from 'lucia'
+import { addToLibraryAction } from '@/app/(content)/features/AddToLibrary/controller'
 import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
-import {
-  addToLibrary,
-  addToLibraryMovieAnime,
-  addToLibraryTv,
-  addToLibraryTvAnime,
-  addToLibraryTvAnimeSeason,
-  addToLibraryTvSeason,
-} from '@/app/(content)/features/AddToLibrary/actions'
+import { useToast } from '@/components/ui/use-toast'
+import { useServerAction } from 'zsa-react'
+
+export type AddToLibraryType =
+  | 'movie'
+  | 'tv'
+  | 'season'
+  | 'animetv'
+  | 'animemovie'
+  | 'animetvseason'
 
 export default function AddToLibraryButton({
   itemId,
-  user,
   type,
   seasonId,
 }: {
   itemId: string
-  user: User
-  type: string
+  type: AddToLibraryType
   seasonId?: number
 }) {
+  const { execute, isPending } = useServerAction(addToLibraryAction)
+  const { toast } = useToast()
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const [data, err] = await execute({
+      type,
+      mediaId: itemId,
+      seasonId: seasonId?.toString(),
+    })
+
+    if (err) {
+      toast({
+        title: 'Error',
+        description: err.message,
+        variant: 'destructive',
+      })
+      return
+    }
+
+    if (data) {
+      toast({
+        title: 'Success',
+        description: 'Added to library',
+        variant: 'success',
+      })
+    }
+  }
   return (
-    <form
-      action={
-        type === 'movie'
-          ? addToLibrary
-          : type === 'tv'
-            ? addToLibraryTv
-            : type === 'season'
-              ? addToLibraryTvSeason
-              : type === 'animetv'
-                ? addToLibraryTvAnime
-                : type === 'animetvseason'
-                  ? addToLibraryTvAnimeSeason
-                  : type === 'animemovie'
-                    ? addToLibraryMovieAnime
-                    : '#'
-      }
-    >
-      <input type="hidden" name="userId" value={user.id} />
-      <input type="hidden" name="mediaId" value={itemId} />
-      {(type === 'season' || type === 'animetvseason') && seasonId && (
-        <input type="hidden" name="seasonId" value={seasonId} />
-      )}
+    <form onSubmit={handleSubmit}>
       <UseFormStatusPendingButton
         style="w-full"
-        text="Add to Library"
+        text={`${isPending ? 'Adding...' : 'Add to Library'}`}
         variant="default"
+        disabled={isPending}
       />
     </form>
   )

@@ -1,6 +1,5 @@
 'use client'
-import RecommendedMedia from '@/app/components/RecommendedMedia'
-import React from 'react'
+import RecommendedMedia from '@/app/(content)/components/shared/RecommendedMedia'
 
 type Movie = {
   adult?: boolean
