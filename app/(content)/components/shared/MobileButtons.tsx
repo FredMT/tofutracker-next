@@ -121,11 +121,9 @@ export default async function MobileButtons({
       <Separator />
 
       <RateButton
-        userId={user.id}
         mediaId={itemId}
         data={library.data}
         title={title}
-        isMovie={isMovie}
         type={type}
         seasonId={seasonId}
       />

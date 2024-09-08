@@ -10,114 +10,68 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { useToast } from '@/components/ui/use-toast'
-import { useEffect, useRef, useState } from 'react'
-import { useFormState, useFormStatus } from 'react-dom'
+import { useState } from 'react'
 import Rating from '@/app/(content)/features/Rate/components/Rating'
-import {
-  rateMedia,
-  rateMediaTv,
-  rateMediaTvAnime,
-  rateMediaTvAnimeMovie,
-  rateMediaTvAnimeSeason,
-  rateMediaTvSeason,
-} from '@/app/(content)/features/Rate/actions'
+import { rateMediaAction } from '@/app/(content)/features/Rate/controller'
+import { useServerAction } from 'zsa-react'
 
 type Props = {
-  userId: number
   mediaId: string
   data: any
   title: string
-  isMovie: boolean
-  type: string
+  type: 'movie' | 'tv' | 'season' | 'animetv' | 'animemovie' | 'animetvseason'
   seasonId?: number
 }
 
-function SubmitButton() {
-  const { pending } = useFormStatus()
-
-  return (
-    <Button type="submit" className="w-1/3" disabled={pending}>
-      {pending ? 'Rating...' : 'Rate'}
-    </Button>
-  )
-}
-
 export default function RateButton({
-  userId,
   mediaId,
   data,
   title,
-  isMovie,
   type,
   seasonId,
 }: Props) {
   const [rating, setRating] = useState(data?.rating || 0)
   const [open, setOpen] = useState(false)
-  const [state, formAction] = useFormState(
-    type === 'movie'
-      ? rateMedia
-      : type === 'season'
-        ? rateMediaTvSeason
-        : type === 'animetv'
-          ? rateMediaTvAnime
-          : type === 'animetvseason'
-            ? rateMediaTvAnimeSeason
-            : type === 'animemovie'
-              ? rateMediaTvAnimeMovie
-              : rateMediaTv,
-    {
-      success: false,
-      message: '',
-    }
-  )
   const { toast } = useToast()
-  const formSubmittedRef = useRef(false)
-  const { pending } = useFormStatus()
+  const { execute, isPending } = useServerAction(rateMediaAction)
 
   const getStarSize = (rating: number | null): number => {
-    if (!rating) return 80 // Default size
-    return 80 + rating * 4 // Increase size based on rating
+    if (!rating) return 80
+    return 80 + rating * 4
   }
 
   const starSize = getStarSize(rating)
 
-  const handleSubmit = (formData: FormData) => {
-    {
-      type !== 'season' && formData.append('user_id', userId.toString())
-    }
-    formData.append('media_id', mediaId)
-    formData.append('rating', rating.toString())
-    {
-      ;(type === 'season' || type === 'animetvseason') &&
-        seasonId &&
-        formData.append('seasonId', seasonId.toString())
-    }
-    formSubmittedRef.current = true
-    formAction(formData)
-  }
+  const handleSubmit = async () => {
+    const [data, err] = await execute({
+      type,
+      mediaId,
+      rating,
+      seasonId: seasonId?.toString(),
+    })
 
-  useEffect(() => {
-    if (state.message && formSubmittedRef.current) {
+    if (err) {
       toast({
-        variant: state.success ? 'success' : 'destructive',
-        title: state.success ? 'Success' : 'Error',
-        description: state.success
-          ? `You've given ${title} a rating of ${rating}`
-          : state.message,
+        title: 'Error',
+        description: err.message,
+        variant: 'destructive',
       })
-      if (state.success) {
-        setOpen(false)
-      }
-      formSubmittedRef.current = false
+    } else if (data) {
+      toast({
+        title: 'Success',
+        description: `You've given ${title} a rating of ${rating}`,
+        variant: 'success',
+      })
+      setOpen(false)
     }
-  }, [state, toast, title, rating])
+  }
 
   const buttonText = data?.rating ? `Your rating: ${data.rating}` : 'Rate'
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" disabled={pending}>
+        <Button variant="outline" disabled={isPending}>
           {buttonText}
         </Button>
       </DialogTrigger>
@@ -156,20 +110,22 @@ export default function RateButton({
         </div>
         <DialogHeader className="mt-8">
           <DialogTitle className="text-center text-lg font-medium">
-            Rate Movie
+            Rate{' '}
+            {type === 'movie' || type === 'animemovie' ? 'Movie' : 'TV Show'}
           </DialogTitle>
           <DialogDescription className="text-center text-muted-foreground">
-            Rate this movie
+            Rate this{' '}
+            {type === 'movie' || type === 'animemovie' ? 'movie' : 'TV show'}
           </DialogDescription>
         </DialogHeader>
         <div>
           <Rating precision={1} totalStars={10} onRatingChange={setRating} />
         </div>
-        <form action={handleSubmit}>
-          <DialogFooter className="flex w-full flex-row justify-center sm:justify-center">
-            <SubmitButton />
-          </DialogFooter>
-        </form>
+        <DialogFooter className="flex w-full flex-row justify-center sm:justify-center">
+          <Button onClick={handleSubmit} disabled={isPending} className="w-1/3">
+            {isPending ? 'Rating...' : 'Rate'}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
