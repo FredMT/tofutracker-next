@@ -1,73 +1,71 @@
 'use client'
-import {
-  watchRemainingAction,
-  watchRemainingActionTvAnime,
-  watchRemainingActionTvAnimeSeason,
-  watchRemainingActionTvSeason,
-} from '@/app/(content)/features/WatchRemaining/actions'
+import { watchRemainingController } from '@/app/(content)/features/WatchRemaining/controller'
 import { Button } from '@/components/ui/button'
-import DatetimePickerForm from '@/components/ui/datetime-picker-form'
+import { DateTimePicker } from '@/components/ui/datetimepicker'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { useToast } from '@/components/ui/use-toast'
+import React from 'react'
+import { useServerAction } from 'zsa-react'
 
 type WatchRemainingButtonProps = {
-  userId: number
   mediaId: number
   type: string
   seasonId?: number
 }
 
 export default function WatchRemainingButton({
-  userId,
   mediaId,
   type,
   seasonId,
 }: WatchRemainingButtonProps) {
+  const { execute, isPending } = useServerAction(watchRemainingController)
+  const [selectedDateTime, setSelectedDateTime] = React.useState(new Date())
   const { toast } = useToast()
-  const handleDatetimeSubmit = async (formData: FormData) => {
-    const result = await watchRemainingAction(formData)
-    toast({
-      title: result.success ? 'Success' : 'Error',
-      description: result.message,
-      variant: result.success ? 'success' : 'destructive',
-    })
-  }
+  const [isOpen, setIsOpen] = React.useState(false)
 
-  const handleNowClick = async () => {
-    const formData = new FormData()
-    {
-      type !== 'season' && formData.append('userId', userId.toString())
-    }
-    formData.append('mediaId', mediaId.toString())
-    formData.append('datetime', new Date().toISOString())
-    {
-      type === 'season' ||
-        (type === 'animetvseason' &&
-          seasonId &&
-          formData.append('seasonId', seasonId.toString()))
-    }
+  const handleWatchRemaining = async (useSelectedDate: boolean) => {
+    const datetime = useSelectedDate
+      ? selectedDateTime.toISOString()
+      : new Date().toISOString()
 
-    const result =
-      type === 'season'
-        ? await watchRemainingActionTvSeason(formData)
-        : type === 'animetv'
-          ? await watchRemainingActionTvAnime(formData)
-          : type === 'animetvseason'
-            ? await watchRemainingActionTvAnimeSeason(formData)
-            : await watchRemainingAction(formData)
-    toast({
-      title: result.success ? 'Success' : 'Error',
-      description: result.message,
-      variant: result.success ? 'success' : 'destructive',
-    })
+    try {
+      const [data, error] = await execute({
+        type,
+        mediaId,
+        seasonId: seasonId?.toString(),
+        datetime,
+      })
+
+      if (error) {
+        toast({
+          title: 'Error',
+          description: error.message || 'An error occurred',
+          variant: 'destructive',
+        })
+      }
+
+      if (data) {
+        toast({
+          title: 'Success',
+          description: 'Episodes marked as watched',
+          variant: 'success',
+        })
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'An unexpected error occurred',
+        variant: 'destructive',
+      })
+    }
   }
 
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button className="w-full justify-center" variant="outline">
           Watch Remaining
@@ -82,19 +80,26 @@ export default function WatchRemainingButton({
                   Choose date
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto" align="start" side="bottom">
-                <DatetimePickerForm
-                  serverAction={handleDatetimeSubmit}
-                  userId={userId.toString()}
-                  mediaId={mediaId.toString()}
-                />
+              <PopoverContent
+                className="flex w-auto flex-col gap-y-2"
+                align="start"
+                side="bottom"
+              >
+                <DateTimePicker onDateTimeChange={setSelectedDateTime} />
+                <Button
+                  onClick={() => handleWatchRemaining(true)}
+                  disabled={isPending}
+                >
+                  Submit
+                </Button>
               </PopoverContent>
             </Popover>
           )}
           <Button
             className="w-1/2 justify-center"
             variant="outline"
-            onClick={handleNowClick}
+            onClick={() => handleWatchRemaining(false)}
+            disabled={isPending}
           >
             Now
           </Button>

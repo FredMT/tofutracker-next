@@ -113,7 +113,6 @@ export default async function MobileButtons({
         library.data &&
         library.data.watched_episodes < library.data.aired_episodes && (
           <WatchRemainingButton
-            userId={user.id}
             mediaId={+itemId}
             type={type}
             seasonId={seasonId}

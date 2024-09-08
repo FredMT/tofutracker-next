@@ -1,139 +1,110 @@
 'use server'
 
-import { validateRequest } from '@/lib/auth'
+import { authProcedure } from '@/lib/authProcedure'
 import { revalidateTag } from 'next/cache'
+import { z } from 'zod'
 
-export async function watchRemainingAction(formData: FormData) {
-  const userId = formData.get('userId')
-  const showId = formData.get('mediaId')
-  const watchDate = formData.get('datetime')
+export const watchRemaningTvAction = authProcedure
+  .input(z.object({ mediaId: z.number(), datetime: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    try {
+      const res = await fetch(
+        `${process.env.BACKEND_BASE_URL}user-media/watch-remaining-tv`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: ctx.user.id.toString(),
+            show_id: input.mediaId,
+            watch_date: input.datetime,
+          }),
+        }
+      )
 
-  try {
-    const response = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/watch-remaining-tv`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          show_id: showId,
-          watch_date: watchDate,
-        }),
+      const data = await res.json()
+      revalidateTag('is-in-tv')
+      return data
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          'An error occurred while marking remaining episodes as watched',
       }
-    )
-
-    const result = await response.json()
-
-    revalidateTag('is-in-tv')
-
-    return { success: result.success, message: result.message }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'Failed to mark remaining episodes as watched',
     }
-  }
-}
+  })
 
-export async function watchRemainingActionTvAnime(formData: FormData) {
-  const showId = formData.get('mediaId')
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
-  const sessionId = session.session.id
-
-  try {
-    const response = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-library/anime/watch-remaining?animeId=${`${showId}2`}&session_id=${sessionId}`,
-      {
-        method: 'POST',
+export const watchRemaningAnimeTvAction = authProcedure
+  .input(z.object({ mediaId: z.number() }))
+  .handler(async ({ input, ctx }) => {
+    try {
+      const res = await fetch(
+        `${process.env.BACKEND_BASE_URL}user-library/anime/watch-remaining?animeId=${`${input.mediaId}2`}&session_id=${ctx.session.id}`,
+        { method: 'POST' }
+      )
+      revalidateTag('is-in-tv')
+      return await res.json()
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          'An error occurred while marking remaining episodes as watched',
       }
-    )
-
-    const result = await response.json()
-
-    revalidateTag('is-in-tv')
-
-    return { success: true, message: result.message }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'Failed to mark remaining episodes as watched',
     }
-  }
-}
+  })
 
-export async function watchRemainingActionTvAnimeSeason(formData: FormData) {
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
-
-  const sessionId = session.session.id
-  const animeId = formData.get('mediaId')
-  const seasonId = formData.get('seasonId')
-
-  try {
-    const response = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-library/anime/season/watch-remaining?animeId=${animeId}&seasonId=${seasonId}&session_id=${sessionId}`,
-      {
-        method: 'POST',
+export const watchRemaningAnimeTvSeasonAction = authProcedure
+  .input(z.object({ mediaId: z.number(), seasonId: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    try {
+      const res = await fetch(
+        `${process.env.BACKEND_BASE_URL}user-library/anime/season/watch-remaining?animeId=${input.mediaId}&seasonId=${input.seasonId}&session_id=${ctx.session.id}`,
+        { method: 'POST' }
+      )
+      revalidateTag('is-in-tv')
+      return await res.json()
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          'An error occurred while marking remaining episodes as watched',
       }
-    )
-
-    const result = await response.json()
-
-    revalidateTag('is-in-tv')
-
-    return { success: result.success, message: result.message }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'Failed to mark remaining episodes as watched',
     }
-  }
-}
+  })
 
-export async function watchRemainingActionTvSeason(formData: FormData) {
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
-
-  const sessionId = session.session.id
-  const showId = formData.get('mediaId')
-  const watchDate = formData.get('datetime')
-  const seasonId = formData.get('seasonId')
-
-  try {
-    const response = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/watch-remaining-season`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          session_id: sessionId,
-          show_id: showId,
-          watch_date: watchDate,
-          season_id: seasonId,
-        }),
+export const watchRemaningTvSeasonAction = authProcedure
+  .input(
+    z.object({
+      mediaId: z.number(),
+      seasonId: z.string(),
+      datetime: z.string(),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    try {
+      const res = await fetch(
+        `${process.env.BACKEND_BASE_URL}user-media/watch-remaining-season`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            session_id: ctx.session.id,
+            show_id: input.mediaId,
+            watch_date: input.datetime,
+            season_id: input.seasonId,
+          }),
+        }
+      )
+      revalidateTag('is-in-tv')
+      return await res.json()
+    } catch (error) {
+      return {
+        success: false,
+        message:
+          'An error occurred while marking remaining episodes as watched',
       }
-    )
-
-    const result = await response.json()
-
-    revalidateTag('is-in-tv')
-
-    return { success: result.success, message: result.message }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'Failed to mark remaining episodes as watched',
     }
-  }
-}
+  })
