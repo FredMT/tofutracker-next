@@ -1,210 +1,156 @@
 'use server'
 
-import { validateRequest } from '@/lib/auth'
+import api from '@/lib/api'
+import { authProcedure } from '@/lib/authProcedure'
 import { revalidateTag } from 'next/cache'
+import { z } from 'zod'
 
-export async function removeFromLibrary(prevState: any, formData: FormData) {
-  const userId = formData.get('userId')
-  const mediaId = formData.get('mediaId')
-
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/delete-movie`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          media_id: mediaId,
-        }),
-        credentials: 'include',
-      }
-    )
-
-    const data = await res.json()
-
-    revalidateTag('is-in-library')
-
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'An error occurred while removing from library',
+export const removeFromLibraryMovie = authProcedure
+  .input(z.object({ mediaId: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    const body = {
+      user_id: ctx.user.id.toString(),
+      media_id: input.mediaId,
     }
-  }
-}
+    try {
+      const res = await fetch(
+        `${process.env.BACKEND_BASE_URL}user-media/delete-movie`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        }
+      )
 
-export async function removeFromLibraryTv(prevState: any, formData: FormData) {
-  const userId = formData.get('userId')
-  const mediaId = formData.get('mediaId')
+      const data = await res.json()
 
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/delete-show`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          show_id: mediaId,
-        }),
-        credentials: 'include',
+      revalidateTag('is-in-library')
+
+      return { success: data.success, message: data.message }
+    } catch (error) {
+      console.error('Error removing from library:', error)
+      return {
+        success: false,
+        message: 'An error occurred while removing from library',
       }
-    )
-
-    const data = await res.json()
-
-    revalidateTag('is-in-library')
-
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'An error occurred while removing from library',
     }
-  }
-}
+  })
 
-export async function removeFromLibraryTvSeason(
-  prevState: any,
-  formData: FormData
-) {
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
+export const removeFromLibraryTv = authProcedure
+  .input(z.object({ mediaId: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    const body = {
+      user_id: ctx.user.id,
+      show_id: input.mediaId,
+    }
+    try {
+      const res = await fetch(
+        `${process.env.BACKEND_BASE_URL}user-media/delete-show`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+          credentials: 'include',
+        }
+      )
 
-  const showId = formData.get('mediaId')
-  const seasonId = formData.get('seasonId')
+      const data = await res.json()
 
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/delete-season?session_id=${session.session.id}&showId=${showId}&seasonId=${seasonId}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+      revalidateTag('is-in-library')
+
+      return { success: data.success, message: data.message }
+    } catch (error) {
+      console.error('Error removing from library:', error)
+      return {
+        success: false,
+        message: 'An error occurred while removing from library',
       }
-    )
-
-    const data = await res.json()
-
-    revalidateTag('is-in-library')
-
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'An error occurred while removing from library',
     }
-  }
-}
+  })
 
-export async function removeFromLibraryAnimeSeason(
-  prevState: any,
-  formData: FormData
-) {
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
-
-  const showId = formData.get('mediaId')
-  const seasonId = formData.get('seasonId')
-  const sessionId = session.session.id
-
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/delete-anime-season?seasonId=${seasonId}&showId=${showId}&session_id=${sessionId}`,
-      {
-        method: 'DELETE',
+export const removeFromLibraryTvSeason = authProcedure
+  .input(z.object({ mediaId: z.string(), seasonId: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    try {
+      await api.delete(`user-media/delete-season`, {
+        session_id: ctx.session.id,
+        showId: input.mediaId,
+        seasonId: input.seasonId,
+      })
+      revalidateTag('is-in-library')
+      return { success: true, message: 'Season removed from library' }
+    } catch (error) {
+      console.error('Error removing from library:', error)
+      return {
+        success: false,
+        message: 'An error occurred while removing from library',
       }
-    )
-
-    const data = await res.json()
-
-    revalidateTag('is-in-library')
-
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'An error occurred while removing from library',
     }
-  }
-}
+  })
 
-export async function removeFromLibraryTvAnime(
-  prevState: any,
-  formData: FormData
-) {
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
+export const removeFromLibraryTvAnime = authProcedure
+  .input(z.object({ mediaId: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    try {
+      api.delete(`user-library/anime/deleteShow`, {
+        animeId: input.mediaId,
+        session_id: ctx.session.id,
+      })
 
-  const showId = formData.get('mediaId')
+      revalidateTag('is-in-library')
 
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-library/anime/deleteShow?animeId=${showId}&session_id=${session.session.id}`,
-      {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
+      return { success: true, message: 'Anime removed from library' }
+    } catch (error) {
+      console.error('Error removing from library:', error)
+      return {
+        success: false,
+        message: 'An error occurred while removing from library',
       }
-    )
-
-    const data = await res.json()
-
-    revalidateTag('is-in-library')
-
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'An error occurred while removing from library',
     }
-  }
-}
+  })
 
-export async function removeFromLibraryAnimeMovie(
-  prevState: any,
-  formData: FormData
-) {
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
+export const removeFromLibraryAnimeSeason = authProcedure
+  .input(z.object({ mediaId: z.string(), seasonId: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    try {
+      await api.delete(`user-media/delete-anime-season`, {
+        seasonId: input.seasonId,
+        showId: input.mediaId,
+        session_id: ctx.session.id,
+      })
 
-  const sessionId = session.session.id
-  const movieId = formData.get('mediaId')
-
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-library/anime/delete-movie?movieId=${movieId}&session_id=${sessionId}`,
-      {
-        method: 'DELETE',
+      revalidateTag('is-in-library')
+      return { success: true, message: 'Season removed from library' }
+    } catch (error) {
+      console.error('Error removing from library:', error)
+      return {
+        success: false,
+        message: 'An error occurred while removing from library',
       }
-    )
-
-    const data = await res.json()
-
-    revalidateTag('is-in-library')
-
-    return { success: true, message: 'Movie removed from library' }
-  } catch (error) {
-    return {
-      success: false,
-      message: 'An error occurred while removing from library',
     }
-  }
-}
+  })
+
+export const removeFromLibraryAnimeMovie = authProcedure
+  .input(z.object({ mediaId: z.string() }))
+  .handler(async ({ input, ctx }) => {
+    try {
+      await api.delete<Response>(`user-library/anime/delete-movie`, {
+        movieId: input.mediaId,
+        session_id: ctx.session.id,
+      })
+
+      revalidateTag('is-in-library')
+
+      return { success: true, message: 'Movie removed from library' }
+    } catch (error) {
+      console.error('Error removing from library:', error)
+      return {
+        success: false,
+        message: 'An error occurred while removing from library',
+      }
+    }
+  })

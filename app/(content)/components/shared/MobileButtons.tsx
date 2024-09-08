@@ -79,9 +79,7 @@ export default async function MobileButtons({
         <div className="flex flex-col">
           <div className="flex w-full">
             <RemoveFromLibrary
-              userId={user.id}
               mediaId={itemId}
-              isMovie={isMovie}
               type={type}
               seasonId={seasonId}
             />

@@ -1,13 +1,5 @@
 'use client'
-import {
-  removeFromLibrary,
-  removeFromLibraryAnimeMovie,
-  removeFromLibraryAnimeSeason,
-  removeFromLibraryTv,
-  removeFromLibraryTvAnime,
-  removeFromLibraryTvSeason,
-} from '@/app/(content)/features/RemoveFromLibrary/actions'
-import UseFormStatusPendingButton from '@/app/components/UseFormStatusPendingButton'
+import { removeFromLibraryAction } from '@/app/(content)/features/RemoveFromLibrary/controller'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -20,53 +12,55 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { useToast } from '@/components/ui/use-toast'
-import { useEffect } from 'react'
-import { useFormState } from 'react-dom'
+import { useServerAction } from 'zsa-react'
+
+export type RemoveFromLibraryType =
+  | 'movie'
+  | 'tv'
+  | 'season'
+  | 'animetv'
+  | 'animemovie'
+  | 'animetvseason'
 
 export default function RemoveFromLibrary({
-  userId,
   mediaId,
-  isMovie,
   type,
   seasonId,
 }: {
-  userId: number
   mediaId: string
-  isMovie: boolean
-  type: string
+  type: RemoveFromLibraryType
   seasonId?: number
 }) {
-  const [state, formAction] = useFormState(
-    isMovie
-      ? removeFromLibrary
-      : type === 'season'
-        ? removeFromLibraryTvSeason
-        : type === 'animetv'
-          ? removeFromLibraryTvAnime
-          : type === 'animetvseason'
-            ? removeFromLibraryAnimeSeason
-            : type === 'animemovie'
-              ? removeFromLibraryAnimeMovie
-              : removeFromLibraryTv,
-    null
-  )
+  const { execute, isPending } = useServerAction(removeFromLibraryAction)
   const { toast } = useToast()
 
-  useEffect(() => {
-    if (state) {
+  const handleRemove = async () => {
+    const [data, err] = await execute({
+      type,
+      mediaId,
+      seasonId: seasonId?.toString(),
+    })
+
+    if (err) {
       toast({
-        title: state.success ? 'Success' : 'Error',
-        description: state.message,
-        variant: state.success ? 'success' : 'destructive',
+        title: 'Error',
+        description: err.message,
+        variant: 'destructive',
+      })
+    } else if (data) {
+      toast({
+        title: 'Success',
+        description: 'Removed from library',
+        variant: 'success',
       })
     }
-  }, [state, toast])
+  }
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className={`${isMovie ? 'basis-5/6' : 'w-full'} ${isMovie ? 'rounded-r-none' : 'rounded-br-none rounded-tr-md'} rounded-bl-none rounded-tl-md`}
+          className={`${type === 'movie' ? 'basis-5/6' : 'w-full'} ${type === 'movie' ? 'rounded-r-none' : 'rounded-br-none rounded-tr-md'} rounded-bl-none rounded-tl-md`}
           variant="destructive"
         >
           Remove from Library
@@ -77,7 +71,8 @@ export default function RemoveFromLibrary({
           <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>
             This action cannot be undone. This will permanently delete this
-            movie and all its plays from your library.
+            {type === 'movie' || type === 'animemovie' ? ' movie' : ' show'} and
+            all its plays from your library.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -85,14 +80,13 @@ export default function RemoveFromLibrary({
             <DialogClose asChild>
               <Button variant="secondary">Cancel</Button>
             </DialogClose>
-            <form action={formAction}>
-              <input type="hidden" name="userId" value={userId} />
-              <input type="hidden" name="mediaId" value={mediaId} />
-              {(type === 'season' || type === 'animetvseason') && seasonId && (
-                <input type="hidden" name="seasonId" value={seasonId} />
-              )}
-              <UseFormStatusPendingButton text="Remove" variant="destructive" />
-            </form>
+            <Button
+              variant="destructive"
+              onClick={handleRemove}
+              disabled={isPending}
+            >
+              {isPending ? 'Removing...' : 'Remove'}
+            </Button>
           </div>
         </DialogFooter>
       </DialogContent>
