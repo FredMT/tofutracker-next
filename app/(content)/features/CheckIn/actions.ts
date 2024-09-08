@@ -1,41 +1,56 @@
 'use server'
+import { authProcedure } from '@/lib/authProcedure'
 import { revalidateTag } from 'next/cache'
+import { z } from 'zod'
 
-export async function checkInAction(prevState: any, formData: FormData) {
-  const userId = formData.get('userId')
-  const mediaId = formData.get('mediaId')
-  const autocomplete = formData.get('autocomplete') === 'true'
+export const checkIn = authProcedure
+  .input(
+    z.object({
+      mediaId: z.string(),
+      autocomplete: z.boolean().optional().default(false),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    const { mediaId, autocomplete } = input
+    const response = await fetch(`${process.env.BACKEND_BASE_URL}check-in`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: ctx.user.id.toString(),
+        media_id: mediaId,
+        autocomplete: autocomplete,
+      }),
+    })
 
-  const response = await fetch(`${process.env.BACKEND_BASE_URL}check-in`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      user_id: userId,
-      media_id: mediaId,
-      autocomplete: autocomplete,
-    }),
+    const data = await response.json()
+    revalidateTag('is-in-library')
+    return data
   })
 
-  const data = await response.json()
-  revalidateTag('is-in-library')
-  return data
-}
-
-export async function cancelCheckInAction(prevState: any, formData: FormData) {
-  const userId = formData.get('userId')
-  const mediaId = formData.get('mediaId')
-
-  const res = await fetch(
-    `${process.env.BACKEND_BASE_URL}check-in/${userId}/${mediaId}`,
-    {
-      method: 'DELETE',
-      credentials: 'include',
-    }
+export const cancelCheckIn = authProcedure
+  .input(
+    z.object({
+      mediaId: z.string(),
+    })
   )
+  .handler(async ({ input, ctx }) => {
+    try {
+      const res = await fetch(
+        `${process.env.BACKEND_BASE_URL}check-in/${ctx.user.id.toString()}/${input.mediaId}`,
+        {
+          method: 'DELETE',
+        }
+      )
 
-  const data = await res.json()
-  revalidateTag('is-in-library')
-  return data
-}
+      const data = await res.json()
+      revalidateTag('is-in-library')
+      return data
+    } catch (error) {
+      return {
+        success: false,
+        message: 'An error occurred while canceling check-in',
+      }
+    }
+  })

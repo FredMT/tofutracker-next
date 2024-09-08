@@ -1,8 +1,8 @@
 'use client'
 
 import {
-  cancelCheckInAction,
-  checkInAction,
+  cancelCheckIn,
+  checkIn,
 } from '@/app/(content)/features/CheckIn/actions'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,54 +14,62 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { useToast } from '@/components/ui/use-toast'
-import React, { SyntheticEvent } from 'react'
-import { useFormState } from 'react-dom'
+import { useServerAction } from 'zsa-react'
 
 export default function CheckInButton({
-  userId,
   mediaId,
   data,
 }: {
-  userId: number
   mediaId: string
   data: any
 }) {
   const { toast } = useToast()
-  const [checkInState, checkInFormAction] = useFormState(checkInAction, null)
-  const [cancelCheckInState, cancelCheckInFormAction] = useFormState(
-    cancelCheckInAction,
-    null
-  )
+  const { execute: checkInAction, isPending: checkInActionIsPending } =
+    useServerAction(checkIn)
+  const {
+    execute: cancelCheckInAction,
+    isPending: cancelCheckInActionIsPending,
+  } = useServerAction(cancelCheckIn)
 
-  React.useEffect(() => {
-    if (checkInState) {
+  async function handleCheckInSubmit(mediaId: string, autocomplete: boolean) {
+    const [data, err] = await checkInAction({ mediaId, autocomplete })
+
+    if (err) {
       toast({
-        variant: checkInState.success ? 'success' : 'destructive',
-        title: 'Check-in Status',
-        description: checkInState.message,
+        title: 'Error',
+        description: err.message,
+        variant: 'destructive',
       })
     }
-  }, [checkInState, toast])
 
-  React.useEffect(() => {
-    if (cancelCheckInState) {
+    if (data) {
       toast({
-        variant: cancelCheckInState.success ? 'success' : 'destructive',
-        title: 'Check-in Status',
-        description: cancelCheckInState.message,
+        title: 'Success',
+        description: data.message,
+        variant: 'success',
       })
     }
-  }, [cancelCheckInState, toast])
+  }
 
-  const handleSubmit = (
-    event: SyntheticEvent<HTMLFormElement, SubmitEvent>
-  ) => {
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const submitter = event.nativeEvent.submitter as HTMLButtonElement
-    const autocomplete = submitter.value === 'false'
-    formData.set('autocomplete', autocomplete.toString())
-    checkInFormAction(formData)
+  async function handleCancelCheckIn(mediaId: string) {
+    const [data, err] = await cancelCheckInAction({ mediaId })
+
+    if (err) {
+      toast({
+        title: 'Error',
+        description: err.message,
+        variant: 'destructive',
+      })
+    }
+
+    if (data) {
+      console.log(data)
+      toast({
+        title: 'Success',
+        description: data.message,
+        variant: 'success',
+      })
+    }
   }
 
   if (!data || !['WATCHING', 'REWATCHING'].includes(data.watch_status)) {
@@ -86,36 +94,37 @@ export default function CheckInButton({
               Item will be added to library by default.
             </DialogDescription>
           </DialogHeader>
-          <form onSubmit={handleSubmit}>
-            <input type="hidden" name="userId" value={userId} />
-            <input type="hidden" name="mediaId" value={mediaId} />
-            <div className="space-y-4">
-              <div className="flex justify-end gap-x-4">
-                <div className="mt-2 space-x-4">
-                  {
-                    <Button type="submit" name="autocomplete" value="false">
-                      Set as {data ? 'Rewatching' : 'Watching'}
-                    </Button>
-                  }
-                  <Button type="submit" name="autocomplete" value="true">
-                    Continue
-                  </Button>
-                </div>
+          <div className="space-y-4">
+            <div className="flex justify-end gap-x-4">
+              <div className="mt-2 space-x-4">
+                <Button
+                  onClick={() => handleCheckInSubmit(mediaId, false)}
+                  disabled={checkInActionIsPending}
+                >
+                  Set as {data ? 'Rewatching' : 'Watching'}
+                </Button>
+                <Button
+                  onClick={() => handleCheckInSubmit(mediaId, true)}
+                  disabled={checkInActionIsPending}
+                >
+                  Continue
+                </Button>
               </div>
             </div>
-          </form>
+          </div>
         </DialogContent>
       </Dialog>
     )
   } else {
     return (
-      <form action={cancelCheckInFormAction}>
-        <input type="hidden" name="userId" value={userId} />
-        <input type="hidden" name="mediaId" value={mediaId} />
-        <Button variant="secondary" type="submit" className="w-full">
-          Cancel Check-in
-        </Button>
-      </form>
+      <Button
+        variant="secondary"
+        className="w-full"
+        disabled={cancelCheckInActionIsPending || checkInActionIsPending}
+        onClick={() => handleCancelCheckIn(mediaId)}
+      >
+        Cancel Check-in
+      </Button>
     )
   }
 }

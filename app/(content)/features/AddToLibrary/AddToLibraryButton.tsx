@@ -26,6 +26,7 @@ export default function AddToLibraryButton({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
     const [data, err] = await execute({
       type,
       mediaId: itemId,
@@ -52,7 +53,7 @@ export default function AddToLibraryButton({
   return (
     <form onSubmit={handleSubmit}>
       <UseFormStatusPendingButton
-        style="w-full"
+        style={`w-full`}
         text={`${isPending ? 'Adding...' : 'Add to Library'}`}
         variant="default"
         disabled={isPending}

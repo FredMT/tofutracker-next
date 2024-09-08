@@ -12,8 +12,8 @@ export default async function MovieDetails({
   revenue,
   crew,
 }: {
-  budget: number
-  revenue: number
+  budget: string
+  revenue: string
   crew: CrewMember[]
 }) {
   const staffEntries = Object.entries(crew).filter(
@@ -39,7 +39,7 @@ export default async function MovieDetails({
             </div>
           </React.Fragment>
         ))}
-        {Boolean(budget) && (
+        {Boolean(+budget.split('$')[1]) && (
           <>
             <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
               Budget
@@ -49,7 +49,7 @@ export default async function MovieDetails({
             </div>
           </>
         )}
-        {Boolean(revenue) && (
+        {Boolean(+revenue.split('$')[1]) && (
           <>
             <div className="text-[14px] font-medium leading-[24px] text-muted-foreground">
               Revenue

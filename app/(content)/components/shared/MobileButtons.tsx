@@ -85,7 +85,7 @@ export default async function MobileButtons({
               type={type}
               seasonId={seasonId}
             />
-            {isMovie && <AddPlay userId={user.id} mediaId={itemId} />}
+            {isMovie && <AddPlay mediaId={itemId} />}
           </div>
           {!isMovie && type !== 'animemovie' && (
             <EpisodeProgress
@@ -120,9 +120,7 @@ export default async function MobileButtons({
           />
         )}
 
-      {isMovie && (
-        <CheckInButton userId={user.id} mediaId={itemId} data={library.data} />
-      )}
+      {isMovie && <CheckInButton mediaId={itemId} data={library.data} />}
       <Separator />
 
       <RateButton

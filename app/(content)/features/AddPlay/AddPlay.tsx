@@ -1,8 +1,8 @@
 'use client'
 
-import { addPlayAction } from '@/app/(content)/features/AddPlay/actions'
+import { addPlayActionMovie } from '@/app/(content)/features/AddPlay/actions'
 import { Button } from '@/components/ui/button'
-import DatetimePickerForm from '@/components/ui/datetime-picker-form'
+import { DateTimePicker } from '@/components/ui/datetimepicker'
 import {
   Popover,
   PopoverContent,
@@ -14,51 +14,23 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { toast } from '@/components/ui/use-toast'
 import { Plus } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { useFormState } from 'react-dom'
+import React from 'react'
+import { useServerAction } from 'zsa-react'
 
-export default function AddPlay({
-  userId,
-  mediaId,
-}: {
-  userId: number
-  mediaId: string
-}) {
-  const [state, formAction] = useFormState(addPlayAction, null)
-  const [mainPopoverOpen, setMainPopoverOpen] = useState(false)
-  const [datePopoverOpen, setDatePopoverOpen] = useState(false)
-
-  useEffect(() => {
-    if (state) {
-      toast({
-        title: state.success ? 'Success' : 'Error',
-        description: state.message,
-        variant: state.success ? 'success' : 'destructive',
-      })
-      if (state.success) {
-        setMainPopoverOpen(false)
-        setDatePopoverOpen(false)
-      }
-    }
-  }, [state])
-
-  const handleNowClick = () => {
-    const formData = new FormData()
-    formData.append('userId', userId.toString())
-    formData.append('mediaId', mediaId)
-    formAction(formData)
+export default function AddPlay({ mediaId }: { mediaId: string }) {
+  const [selectedDateTime, setSelectedDateTime] = React.useState(new Date())
+  const { execute, isPending } = useServerAction(addPlayActionMovie)
+  const handleSubmit = () => {
+    execute({
+      mediaId,
+      datetime: selectedDateTime.toISOString(),
+    })
   }
-
-  const handleDatetimeSubmit = (formData: FormData) => {
-    formAction(formData)
-  }
-
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip>
-        <Popover open={mainPopoverOpen} onOpenChange={setMainPopoverOpen}>
+        <Popover>
           <TooltipTrigger asChild>
             <PopoverTrigger asChild>
               <Button className="basis-1/6 rounded-l-none rounded-br-none rounded-tr-md px-2">
@@ -75,10 +47,7 @@ export default function AddPlay({
                 When did you watch this?
               </div>
               <div className="flex gap-x-2">
-                <Popover
-                  open={datePopoverOpen}
-                  onOpenChange={setDatePopoverOpen}
-                >
+                <Popover>
                   <PopoverTrigger asChild>
                     <Button>Another time</Button>
                   </PopoverTrigger>
@@ -87,18 +56,17 @@ export default function AddPlay({
                     align="start"
                     side="bottom"
                   >
-                    <DatetimePickerForm
-                      serverAction={handleDatetimeSubmit}
-                      userId={userId.toString()}
-                      mediaId={mediaId}
-                      onSuccess={() => {
-                        setMainPopoverOpen(false)
-                        setDatePopoverOpen(false)
-                      }}
-                    />
+                    <div className="flex flex-col gap-y-2">
+                      <DateTimePicker onDateTimeChange={setSelectedDateTime} />
+                      <Button onClick={handleSubmit} disabled={isPending}>
+                        Submit
+                      </Button>
+                    </div>
                   </PopoverContent>
                 </Popover>
-                <Button onClick={handleNowClick}>Now</Button>
+                <Button disabled={isPending} onClick={handleSubmit}>
+                  Now
+                </Button>
               </div>
             </div>
           </PopoverContent>
