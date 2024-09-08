@@ -1,86 +1,72 @@
 'use client'
 
-import {
-  changeAnimeMovieWatchStatus,
-  changeWatchStatus,
-  changeWatchStatusAnimeTv,
-  changeWatchStatusAnimeTvSeason,
-  changeWatchStatusTv,
-  changeWatchStatusTvSeason,
-} from '@/app/(content)/features/WatchStatus/actions'
+import { changeWatchStatusAction } from '@/app/(content)/features/WatchStatus/controller'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Form, FormControl, FormField, FormItem } from '@/components/ui/form'
 import { useToast } from '@/components/ui/use-toast'
 import { Check } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import { useServerAction } from 'zsa-react'
+
+type WatchStatusType =
+  | 'movie'
+  | 'tv'
+  | 'season'
+  | 'animetv'
+  | 'animemovie'
+  | 'animetvseason'
 
 export function WatchStatusSelect({
-  userId,
   mediaId,
   data,
-  isMovie,
   type,
   seasonId,
 }: {
-  userId: number
   mediaId: string
   data: any
-  isMovie: boolean
-  type: string
+  type: WatchStatusType
   seasonId?: number
 }) {
   const { toast } = useToast()
   const watchStatus = data ? data.watch_status : null
 
+  const { execute, isPending } = useServerAction(changeWatchStatusAction)
+
   const form = useForm({
     defaultValues: {
-      userId,
+      type,
       mediaId,
       watchStatus: watchStatus || '',
-      addPlay: false,
-      seasonId: seasonId || null,
+      seasonId: seasonId?.toString() || null,
     },
   })
 
   const onSubmit = async (values: any) => {
-    const formData = new FormData()
-    Object.entries(values).forEach(([key, value]) => {
-      formData.append(key, String(value))
+    const [data, err] = await execute({
+      type,
+      mediaId: values.mediaId,
+      watchStatus: values.watchStatus,
+      seasonId: values.seasonId || '',
     })
 
-    const result =
-      type === 'movie'
-        ? await changeWatchStatus(null, formData)
-        : type === 'season'
-          ? await changeWatchStatusTvSeason(null, formData)
-          : type === 'animetv'
-            ? await changeWatchStatusAnimeTv(null, formData)
-            : type === 'animetvseason'
-              ? await changeWatchStatusAnimeTvSeason(null, formData)
-              : type === 'animemovie'
-                ? await changeAnimeMovieWatchStatus(null, formData)
-                : await changeWatchStatusTv(null, formData)
-    if (result.success) {
-      toast({
-        title: 'Success',
-        description: result.message,
-        variant: 'success',
-      })
-    } else {
+    if (err) {
       toast({
         title: 'Error',
-        description: result.message,
+        description: err.message,
         variant: 'destructive',
+      })
+    } else if (data) {
+      toast({
+        title: 'Success',
+        description: 'Watch status updated succesfully',
+        variant: 'success',
       })
     }
   }
@@ -100,16 +86,10 @@ export function WatchStatusSelect({
     }
   }
 
-  const handleStatusChange = (newStatus: string, addPlay: boolean = false) => {
+  const handleStatusChange = (newStatus: string) => {
     form.setValue('watchStatus', newStatus)
-    {
-      type === 'movie' && form.setValue('addPlay', addPlay)
-    }
-    {
-      type === 'season' ||
-        (type === 'animetvseason' &&
-          seasonId &&
-          form.setValue('seasonId', seasonId))
+    if ((type === 'season' || type === 'animetvseason') && seasonId) {
+      form.setValue('seasonId', seasonId.toString())
     }
     form.handleSubmit(onSubmit)()
   }
@@ -125,8 +105,14 @@ export function WatchStatusSelect({
               <FormControl>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="w-full justify-center">
-                      Status: {getDisplayStatus(watchStatus)}
+                    <Button
+                      variant="outline"
+                      className="w-full justify-center"
+                      disabled={isPending}
+                    >
+                      {isPending
+                        ? 'Updating...'
+                        : `Status: ${getDisplayStatus(watchStatus)}`}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56">
@@ -136,7 +122,9 @@ export function WatchStatusSelect({
                         <DropdownMenuItem
                           key={status}
                           onSelect={() => handleStatusChange(status)}
-                          disabled={data && data.watch_status === status}
+                          disabled={
+                            isPending || (data && data.watch_status === status)
+                          }
                           className="cursor-pointer"
                         >
                           <div className="flex items-center">

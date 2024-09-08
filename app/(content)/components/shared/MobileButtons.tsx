@@ -132,10 +132,8 @@ export default async function MobileButtons({
         seasonId={seasonId}
       />
       <WatchStatusSelect
-        userId={user.id}
         mediaId={itemId}
         data={library.data}
-        isMovie={isMovie}
         type={type}
         seasonId={seasonId}
       />

@@ -1,234 +1,199 @@
 'use server'
 
-import { validateRequest } from '@/lib/auth'
+import api from '@/lib/api'
+import { authProcedure } from '@/lib/authProcedure'
 import { revalidateTag } from 'next/cache'
+import { z } from 'zod'
 
-export async function changeWatchStatus(prevState: any, formData: FormData) {
-  const userId = formData.get('userId')
-  const mediaId = formData.get('mediaId')
-  const watchStatus = formData.get('watchStatus')
-  const addPlay = formData.get('addPlay') === 'true'
-
-  const body: any = {
-    userId: Number(userId),
-    mediaId: Number(mediaId),
-    watchStatus,
-  }
-
-  if (watchStatus === 'COMPLETED') {
-    body.addPlay = addPlay
-  }
-
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/change-movie-status`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
+export const changeWatchStatusMovie = authProcedure
+  .input(
+    z.object({
+      mediaId: z.string(),
+      watchStatus: z.string(),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    try {
+      const body = {
+        userId: ctx.user.id,
+        mediaId: input.mediaId,
+        watchStatus: input.watchStatus,
       }
-    )
 
-    const data = await res.json()
+      const res = await fetch(
+        `${process.env.BACKEND_BASE_URL}user-media/change-movie-status`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        }
+      )
 
-    revalidateTag('is-in-library')
+      const data = await res.json()
 
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    console.error('Error changing watch status:', error)
-    return {
-      success: false,
-      message: 'An error occurred while changing the watch status',
-    }
-  }
-}
+      revalidateTag('is-in-library')
 
-export async function changeWatchStatusTvSeason(
-  prevState: any,
-  formData: FormData
-) {
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
-
-  const sessionId = session.session.id
-  const showId = formData.get('mediaId')
-  const watchStatus = formData.get('watchStatus')
-  const seasonId = formData.get('seasonId')
-
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/change-season-status`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          session_id: sessionId,
-          showId: showId,
-          watchStatus: watchStatus,
-          seasonId: seasonId,
-        }),
-        credentials: 'include',
+      return { success: data.success, message: data.message }
+    } catch (error) {
+      console.error('Error changing watch status:', error)
+      return {
+        success: false,
+        message: 'An error occurred while changing the watch status',
       }
-    )
-
-    const data = await res.json()
-
-    revalidateTag('is-in-library')
-
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    console.error('Error changing watch status:', error)
-    return {
-      success: false,
-      message: 'An error occurred while changing the watch status',
     }
-  }
-}
+  })
 
-export async function changeWatchStatusTv(prevState: any, formData: FormData) {
-  const userId = formData.get('userId')
-  const mediaId = formData.get('mediaId')
-  const watchStatus = formData.get('watchStatus')
+export const changeWatchStatusTv = authProcedure
+  .input(
+    z.object({
+      mediaId: z.string(),
+      watchStatus: z.string(),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    const body = {
+      user_id: ctx.user.id,
+      show_id: input.mediaId,
+      watch_status: input.watchStatus,
+    }
+    try {
+      const res = await fetch(
+        `${process.env.BACKEND_BASE_URL}user-media/change-tv-status`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        }
+      )
 
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}user-media/change-tv-status`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_id: userId,
-          show_id: mediaId,
-          watch_status: watchStatus,
-        }),
-        credentials: 'include',
+      const data = await res.json()
+
+      revalidateTag('is-in-library')
+
+      return { success: data.success, message: data.message }
+    } catch (error) {
+      console.error('Error changing watch status:', error)
+      return {
+        success: false,
+        message: 'An error occurred while changing the watch status',
       }
-    )
-
-    const data = await res.json()
-
-    revalidateTag('is-in-library')
-
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    console.error('Error changing watch status:', error)
-    return {
-      success: false,
-      message: 'An error occurred while changing the watch status',
     }
-  }
-}
+  })
 
-export async function changeWatchStatusAnimeTv(
-  prevState: any,
-  formData: FormData
-) {
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
-
-  const sessionId = session.session.id
-  const mediaId = formData.get('mediaId')
-  const watchStatus = formData.get('watchStatus')
-
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}watch-status/anime-show?animeId=${`${mediaId}2`}&status=${watchStatus}&session_id=${sessionId}`,
-      {
-        method: 'POST',
+export const changeWatchStatusTvSeason = authProcedure
+  .input(
+    z.object({
+      mediaId: z.string(),
+      watchStatus: z.string(),
+      seasonId: z.string(),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    try {
+      const body = {
+        session_id: ctx.session.id,
+        showId: input.mediaId,
+        watchStatus: input.watchStatus,
+        seasonId: input.seasonId,
       }
-    )
+      const res = await fetch(
+        `${process.env.BACKEND_BASE_URL}user-media/change-season-status`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        }
+      )
 
-    const data = await res.json()
+      const data = await res.json()
 
-    revalidateTag('is-in-library')
+      revalidateTag('is-in-library')
 
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    console.error('Error changing watch status:', error)
-    return {
-      success: false,
-      message: 'An error occurred while changing the watch status',
-    }
-  }
-}
-
-export async function changeWatchStatusAnimeTvSeason(
-  prevState: any,
-  formData: FormData
-) {
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
-
-  const sessionId = session.session.id
-  const mediaId = formData.get('mediaId')
-  const watchStatus = formData.get('watchStatus')
-  const seasonId = formData.get('seasonId')
-
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}watch-status/anime-season?animeId=${`${mediaId}`}&status=${watchStatus}&seasonId=${seasonId}&session_id=${sessionId}`,
-      {
-        method: 'POST',
+      return { success: data.success, message: data.message }
+    } catch (error) {
+      console.error('Error changing watch status:', error)
+      return {
+        success: false,
+        message: 'An error occurred while changing the watch status',
       }
-    )
-
-    const data = await res.json()
-
-    revalidateTag('is-in-library')
-
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    console.error('Error changing watch status:', error)
-    return {
-      success: false,
-      message: 'An error occurred while changing the watch status',
     }
-  }
-}
+  })
 
-export async function changeAnimeMovieWatchStatus(
-  prevState: any,
-  formData: FormData
-) {
-  const session = await validateRequest()
-  if (!session || !session.session) {
-    return { success: false, message: 'Unauthorized' }
-  }
+export const changeWatchStatusAnimeTv = authProcedure
+  .input(
+    z.object({
+      mediaId: z.string(),
+      watchStatus: z.string(),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    try {
+      const data = await api.post<{ success: boolean; message: string }>(
+        `watch-status/anime-show?animeId=${input.mediaId}2&status=${input.watchStatus}&session_id=${ctx.session.id}`
+      )
 
-  const sessionId = session.session.id
-  const mediaId = formData.get('mediaId')
-  const watchStatus = formData.get('watchStatus')
-
-  try {
-    const res = await fetch(
-      `${process.env.BACKEND_BASE_URL}watch-status/anime-movie?movieId=${mediaId}&status=${watchStatus}&session_id=${sessionId}`,
-      {
-        method: 'POST',
+      revalidateTag('is-in-library')
+      return data
+    } catch (error) {
+      console.error('Error changing watch status:', error)
+      return {
+        success: false,
+        message: 'An error occurred while changing the watch status',
       }
-    )
-
-    const data = await res.json()
-
-    revalidateTag('is-in-library')
-
-    return { success: data.success, message: data.message }
-  } catch (error) {
-    console.error('Error changing watch status:', error)
-    return {
-      success: false,
-      message: 'An error occurred while changing the watch status',
     }
-  }
-}
+  })
+
+export const changeWatchStatusAnimeTvSeason = authProcedure
+  .input(
+    z.object({
+      mediaId: z.string(),
+      watchStatus: z.string(),
+      seasonId: z.string(),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    try {
+      const data = await api.post<{ success: boolean; message: string }>(
+        `watch-status/anime-season?animeId=${input.mediaId}&status=${input.watchStatus}&seasonId=${input.seasonId}&session_id=${ctx.session.id}`
+      )
+
+      revalidateTag('is-in-library')
+      return data
+    } catch (error) {
+      console.error('Error changing watch status:', error)
+      return {
+        success: false,
+        message: 'An error occurred while changing the watch status',
+      }
+    }
+  })
+
+export const changeWatchStatusAnimeMovie = authProcedure
+  .input(
+    z.object({
+      mediaId: z.string(),
+      watchStatus: z.string(),
+    })
+  )
+  .handler(async ({ input, ctx }) => {
+    try {
+      const data = await api.post<{ success: boolean; message: string }>(
+        `watch-status/anime-movie?movieId=${input.mediaId}&status=${input.watchStatus}&session_id=${ctx.session.id}`
+      )
+
+      revalidateTag('is-in-library')
+      return data
+    } catch (error) {
+      console.error('Error changing watch status:', error)
+      return {
+        success: false,
+        message: 'An error occurred while changing the watch status',
+      }
+    }
+  })
