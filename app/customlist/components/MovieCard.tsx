@@ -5,22 +5,19 @@ import { Button } from '@/components/ui/button'
 import { Minus } from 'lucide-react'
 import Image from 'next/image'
 import { Movie } from '@/app/customlist/types'
+import { useEditMode } from '@/app/customlist/contexts/EditModeContext'
 
 interface MovieCardProps {
   movie: Movie
-  isEditMode: boolean
   onRemove: (id: number) => void
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({
-  movie,
-  isEditMode,
-  onRemove,
-}) => {
+const MovieCard: React.FC<MovieCardProps> = ({ movie, onRemove }) => {
+  const { isEditMode } = useEditMode()
+
   return (
     <div className="relative border-0">
       <Card className="border-0">
-        {/* <Link href={`/movie/${movie.id}`}> */}
         <div className="relative">
           <Image
             className="aspect-poster h-full w-full rounded-sm object-cover"
@@ -38,14 +35,11 @@ const MovieCard: React.FC<MovieCardProps> = ({
             )}
           </div>
         </div>
-        {/* </Link> */}
         <div className="mt-4 flex flex-col gap-y-2">
-          {/* <Link href={`/movie/${movie.id}`}> */}
           <h3 className="line-clamp-2 text-[14px] font-semibold leading-6 text-secondary-foreground">
             {movie.title}
           </h3>
           <div className="text-xs text-muted-foreground">{movie.year}</div>
-          {/* </Link> */}
         </div>
       </Card>
       {isEditMode && (

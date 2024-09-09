@@ -4,28 +4,25 @@ import React, { useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
+import { useEditMode } from '@/app/customlist/contexts/EditModeContext'
 
-interface ListHeaderProps {
-  title: string
-  description: string
-  isEditing: boolean
-  onSave: (newTitle: string, newDescription: string) => void
-}
-
-const ListHeader: React.FC<ListHeaderProps> = ({
-  title,
-  description,
-  isEditing,
-  onSave,
-}) => {
+const ListHeader: React.FC = () => {
+  const { isEditMode } = useEditMode()
+  const [title, setTitle] = useState('My Watchlist')
+  const [description, setDescription] = useState(
+    'Keep track of your favorite movies, TV shows, and anime'
+  )
   const [editedTitle, setEditedTitle] = useState(title)
   const [editedDescription, setEditedDescription] = useState(description)
 
   const handleSave = () => {
-    onSave(editedTitle, editedDescription)
+    setTitle(editedTitle)
+    setDescription(editedDescription)
+    // Here you would typically call a server action to save the changes
+    // For example: saveListDetails(editedTitle, editedDescription)
   }
 
-  if (isEditing) {
+  if (isEditMode) {
     return (
       <div className="space-y-4">
         <Input

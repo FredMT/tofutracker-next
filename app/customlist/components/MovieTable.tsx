@@ -9,18 +9,16 @@ import {
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
 import { Movie } from '@/app/customlist/types'
+import { useEditMode } from '@/app/customlist/contexts/EditModeContext'
 
 interface MovieTableProps {
   movies: Movie[]
-  isEditMode: boolean
   onRemove: (id: number) => void
 }
 
-const MovieTable: React.FC<MovieTableProps> = ({
-  movies,
-  isEditMode,
-  onRemove,
-}) => {
+const MovieTable: React.FC<MovieTableProps> = ({ movies, onRemove }) => {
+  const { isEditMode } = useEditMode()
+
   return (
     <Table>
       <TableHeader>
