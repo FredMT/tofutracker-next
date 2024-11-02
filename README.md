@@ -11,8 +11,8 @@ TofuTracker helps you view the latest information on Movies, Television Shows an
 
 # Feature Preview
 
-1. Add, Rate, Watch Remaining, Quick Track, Watch Status
-   ![Add, Rate, Watch Remaining, Quick Track, Watch Status](https://i.imgur.com/tdtrSC9.gif)
+1. Add, Rate, Watch Remaining, Quick Track, Watch Status - https://i.imgur.com/h88hO1Y.gif
+   ![Add, Rate, Watch Remaining, Quick Track, Watch Status](https://i.imgur.com/h88hO1Y.gif)
 
 2. Movie Page Screenshots
    ![Movie Page Screenshots](https://cdn.imgchest.com/files/j7mmcxq3r37.jpg)
